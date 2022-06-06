@@ -140,6 +140,11 @@ class WeChatChatPage extends StatelessWidget {
                           Expanded(
                             flex: 7,
                             child: TextFieldItemView(
+                              onTap: (){
+                               if(weChatHomePageBloc.isShowMoreWidget){
+                                 weChatHomePageBloc.setIsShowMoreWidgetState();
+                               }
+                              },
                               onChange: (string) {
                                 weChatHomePageBloc
                                     .setIsShowMoreIconState(string);

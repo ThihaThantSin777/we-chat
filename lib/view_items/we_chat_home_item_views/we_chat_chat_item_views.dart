@@ -39,15 +39,16 @@ class ShowMoreIconItemView extends StatelessWidget {
 }
 
 class TextFieldItemView extends StatelessWidget {
-  const TextFieldItemView({Key? key, required this.onChange}) : super(key: key);
+  const TextFieldItemView({Key? key, required this.onChange,required this.onTap}) : super(key: key);
   final Function(String) onChange;
-
+  final Function onTap;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         // width: MediaQuery.of(context).size.width * 0.8,
         // height: MediaQuery.of(context).size.height * 0.05,
         child: TextField(
+          onTap: ()=>onTap(),
       onChanged: (string) => onChange(string),
       decoration: InputDecoration(
           hintText: 'Message...',
