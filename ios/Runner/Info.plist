@@ -46,6 +46,8 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs to use your gallery or camera</string>
+    <string>This app needs to use your gallery</string>
+	<key>NSCameraUsageDescription </key>
+    <string>This app needs to use your camera</string>
 </dict>
 </plist>

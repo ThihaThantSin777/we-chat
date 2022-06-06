@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class WeChatHomePageBloc extends ChangeNotifier {
   ShowMoreIconForm _showMoreIcon = ShowMoreIconForm.add;
   bool _showMoreWidget = false;
   bool _isDisposed = false;
+  File? _file;
 
   ///getter
   List<UserVO> get getUserVOList => _userVOList;
@@ -41,9 +43,21 @@ class WeChatHomePageBloc extends ChangeNotifier {
 
   bool get isShowMoreWidget => _showMoreWidget;
 
+  File? get getFile => _file;
+
   WeChatHomePageBloc() {
     _userVOList = userVOList;
     _setChatTalk();
+    _notifySafely();
+  }
+
+  void addImage(File path) {
+    _file = path;
+    _notifySafely();
+  }
+
+  void removeImage() {
+    _file = null;
     _notifySafely();
   }
 

@@ -1,11 +1,14 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_home_page_bloc.dart';
 import 'package:wechat_app/data/vos/chatting_vo.dart';
-import 'package:wechat_app/data/vos/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
+import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/view_items/we_chat_home_item_views/we_chat_chat_item_views.dart';
 import 'package:wechat_app/widgets/leading_widget.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
@@ -13,6 +16,21 @@ import 'package:wechat_app/widgets/wating_widget.dart';
 class WeChatChatPage extends StatelessWidget {
   const WeChatChatPage({Key? key, required this.title}) : super(key: key);
   final String title;
+  void chooseImage(String text, WeChatHomePageBloc bloc) async {
+    if (text == kCameraText) {
+      final ImagePicker picker = ImagePicker();
+      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+      bloc.addImage(File(photo?.path.toString() ?? ''));
+    } else if (text == kFileText) {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.any);
+
+      if (result != null) {
+        File file = File(result.files.single.path ?? '');
+        bloc.addImage(file);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +87,40 @@ class WeChatChatPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Selector<WeChatHomePageBloc, File?>(
+                        selector: (context, bloc) => bloc.getFile,
+                        builder: (context, file, child) {
+                          return Visibility(
+                            visible: (file != null),
+                            child: Container(
+                              color: kBarColor,
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.15,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadSpace10x,
+                                  vertical: kPadSpace10x),
+                              child: Stack(
+                                children: [
+                                  Image.file(
+                                    file ?? File(''),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                        onPressed: () {
+                                          WeChatHomePageBloc
+                                              weChatHomePageBloc = context
+                                                  .read<WeChatHomePageBloc>();
+                                          weChatHomePageBloc.removeImage();
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
                     Container(
                       padding: const EdgeInsets.only(top: kPadSpace10x),
                       alignment: Alignment.topCenter,
@@ -81,21 +133,27 @@ class WeChatChatPage extends StatelessWidget {
                           const SizedBox(
                             width: kPadSpace5x,
                           ),
-                          const MicroPhoneItemView(),
-                          const SizedBox(
-                            width: kPadSpace10x,
+                          const Expanded(flex: 1, child: MicroPhoneItemView()),
+                          // const SizedBox(
+                          //   width: kPadSpace10x,
+                          // ),
+                          Expanded(
+                            flex: 7,
+                            child: TextFieldItemView(
+                              onChange: (string) {
+                                weChatHomePageBloc
+                                    .setIsShowMoreIconState(string);
+                              },
+                            ),
                           ),
-                          TextFieldItemView(
-                            onChange: (string) {
-                              weChatHomePageBloc.setIsShowMoreIconState(string);
-                            },
-                          ),
-                          ShowMoreIconItemView(
-                            onPressed: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              bloc.setIsShowMoreWidgetState();
-                            },
-                            showMoreIcon: bloc.getShowMoreIcon,
+                          Expanded(
+                            child: ShowMoreIconItemView(
+                              onPressed: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                bloc.setIsShowMoreWidgetState();
+                              },
+                              showMoreIcon: bloc.getShowMoreIcon,
+                            ),
                           ),
                         ],
                       ),
@@ -104,7 +162,9 @@ class WeChatChatPage extends StatelessWidget {
                       duration: kDurationIn500milliseconds,
                       child: Visibility(
                         visible: bloc.isShowMoreWidget,
-                        child: const ShowMoreItemView(),
+                        child: ShowMoreItemView(
+                          onTap: (string) => chooseImage(string, bloc),
+                        ),
                       ),
                     ),
                   ],
@@ -115,40 +175,5 @@ class WeChatChatPage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class ChattingItemView extends StatelessWidget {
-  const ChattingItemView({Key? key, required this.text,required this.isLeft}) : super(key: key);
-  final String text;
-  final bool isLeft;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 50, maxWidth: 200),
-      padding: const EdgeInsets.symmetric(
-          horizontal: kPadSpace10x, vertical: kPadSpace10x),
-      alignment: (isLeft)?Alignment.topLeft:Alignment.topRight,
-      decoration: BoxDecoration(
-          color: kBarColor, borderRadius: BorderRadius.circular(kPadSpace20x)),
-      child: Text(text),
-    );
-  }
-}
-
-class CircleAvatarProfileItemView extends StatelessWidget {
-  const CircleAvatarProfileItemView({Key? key, required this.isLeft})
-      : super(key: key);
-  final bool isLeft;
-
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-        visible: isLeft,
-        child: const CircleAvatar(
-          backgroundColor: Colors.transparent,
-          backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
-        ));
   }
 }

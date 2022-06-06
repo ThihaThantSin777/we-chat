@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
 class SubMessageItemView extends StatelessWidget {
-  const SubMessageItemView({
-    Key? key,
-    required this.subMessage
-  }) : super(key: key);
+  const SubMessageItemView({Key? key, required this.subMessage})
+      : super(key: key);
   final String subMessage;
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(
+    return SizedBox(
         height: kSubMessageShowHeight,
         child: Text(
           subMessage,
@@ -21,14 +19,11 @@ class SubMessageItemView extends StatelessWidget {
 }
 
 class ReceiveTimeItemView extends StatelessWidget {
-  const ReceiveTimeItemView({
-    Key? key,
-    required this.time
-  }) : super(key: key);
+  const ReceiveTimeItemView({Key? key, required this.time}) : super(key: key);
   final String time;
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(right: kPadSpace10x),
       child: Text(
         time,
@@ -46,33 +41,28 @@ class UserNameItemView extends StatelessWidget {
   final String name;
   @override
   Widget build(BuildContext context) {
-    return  Text(
+    return Text(
       name,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: kFontSize17x),
+      style:
+          const TextStyle(fontWeight: FontWeight.bold, fontSize: kFontSize17x),
     );
   }
 }
 
 class ProfileItemView extends StatelessWidget {
-  const ProfileItemView({
-    Key? key,
-    required this.imageURL
-  }) : super(key: key);
+  const ProfileItemView({Key? key, required this.imageURL}) : super(key: key);
   final String imageURL;
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl:imageURL,
+      imageUrl: imageURL,
       imageBuilder: (context, imageProvider) => Container(
         width: kProfileImageCircleShapeWidth,
         height: kProfileImageCircleShapeHeight,
         margin: const EdgeInsets.only(left: kPadSpace10x),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover
-          ),
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
         ),
       ),
       placeholder: (context, url) => const CircularProgressIndicator(),
