@@ -6,6 +6,12 @@ const kContactText='Contact';
 const kDiscoverText='Discover';
 const kProfileText='Me';
 
+
+///AppBar Title
+const kWeChatTitle='WeChat';
+const kContactTitle='Contacts';
+const kMomentsTitle='Moments';
+
 ///Contact Text
 const kNewFriendText='News Friends';
 const kGroupChatText='Group Chats';

@@ -12,8 +12,9 @@ class SubMessageItemView extends StatelessWidget {
         height: kSubMessageShowHeight,
         child: Text(
           subMessage,
+          maxLines: kMaxLines,
           style: const TextStyle(color: Colors.black38),
-          overflow: TextOverflow.clip,
+          overflow: TextOverflow.ellipsis,
         ));
   }
 }

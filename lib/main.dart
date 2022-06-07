@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wechat_app/pages/we_chat_chat_history_page.dart';
 import 'package:wechat_app/pages/we_chat_home_page.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/theme/we_chat_theme.dart';

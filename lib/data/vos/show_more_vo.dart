@@ -28,15 +28,23 @@ class ShowMoreVO{
 }
 
 List<ShowMoreVO>showMoreVOList=[
-  ShowMoreVO(text: kFileText, icon: const Icon(Icons.broken_image_outlined,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kCameraText, icon: const Icon(Icons.camera_alt_outlined,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kSightsText, icon: const Icon(Icons.preview_outlined,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kVideoCallText, icon: const Icon(Icons.videocam_outlined,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kLuckyMoneyText, icon: const Icon(Icons.wallet_outlined,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kTransferText, icon: const FaIcon(FontAwesomeIcons.exchange,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kFavoriteText, icon: const FaIcon(FontAwesomeIcons.heart,size: kSHowMoreIconSize,color: Colors.black38,)),
-  ShowMoreVO(text: kLocationText, icon: const FaIcon(FontAwesomeIcons.locationPin,size: kSHowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kFileText, icon: const Icon(Icons.broken_image_outlined,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kCameraText, icon: const Icon(Icons.camera_alt_outlined,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kSightsText, icon: const Icon(Icons.preview_outlined,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kVideoCallText, icon: const Icon(Icons.videocam_outlined,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kLuckyMoneyText, icon: const Icon(Icons.wallet_outlined,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kTransferText, icon: const FaIcon(FontAwesomeIcons.exchange,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kFavoriteText, icon: const FaIcon(FontAwesomeIcons.heart,size: kShowMoreIconSize,color: Colors.black38,)),
+  ShowMoreVO(text: kLocationText, icon: const FaIcon(FontAwesomeIcons.locationPin,size: kShowMoreIconSize,color: Colors.black38,)),
 
+];
+
+
+List<ShowMoreVO>accountVOList=[
+  ShowMoreVO(text: kNewFriendText,  icon: const Icon(Icons.person_add,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kGroupChatText,  icon: const Icon(Icons.group,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kTagsText,  icon:const  FaIcon(FontAwesomeIcons.tags,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kOfficialAccountText,  icon: const Icon(Icons.switch_account,size: kShowMoreIconSize,color: Colors.black38,) ),
 ];
 
 

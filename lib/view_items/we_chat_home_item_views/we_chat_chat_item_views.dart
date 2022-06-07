@@ -1,14 +1,10 @@
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:wechat_app/bloc/we_chat_home_page_bloc.dart';
 import 'package:wechat_app/data/vos/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
-import 'package:wechat_app/resources/strings.dart';
+import 'package:wechat_app/utils/enums.dart';
 
 class ShowMoreIconItemView extends StatelessWidget {
   const ShowMoreIconItemView(
@@ -45,8 +41,6 @@ class TextFieldItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        // width: MediaQuery.of(context).size.width * 0.8,
-        // height: MediaQuery.of(context).size.height * 0.05,
         child: TextField(
           onTap: ()=>onTap(),
       onChanged: (string) => onChange(string),
@@ -94,7 +88,8 @@ class ShowMoreItemView extends StatelessWidget {
             children: showMoreVOList
                 .map((data) => GestureDetector(
                       onTap: () => onTap(data.text),
-                      child: Column(
+                      child:
+                      Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           data.icon,
