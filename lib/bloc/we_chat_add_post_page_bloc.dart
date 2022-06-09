@@ -1,15 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class WeChatAddPostPageBloc extends ChangeNotifier {
   ///State Variable
-  bool _showBottomSheet = true;
-
+  List<File>? _photos;
   bool _isDisposed = false;
 
-  bool get isShowBottomSheet => _showBottomSheet;
+  List<File>? get getPhotos => _photos;
 
-  void setShowBottomSheetState(bool cond) {
-    _showBottomSheet =cond;
+  void setPhotos(List<File> photos) {
+    _photos = photos;
+    _notifySafely();
+  }
+
+  void removePhoto(File file) {
+    _photos?.remove(file);
+    List<File> temp = _photos?.map((data) => data).toList() ?? [];
+    _photos = temp;
     _notifySafely();
   }
 
