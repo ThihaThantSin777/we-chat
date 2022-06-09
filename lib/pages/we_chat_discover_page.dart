@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wechat_app/pages/we_chat_add_post_page.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
+import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/widgets/leading_widget.dart';
 
 class WeChatDiscoverPage extends StatelessWidget {
@@ -15,7 +17,9 @@ class WeChatDiscoverPage extends StatelessWidget {
         leadingWidth: kLeadingWidth,
         leading: const LeadingWidget(text: kDiscoverText),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.photo_camera))
+          IconButton(onPressed: () {
+            navigatePush(context, const WeChatAddPostPage());
+          }, icon: const Icon(Icons.photo_camera))
         ],
       ),
     );
