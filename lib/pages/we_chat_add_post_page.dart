@@ -3,21 +3,47 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wechat_app/bloc/we_chat_add_post_page_bloc.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_discover_item_views.dart';
-import 'package:wechat_app/utils/extension.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 
-class WeChatAddPostPage extends StatelessWidget {
+class WeChatAddPostPage extends StatefulWidget {
   const WeChatAddPostPage({Key? key, this.id = -1}) : super(key: key);
   final int id;
+
+  @override
+  State<WeChatAddPostPage> createState() => _WeChatAddPostPageState();
+}
+
+class _WeChatAddPostPageState extends State<WeChatAddPostPage> {
+  FlickManager? flickManager;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    flickManager = FlickManager(
+      videoPlayerController:
+          VideoPlayerController.network("https://youtu.be/CZQ9ox8RRyA"),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    flickManager?.dispose();
+  }
+
   void _openBottomSheet(
       BuildContext context, WeChatAddPostPageBloc weChatAddPostPageBloc) {
     showModalBottomSheet(
         context: context,
         builder: (context) => PhotoAndVideosChooseItemView(
               onTap: (text) async {
-                navigateBack(context);
+                Navigator.of(context).pop();
                 if (text == 'Photos') {
                   FilePickerResult? result =
                       await FilePicker.platform.pickFiles(
@@ -31,14 +57,30 @@ class WeChatAddPostPage extends StatelessWidget {
                         result.paths.map((path) => File(path ?? '')).toList();
                     weChatAddPostPageBloc.setPhotos(files);
                   }
-                } else if (text == 'Videos') {}
+                } else if (text == 'Videos') {
+                  FilePickerResult? result =
+                      await FilePicker.platform.pickFiles(
+                    allowMultiple: true,
+                    type: FileType.custom,
+                    allowedExtensions: ['mp4'],
+                  );
+                  if (result != null) {
+                    List<File> files =
+                        result.paths.map((path) => File(path ?? '')).toList();
+                    weChatAddPostPageBloc.setVideos(files);
+                  }
+                }
               },
             ));
   }
 
   void _removePhoto(File file, WeChatAddPostPageBloc weChatAddPostPageBloc) {
-    print('AA');
     weChatAddPostPageBloc.removePhoto(file);
+  }
+
+  void _removeVideos(
+      FlickManager flickManager, WeChatAddPostPageBloc weChatAddPostPageBloc) {
+    weChatAddPostPageBloc.removeVideo(flickManager);
   }
 
   @override
@@ -47,7 +89,7 @@ class WeChatAddPostPage extends StatelessWidget {
       create: (context) => WeChatAddPostPageBloc(),
       child: Scaffold(
           appBar: AppBar(
-            title: Text((id == -1) ? 'Add Post' : 'Edit Post'),
+            title: Text((widget.id == -1) ? 'Add Post' : 'Edit Post'),
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: const Icon(Icons.close),
@@ -55,7 +97,8 @@ class WeChatAddPostPage extends StatelessWidget {
             actions: [
               GestureDetector(
                   onTap: () {},
-                  child: Center(child: Text((id == -1) ? 'POST' : 'EDIT'))),
+                  child:
+                      Center(child: Text((widget.id == -1) ? 'POST' : 'EDIT'))),
               const SizedBox(
                 width: kPadSpace10x,
               ),
@@ -116,7 +159,8 @@ class WeChatAddPostPage extends StatelessWidget {
                                                             ],
                                                           ))
                                                       .toList() ??
-                                                  []))
+                                                  [])),
+                                  FlickVideoPlayer(flickManager: flickManager!)
                                 ],
                               ),
                             )
