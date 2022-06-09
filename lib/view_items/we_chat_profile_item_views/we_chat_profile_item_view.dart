@@ -1,48 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/vos/show_more_vo.dart';
+import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
-
 class SettingItemView extends StatelessWidget {
-  const SettingItemView({
-    Key? key,
-    required this.onTap
-  }) : super(key: key);
-  final Function(String)onTap;
+  const SettingItemView({Key? key, required this.onTap}) : super(key: key);
+  final Function(String) onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-      EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.25),
+      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.25),
       height: kBioTextContainerWidth,
       child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 9/12,
-
+            childAspectRatio: 9 / 12,
           ),
           itemCount: settingVOList.length,
-          itemBuilder: (context,index){
+          itemBuilder: (context, index) {
             return Card(
               child: GestureDetector(
-                onTap: ()=>onTap(settingVOList[index].text),
-                child: Center(child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    settingVOList[index].icon,
-                    const SizedBox(
-                      height: kPadSpace10x,
-                    ),
-                    Text(settingVOList[index].text)
-                  ],
-                ),),
+                onTap: () => onTap(settingVOList[index].text),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      settingVOList[index].icon,
+                      const SizedBox(
+                        height: kPadSpace10x,
+                      ),
+                      Text(settingVOList[index].text)
+                    ],
+                  ),
+                ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }
@@ -115,7 +110,7 @@ class BioTextItemView extends StatelessWidget {
               color: Colors.black54,
             ),
             text:
-            'Adding you as my friend doesn’t mean I like you, I did it just to increase.',
+                'Adding you as my friend doesn’t mean I like you, I did it just to increase.',
             children: [
               TextSpan(
                   text: 'Edit',

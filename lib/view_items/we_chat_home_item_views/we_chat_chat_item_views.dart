@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:wechat_app/data/vos/show_more_vo.dart';
+import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/utils/enums.dart';
@@ -35,14 +34,16 @@ class ShowMoreIconItemView extends StatelessWidget {
 }
 
 class TextFieldItemView extends StatelessWidget {
-  const TextFieldItemView({Key? key, required this.onChange,required this.onTap}) : super(key: key);
+  const TextFieldItemView(
+      {Key? key, required this.onChange, required this.onTap})
+      : super(key: key);
   final Function(String) onChange;
   final Function onTap;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         child: TextField(
-          onTap: ()=>onTap(),
+      onTap: () => onTap(),
       onChanged: (string) => onChange(string),
       decoration: InputDecoration(
           hintText: 'Message...',
@@ -88,8 +89,7 @@ class ShowMoreItemView extends StatelessWidget {
             children: showMoreVOList
                 .map((data) => GestureDetector(
                       onTap: () => onTap(data.text),
-                      child:
-                      Column(
+                      child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           data.icon,

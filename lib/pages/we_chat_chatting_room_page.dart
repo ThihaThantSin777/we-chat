@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chatting_and_chat_history_pages_bloc.dart';
-import 'package:wechat_app/data/vos/chatting_vo.dart';
+import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';

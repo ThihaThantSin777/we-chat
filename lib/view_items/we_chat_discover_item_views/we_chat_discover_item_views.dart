@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/vos/add_post_vo.dart';
+import 'package:video_player/video_player.dart';
+import 'package:wechat_app/data/vos/add_post_vo/add_post_vo.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
 class PostTextFieldView extends StatelessWidget {
-  const PostTextFieldView({
-    Key? key,
-  }) : super(key: key);
-
+  const PostTextFieldView({Key? key, required this.formState})
+      : super(key: key);
+  final GlobalKey<FormState> formState;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: kPadSpace10x, vertical: kPadSpace10x),
       child: Form(
+          key: formState,
           child: TextFormField(
-        maxLines: 10,
-        decoration: const InputDecoration(
-            border: InputBorder.none, hintText: 'What is in your mind?'),
-      )),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (string) {
+              if (string?.isEmpty ?? true) {
+                return 'required';
+              }
+              return null;
+            },
+            maxLines: null,
+            decoration: const InputDecoration(
+                border: InputBorder.none, hintText: 'What is in your mind?'),
+          )),
     );
   }
 }
@@ -62,5 +70,27 @@ class PhotoAndVideosChooseItemView extends StatelessWidget {
               )
               .toList()),
     );
+  }
+}
+
+class VideoItemView extends StatelessWidget {
+  const VideoItemView(
+      {Key? key, required this.videoPlayerController, required this.onPressed})
+      : super(key: key);
+  final VideoPlayerController videoPlayerController;
+  final Function onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      AspectRatio(
+          aspectRatio: videoPlayerController.value.aspectRatio,
+          child: VideoPlayer(videoPlayerController)),
+      IconButton(
+          onPressed: () => onPressed(),
+          icon: const Icon(
+            Icons.cancel,
+            color: Colors.red,
+          ))
+    ]);
   }
 }

@@ -1,21 +1,18 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/vos/strings_vo.dart';
+import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
 
 class WeChatContactPageBloc extends ChangeNotifier {
-
-
   ///State Variable
   List<String> _contactList = [];
   List<StringVO> _stringVoList = [];
-  Map<String,int>_countFriend={};
+  Map<String, int> _countFriend = {};
   bool _isDisposed = false;
-
 
   ///getter
   List<String> get getContactList => _contactList;
   List<StringVO> get getStringVOList => _stringVoList;
-  Map<String,int> get getCountFriend=>_countFriend;
+  Map<String, int> get getCountFriend => _countFriend;
 
   WeChatContactPageBloc() {
     _firstPrePopulateData();
@@ -52,12 +49,15 @@ class WeChatContactPageBloc extends ChangeNotifier {
   // 'Z':0,
 
   void _countFriendListByAlphabet() {
-   // int count = 1;
+    // int count = 1;
     List<String> nameListTags = (getStringVOList).map((e) => e.tag).toList();
     Set<String> nameSetTags = (getStringVOList).map((e) => e.tag).toSet();
-    for(int i=0;i<nameSetTags.length;i++){
-      var count = nameListTags.where((string) => string == nameSetTags.elementAt(i)).toList().length;
-      _countFriend[nameSetTags.elementAt(i)]=count;
+    for (int i = 0; i < nameSetTags.length; i++) {
+      var count = nameListTags
+          .where((string) => string == nameSetTags.elementAt(i))
+          .toList()
+          .length;
+      _countFriend[nameSetTags.elementAt(i)] = count;
     }
 
     // for (var element in nameTags) {

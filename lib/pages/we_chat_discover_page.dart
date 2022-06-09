@@ -17,9 +17,11 @@ class WeChatDiscoverPage extends StatelessWidget {
         leadingWidth: kLeadingWidth,
         leading: const LeadingWidget(text: kDiscoverText),
         actions: [
-          IconButton(onPressed: () {
-            navigatePush(context, const WeChatAddPostPage());
-          }, icon: const Icon(Icons.photo_camera))
+          IconButton(
+              onPressed: () {
+                navigatePush(context, WeChatAddPostPage());
+              },
+              icon: const Icon(Icons.photo_camera))
         ],
       ),
     );

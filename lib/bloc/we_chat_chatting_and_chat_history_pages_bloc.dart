@@ -2,12 +2,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/vos/chatting_vo.dart';
+import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
 import 'package:wechat_app/utils/enums.dart';
 
-import '../data/vos/user_vo.dart';
-
-
+import '../data/vos/chat_user_vo/chat_user_vo.dart';
 
 List<String> personChat = [
   'Hello Leave the door open baby',
@@ -24,7 +22,7 @@ List<String> personChat = [
 
 class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
   ///State Variable
-  List<UserVO> _userVOList = [];
+  List<ChatUserVO> _userVOList = [];
   List<ChattingVO> _chatList = [];
   ShowMoreIconForm _showMoreIcon = ShowMoreIconForm.add;
   bool _showMoreWidget = false;
@@ -32,7 +30,7 @@ class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
   File? _file;
 
   ///getter
-  List<UserVO> get getUserVOList => _userVOList;
+  List<ChatUserVO> get getUserVOList => _userVOList;
 
   List<ChattingVO> get getChattingVOList => _chatList;
 
@@ -88,9 +86,9 @@ class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
     _notifySafely();
   }
 
-  void remove(UserVO userVO) {
+  void remove(ChatUserVO userVO) {
     bool cond = _userVOList.remove(userVO);
-    List<UserVO> temp = [];
+    List<ChatUserVO> temp = [];
     if (cond) {
       for (var element in _userVOList) {
         temp.add(element);

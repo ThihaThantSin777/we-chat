@@ -1,6 +1,6 @@
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/vos/show_more_vo.dart';
+import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 
 class SearchTextFieldItemView extends StatelessWidget {

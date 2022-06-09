@@ -1,30 +1,24 @@
-
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
 import 'package:wechat_app/data/model/we_chat_model.dart';
 
-class WeChatSettingPageBloc extends ChangeNotifier{
-
-  bool _lightMode=true;
+class WeChatSettingPageBloc extends ChangeNotifier {
+  bool _lightMode = true;
   bool _isDisposed = false;
-  final WeChatModel _weChatModel=WeChatModelImpl();
+  final WeChatModel _weChatModel = WeChatModelImpl();
 
-  bool get isLightMode=>_lightMode;
+  bool get isLightMode => _lightMode;
 
-
-  WeChatSettingPageBloc(){
+  WeChatSettingPageBloc() {
     _weChatModel.getThemeMode().listen((mode) {
-      _lightMode=mode;
+      _lightMode = mode;
       _notifySafely();
-    },
-      onError: (error)=>debugPrint(error)
-    );
+    }, onError: (error) => debugPrint(error));
   }
-  void saveThemeMode(bool mode){
-    _lightMode=mode;
+  void saveThemeMode(bool mode) {
+    _lightMode = mode;
     _notifySafely();
   }
-
 
   void _notifySafely() {
     if (!_isDisposed) {
@@ -37,5 +31,4 @@ class WeChatSettingPageBloc extends ChangeNotifier{
     super.dispose();
     _isDisposed = true;
   }
-
 }

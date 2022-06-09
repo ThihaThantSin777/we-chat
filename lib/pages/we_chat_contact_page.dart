@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_contact_page_bloc.dart';
-import 'package:wechat_app/data/vos/show_more_vo.dart';
-import 'package:wechat_app/data/vos/strings_vo.dart';
+import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
+import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/view_items/we_chat_contact_item_views/we_chat_contact_item_views.dart';
@@ -63,13 +63,15 @@ class WeChatContactPage extends StatelessWidget {
                                       ),
                                     ),
                                 itemBuilder: (context, index) {
-                                  return Selector<WeChatContactPageBloc,Map<String,int>>(
-                                    selector: (context,bloc)=>bloc.getCountFriend,
-                                    builder: (context,countFriends,child)=>
-                                     AtoZContactItemView(
-                                        stringVO: contactList[index],
-                                     countFriends: countFriends,
-                                     ),
+                                  return Selector<WeChatContactPageBloc,
+                                      Map<String, int>>(
+                                    selector: (context, bloc) =>
+                                        bloc.getCountFriend,
+                                    builder: (context, countFriends, child) =>
+                                        AtoZContactItemView(
+                                      stringVO: contactList[index],
+                                      countFriends: countFriends,
+                                    ),
                                   );
                                 }),
                           )
@@ -81,14 +83,15 @@ class WeChatContactPage extends StatelessWidget {
 }
 
 class AtoZContactItemView extends StatelessWidget {
-  const AtoZContactItemView({Key? key, required this.stringVO,required this.countFriends})
+  const AtoZContactItemView(
+      {Key? key, required this.stringVO, required this.countFriends})
       : super(key: key);
   final StringVO stringVO;
-  final Map<String,int>countFriends;
+  final Map<String, int> countFriends;
   @override
   Widget build(BuildContext context) {
-    int count=int.parse(countFriends[stringVO.tag].toString());
-    String totalFriends='$count ${(count<=1)?'friend':'friends'}';
+    int count = int.parse(countFriends[stringVO.tag].toString());
+    String totalFriends = '$count ${(count <= 1) ? 'friend' : 'friends'}';
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -104,13 +107,21 @@ class AtoZContactItemView extends StatelessWidget {
               children: [
                 Text(
                   stringVO.getSuspensionTag(),
-                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: kFontSize17x,color: Colors.black38),),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: kFontSize17x,
+                      color: Colors.black38),
+                ),
                 const SizedBox(
                   width: kPadSpace250x,
                 ),
                 Text(
                   totalFriends,
-                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: kFontSize17x,color: Colors.black38),),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: kFontSize17x,
+                      color: Colors.black38),
+                ),
               ],
             ),
           ),
