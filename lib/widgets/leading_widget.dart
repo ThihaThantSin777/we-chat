@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/utils/extension.dart';
 
 class LeadingWidget extends StatelessWidget {
@@ -7,31 +8,33 @@ class LeadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: IconButton(
-            onPressed: () {
-              navigateBack(context);
-            },
-            icon: const Icon(
-              Icons.chevron_left,
-              color: Colors.white,
-            ),
+    return GestureDetector(
+      onTap: ()=>navigateBack(context),
+      child: Row(
+        children: [
+          const Expanded(
+            flex: 2,
+            child:  Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+              ),
+
           ),
-        ),
-        Expanded(
-          flex: 5,
-          child: Text(
-            text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-            ),
+          const SizedBox(
+            width: kPadSpace5x,
           ),
-        )
-      ],
+          Expanded(
+            flex: 5,
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+          )
+        ],
+      ),
     );
     // return MaterialButton(
     //   onPressed: ()=>navigateBack(context),

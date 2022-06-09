@@ -41,10 +41,19 @@ List<ShowMoreVO>showMoreVOList=[
 
 
 List<ShowMoreVO>accountVOList=[
-  ShowMoreVO(text: kNewFriendText,  icon: const Icon(Icons.person_add,size: kShowMoreIconSize,color: Colors.black38,) ),
-  ShowMoreVO(text: kGroupChatText,  icon: const Icon(Icons.group,size: kShowMoreIconSize,color: Colors.black38,) ),
-  ShowMoreVO(text: kTagsText,  icon:const  FaIcon(FontAwesomeIcons.tags,size: kShowMoreIconSize,color: Colors.black38,) ),
-  ShowMoreVO(text: kOfficialAccountText,  icon: const Icon(Icons.switch_account,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kNewFriendText,  icon: const Icon(Icons.person_add,size: 55,color: Colors.black38,) ),
+  ShowMoreVO(text: kGroupChatText,  icon: const Icon(Icons.group,size: 55,color: Colors.black38,) ),
+  ShowMoreVO(text: kTagsText,  icon:const  FaIcon(FontAwesomeIcons.tags,size: 55,color: Colors.black38,) ),
+  ShowMoreVO(text: kOfficialAccountText,  icon: const Icon(Icons.switch_account,size: 55,color: Colors.black38,) ),
+];
+
+List<ShowMoreVO>settingVOList=[
+  ShowMoreVO(text: kPhotoText,  icon: const Icon(Icons.photo,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kFavoriteText,  icon: const Icon(Icons.favorite,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kWalletText,  icon:const  FaIcon(FontAwesomeIcons.wallet,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kCardText,  icon: const Icon(Icons.credit_card,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kStickerText,  icon:const  Icon(Icons.sentiment_satisfied_outlined,size: kShowMoreIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kSettingText,  icon: const Icon(Icons.settings,size: kShowMoreIconSize,color: Colors.black38,) ),
 ];
 
 

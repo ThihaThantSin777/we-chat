@@ -31,3 +31,12 @@ const kVideoCallText='Video Call';
 const kSightsText='Sight';
 const kTransferText='Transfer';
 const kLocationText='Location';
+
+
+///Profile Text
+const kPhotoText='Photos';
+const kFavoritesText='Favorite';
+const kWalletText='Wallets';
+const kCardText='Cards';
+const kStickerText='Stickers';
+const kSettingText='Settings';

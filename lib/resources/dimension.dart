@@ -2,7 +2,13 @@
 const kPadSpace5x=5.0;
 const kPadSpace10x=10.0;
 const kPadSpace20x=20.0;
+const kPadSpace30x=30.0;
 const kPadSpace250x=250.0;
+const kPadSpace40x=40.0;
+const kPadSpace45x=45.0;
+const kPadSpace70x=70.0;
+const kPadSpace23x=23.0;
+const kPadSpace280x=280.0;
 
 
 
@@ -26,6 +32,12 @@ const kIntrinsicWidth=140.0;
 const kAtoZOffsetX=-20.0;
 const kAtoZHintWidthAndHeight=60.0;
 const kAtoZHeaderHeight=40.0;
+const kProfileBodyFlex=3;
+const kFirstBodyCircleRadius=70.0;
+const kSecondBodyCircleRadius=63.0;
+const kLogoutButtonWidth=230.0;
+const kBioTextContainerWidth=400.0;
+
 
 ///FontSize
 const kFontSize17x=17.0;
