@@ -40,3 +40,7 @@ const kWalletText='Wallets';
 const kCardText='Cards';
 const kStickerText='Stickers';
 const kSettingText='Settings';
+
+
+///Default
+const kDefaultImage='https://www.chanchao.com.tw/images/default.jpg';

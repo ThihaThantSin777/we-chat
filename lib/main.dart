@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
 import 'package:wechat_app/pages/we_chat_home_page.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/theme/we_chat_theme.dart';

@@ -49,5 +49,6 @@
     <string>This app needs to use your gallery</string>
 	<key>NSCameraUsageDescription </key>
     <string>This app needs to use your camera</string>
+
 </dict>
 </plist>

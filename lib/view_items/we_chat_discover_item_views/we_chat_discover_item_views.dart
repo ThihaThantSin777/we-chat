@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/data/vos/add_post_vo/add_post_vo.dart';
 import 'package:wechat_app/resources/dimension.dart';
@@ -95,5 +96,262 @@ class VideoItemView extends StatelessWidget {
             color: Colors.red,
           ))
     ]);
+  }
+}
+
+
+class MyBackgroundItemView extends StatelessWidget {
+  const MyBackgroundItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yMMMMEEEEd');
+    final String formatted = formatter.format(now);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Stack(
+          children: const[
+            BackgroundImageView(),
+            Positioned.fill(
+              bottom: kPadSpace10x,
+              right: kPadSpace10x,
+              child:  Align(
+                  alignment: Alignment.bottomRight,
+                  child:  ProfileNameView()),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: kPadSpace20x,
+        ),
+        Padding(
+          padding:  const EdgeInsets.only(right: kPadSpace10x),
+          child:  Text(formatted,style: const TextStyle(fontWeight: FontWeight.w700),),
+        ),
+        const Padding(
+          padding:  EdgeInsets.only(right: kPadSpace10x),
+          child:  Text('23 new moments',style: TextStyle(fontWeight: FontWeight.w700),),
+        )
+      ],
+    );
+  }
+}
+
+class ProfileNameView extends StatelessWidget {
+  const ProfileNameView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Thiha Thant Sin',style: TextStyle(color: Colors.white,fontSize: kFontSize17x,fontWeight: FontWeight.bold),);
+  }
+}
+
+class BackgroundImageView extends StatelessWidget {
+  const BackgroundImageView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Image.network(
+        'https://staticg.sportskeeda.com/editor/2021/11/87584-16359620181400-1920.jpg',fit: BoxFit.cover,),
+    );
+  }
+}
+
+
+
+
+class ImageAndVideoItemView extends StatelessWidget {
+  const ImageAndVideoItemView({
+    Key? key,
+    required this.imageLink,
+    required this.videoLink,
+    required this.isImage,
+    required this.isVideo
+  }) : super(key: key);
+  final bool isImage;
+  final bool isVideo;
+  final String imageLink;
+  final String videoLink;
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        if(isImage)...[
+          ClipRRect(
+            borderRadius:
+            BorderRadius.circular(kPadSpace10x),
+            child: Image.network(
+              imageLink,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+        if(isVideo)...[
+          ClipRRect(
+            borderRadius:
+            BorderRadius.circular(kPadSpace10x),
+            child: Image.network(
+              videoLink,
+              fit: BoxFit.cover,
+            ),
+          )
+        ]
+
+
+      ],
+    );
+  }
+}
+
+class DescriptionItemView extends StatelessWidget {
+  const DescriptionItemView({
+    Key? key,
+    required this.description
+  }) : super(key: key);
+  final String description;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      description,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+        color: Colors.black54,
+      ),
+    );
+  }
+}
+
+class UserNameItemView extends StatelessWidget {
+  const UserNameItemView({
+    Key? key,
+    required this.userName
+  }) : super(key: key);
+  final String userName;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      userName,
+      style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w700,
+          fontSize: kFontSize19x),
+    );
+  }
+}
+
+class MyProfileItemView extends StatelessWidget {
+  const MyProfileItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: kProfileImageWidthAndHeight,
+      height: kProfileImageWidthAndHeight,
+      decoration: BoxDecoration(
+        image: const DecorationImage(
+          image: NetworkImage('https://static.wikia.nocookie.net/naruto/images/d/de/Boruto_Infobox.png'),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+        border: Border.all(
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+}
+
+class CommentItemView extends StatelessWidget {
+  const CommentItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.only(left: kPadSpace50x),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const  Icon(Icons.comment,color: Colors.black,),
+            const  SizedBox(
+              width: kPadSpace10x,
+            ),
+            Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RichText(
+                      maxLines:2,
+                      overflow: TextOverflow.ellipsis,
+                      text: const TextSpan(
+                        text: 'Andy ',
+                        style: TextStyle(fontWeight: FontWeight.w700,color: Colors.black),
+                        children:  <TextSpan>[
+                          TextSpan(text: 'I like it very beautiful.',style: TextStyle(color: Colors.black54)),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      maxLines:2,
+                      overflow: TextOverflow.ellipsis,
+                      text: const TextSpan(
+                        text: 'Rickit ',
+                        style: TextStyle(fontWeight: FontWeight.w700,color: Colors.black),
+                        children:  <TextSpan>[
+                          TextSpan(text: 'Where did you get theses?',style: TextStyle(color: Colors.black54)),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+            )
+          ],
+        )
+
+    );
+  }
+}
+
+class LikesItemView extends StatelessWidget {
+  const LikesItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.only(left: kPadSpace50x),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const[
+            Icon(Icons.favorite,color: Colors.black,),
+            SizedBox(
+              width: kPadSpace10x,
+            ),
+            Expanded(
+              child: SizedBox(
+                  child: Text('Thiha Thant Sin, Thomas, Killo, Milopn, Darius, Pillow Willian ',maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.w700),)),
+            )
+          ],
+        )
+
+    );
   }
 }

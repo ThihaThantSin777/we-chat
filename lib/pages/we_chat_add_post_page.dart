@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/utils/extension.dart';
-import 'package:wechat_app/bloc/we_chat_add_post_page_bloc.dart';
+import 'package:wechat_app/bloc/we_chat_discover_page_bloc.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_discover_item_views.dart';
@@ -16,7 +16,7 @@ class WeChatAddPostPage extends StatelessWidget {
   final int id;
   final formKey = GlobalKey<FormState>();
   void _openBottomSheet(
-      BuildContext context, WeChatAddPostPageBloc weChatAddPostPageBloc) {
+      BuildContext context, WeChatDiscoverPageBloc weChatAddPostPageBloc) {
     showModalBottomSheet(
         context: context,
         builder: (context) => PhotoAndVideosChooseItemView(
@@ -51,30 +51,30 @@ class WeChatAddPostPage extends StatelessWidget {
             ));
   }
 
-  void _removePhoto(WeChatAddPostPageBloc weChatAddPostPageBloc) {
+  void _removePhoto(WeChatDiscoverPageBloc weChatAddPostPageBloc) {
     weChatAddPostPageBloc.removePhoto();
   }
 
-  void _removeVideos(WeChatAddPostPageBloc weChatAddPostPageBloc) {
+  void _removeVideos(WeChatDiscoverPageBloc weChatAddPostPageBloc) {
     weChatAddPostPageBloc.removeVideo();
   }
 
   void _post(
-      WeChatAddPostPageBloc weChatAddPostPageBloc, BuildContext context) {
+      WeChatDiscoverPageBloc weChatAddPostPageBloc, BuildContext context) {
     if (formKey.currentState?.validate() ?? false) {
       weChatAddPostPageBloc.addPost(id).then((_) => navigateBack(context));
     }
   }
 
   void _changeDescription(
-      String description, WeChatAddPostPageBloc weChatAddPostPageBloc) {
+      String description, WeChatDiscoverPageBloc weChatAddPostPageBloc) {
     weChatAddPostPageBloc.setDescription(description);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WeChatAddPostPageBloc>(
-      create: (context) => WeChatAddPostPageBloc(),
+    return ChangeNotifierProvider<WeChatDiscoverPageBloc>(
+      create: (context) => WeChatDiscoverPageBloc(),
       child: Scaffold(
           appBar: AppBar(
             title: Text((id == -1) ? 'Add Post' : 'Edit Post'),
@@ -83,7 +83,7 @@ class WeChatAddPostPage extends StatelessWidget {
               icon: const Icon(Icons.close),
             ),
             actions: [
-              Consumer<WeChatAddPostPageBloc>(
+              Consumer<WeChatDiscoverPageBloc>(
                 builder: (context, bloc, child) => GestureDetector(
                     onTap: () => _post(bloc, context),
                     child: Center(child: Text((id == -1) ? 'POST' : 'EDIT'))),
@@ -93,7 +93,7 @@ class WeChatAddPostPage extends StatelessWidget {
               ),
             ],
           ),
-          body: Selector<WeChatAddPostPageBloc, bool>(
+          body: Selector<WeChatDiscoverPageBloc, bool>(
             selector: (context, bloc) => bloc.isLoading,
             builder: (context, isLoading, child) => Stack(
               children: [
@@ -104,7 +104,7 @@ class WeChatAddPostPage extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Consumer<WeChatAddPostPageBloc>(
+                          Consumer<WeChatDiscoverPageBloc>(
                             builder: (context, bloc, child) => ProfileItemView(
                                 onPressed: () =>
                                     _openBottomSheet(context, bloc)),
@@ -112,7 +112,7 @@ class WeChatAddPostPage extends StatelessWidget {
                           PostTextFieldView(
                             formState: formKey,
                             onChanged: (string) => _changeDescription(
-                                string, context.read<WeChatAddPostPageBloc>()),
+                                string, context.read<WeChatDiscoverPageBloc>()),
                           ),
                           Expanded(
                             child: Padding(
@@ -121,7 +121,7 @@ class WeChatAddPostPage extends StatelessWidget {
                                   vertical: kPadSpace20x),
                               child: ListView(
                                 children: [
-                                  Selector<WeChatAddPostPageBloc,
+                                  Selector<WeChatDiscoverPageBloc,
                                           VideoPlayerController?>(
                                       shouldRebuild: (pre, next) => pre != next,
                                       selector: (context, bloc) =>
@@ -135,8 +135,8 @@ class WeChatAddPostPage extends StatelessWidget {
                                                       videoPlayerController,
                                                   onPressed: () => _removeVideos(
                                                       context.read<
-                                                          WeChatAddPostPageBloc>()))),
-                                  Selector<WeChatAddPostPageBloc, File?>(
+                                                          WeChatDiscoverPageBloc>()))),
+                                  Selector<WeChatDiscoverPageBloc, File?>(
                                       shouldRebuild: (pre, next) => pre != next,
                                       selector: (context, bloc) =>
                                           bloc.getPhotos,
@@ -153,7 +153,7 @@ class WeChatAddPostPage extends StatelessWidget {
                                                         onPressed: () =>
                                                             _removePhoto(
                                                                 context.read<
-                                                                    WeChatAddPostPageBloc>()),
+                                                                    WeChatDiscoverPageBloc>()),
                                                         icon: const Icon(
                                                           Icons.cancel,
                                                           color: Colors.red,

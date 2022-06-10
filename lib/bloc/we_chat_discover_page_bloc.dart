@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
 import 'package:wechat_app/data/model/we_chat_model.dart';
 
-class WeChatAddPostPageBloc extends ChangeNotifier {
+class WeChatDiscoverPageBloc extends ChangeNotifier {
   ///State Variable
   File? _photos;
   File? _videoFile;

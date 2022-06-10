@@ -5,8 +5,10 @@ const kPadSpace20x=20.0;
 const kPadSpace30x=30.0;
 const kPadSpace250x=250.0;
 const kPadSpace40x=40.0;
+const kPadSpace50x=50.0;
 const kPadSpace45x=45.0;
 const kPadSpace70x=70.0;
+const kPadSpace90x=90.0;
 const kPadSpace23x=23.0;
 const kPadSpace280x=280.0;
 
@@ -37,10 +39,13 @@ const kFirstBodyCircleRadius=70.0;
 const kSecondBodyCircleRadius=63.0;
 const kLogoutButtonWidth=230.0;
 const kBioTextContainerWidth=400.0;
+const kProfileImageWidthAndHeight=100.0;
 
 
 ///FontSize
+const kFontSize15x=15.0;
 const kFontSize17x=17.0;
+const kFontSize19x=19.0;
 
 
 ///Duration

@@ -5,6 +5,7 @@ import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_cloud_firestore_data_agent_impl.dart';
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
 import 'package:wechat_app/persistant/impl/light_or_dark_dao_impl.dart';
+import 'package:wechat_app/resources/strings.dart';
 
 import '../../persistant/dao/light_or_dark_dao.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -26,11 +27,11 @@ class WeChatModelImpl extends WeChatModel {
   Future<MomentVO> _createMoment(
       String description, String imageURL, String videoURL) {
     String imgUrl = imageURL.isEmpty
-        ? 'https://www.chanchao.com.tw/images/default.jpg'
+        ? kDefaultImage
         : imageURL;
 
     String vURL = videoURL.isEmpty
-        ? 'https://www.chanchao.com.tw/images/default.jpg'
+        ? kDefaultImage
         : videoURL;
     int dateTime = DateTime.now().millisecond;
     var momentVO = MomentVO(
