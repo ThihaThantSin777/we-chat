@@ -25,17 +25,21 @@ class WeChatModelImpl extends WeChatModel {
 
   Future<MomentVO> _createMoment(
       String description, String imageURL, String videoURL) {
-    String url = imageURL.isEmpty
+    String imgUrl = imageURL.isEmpty
         ? 'https://www.chanchao.com.tw/images/default.jpg'
         : imageURL;
+
+    String vURL = videoURL.isEmpty
+        ? 'https://www.chanchao.com.tw/images/default.jpg'
+        : videoURL;
     int dateTime = DateTime.now().millisecond;
     var momentVO = MomentVO(
         id: dateTime,
         userName: 'Thiha Thant Sin',
         profilePicture:
             'https://st3.depositphotos.com/5392356/13703/i/1600/depositphotos_137037020-stock-photo-professional-software-developer-working-in.jpg',
-        postImage: imageURL,
-        postVideo: videoURL,
+        postImage: imgUrl,
+        postVideo: vURL,
         description: description);
 
     return Future.value(momentVO);
@@ -43,8 +47,24 @@ class WeChatModelImpl extends WeChatModel {
 
   @override
   Future<void> addNewPost(
-          MomentVO momentVO, File? postImageURL, File? videoURL) =>
-      _weChatDataAgent.addNewPost(momentVO);
+      String description, File? postImageURL, File? videoURL) {
+    if (postImageURL != null) {
+      return _weChatDataAgent
+          .uploadFileToFirebase(postImageURL)
+          .then((downloadImageURL) =>
+              _createMoment(description, downloadImageURL, ''))
+          .then((momentVO) => _weChatDataAgent.addNewPost(momentVO));
+    }
+    if (videoURL != null) {
+      return _weChatDataAgent
+          .uploadFileToFirebase(videoURL)
+          .then((downloadVideoURL) =>
+              _createMoment(description, downloadVideoURL, ''))
+          .then((momentVO) => _weChatDataAgent.addNewPost(momentVO));
+    }
+    return _createMoment(description, '', '')
+        .then((momentVO) => _weChatDataAgent.addNewPost(momentVO));
+  }
 
   @override
   Future<void> delete(int postID) {
@@ -59,11 +79,7 @@ class WeChatModelImpl extends WeChatModel {
   }
 
   @override
-  Stream<List<MomentVO>> getMoments() {
-    // TODO: implement getMoments
-    throw UnimplementedError();
-  }
-
+  Stream<List<MomentVO>> getMoments() => _weChatDataAgent.getMoments();
   @override
   Future<String> uploadFileToFirebase(File image) {
     // TODO: implement uploadFileToFirebase
@@ -72,7 +88,7 @@ class WeChatModelImpl extends WeChatModel {
 
   @override
   Future<void> editNewPost(
-      MomentVO momentVO, File? postImageURL, File? videoURL) {
+      String description, File? postImageURL, File? videoURL) {
     // TODO: implement editNewPost
     throw UnimplementedError();
   }

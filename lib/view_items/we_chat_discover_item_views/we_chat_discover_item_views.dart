@@ -4,9 +4,11 @@ import 'package:wechat_app/data/vos/add_post_vo/add_post_vo.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
 class PostTextFieldView extends StatelessWidget {
-  const PostTextFieldView({Key? key, required this.formState})
+  const PostTextFieldView(
+      {Key? key, required this.formState, required this.onChanged})
       : super(key: key);
   final GlobalKey<FormState> formState;
+  final Function(String) onChanged;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,6 +17,7 @@ class PostTextFieldView extends StatelessWidget {
       child: Form(
           key: formState,
           child: TextFormField(
+            onChanged: (string) => onChanged(string),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (string) {
               if (string?.isEmpty ?? true) {

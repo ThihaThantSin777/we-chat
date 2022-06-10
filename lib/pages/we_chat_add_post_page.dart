@@ -9,7 +9,7 @@ import 'package:wechat_app/bloc/we_chat_add_post_page_bloc.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_discover_item_views.dart';
-import 'package:wechat_app/widgets/tween_animation_builder_widget.dart';
+import 'package:wechat_app/widgets/loading_widget.dart';
 
 class WeChatAddPostPage extends StatelessWidget {
   WeChatAddPostPage({Key? key, this.id = -1}) : super(key: key);
@@ -33,7 +33,7 @@ class WeChatAddPostPage extends StatelessWidget {
                   if (result != null) {
                     List<File> files =
                         result.paths.map((path) => File(path ?? '')).toList();
-                    weChatAddPostPageBloc.setPhotos(files);
+                    weChatAddPostPageBloc.setPhotos(files.first);
                   }
                 } else if (text == 'Videos') {
                   FilePickerResult? result =
@@ -43,24 +43,32 @@ class WeChatAddPostPage extends StatelessWidget {
                   );
                   if (result != null) {
                     File file = File(result.files.single.path ?? '');
-                    weChatAddPostPageBloc
-                        .setVideos(VideoPlayerController.file(file));
+                    weChatAddPostPageBloc.setVideos(
+                        VideoPlayerController.file(file), file);
                   }
                 }
               },
             ));
   }
 
-  void _removePhoto(File file, WeChatAddPostPageBloc weChatAddPostPageBloc) {
-    weChatAddPostPageBloc.removePhoto(file);
+  void _removePhoto(WeChatAddPostPageBloc weChatAddPostPageBloc) {
+    weChatAddPostPageBloc.removePhoto();
   }
 
   void _removeVideos(WeChatAddPostPageBloc weChatAddPostPageBloc) {
     weChatAddPostPageBloc.removeVideo();
   }
 
-  void _post() {
-    if (formKey.currentState?.validate() ?? false) {}
+  void _post(
+      WeChatAddPostPageBloc weChatAddPostPageBloc, BuildContext context) {
+    if (formKey.currentState?.validate() ?? false) {
+      weChatAddPostPageBloc.addPost(id).then((_) => navigateBack(context));
+    }
+  }
+
+  void _changeDescription(
+      String description, WeChatAddPostPageBloc weChatAddPostPageBloc) {
+    weChatAddPostPageBloc.setDescription(description);
   }
 
   @override
@@ -75,86 +83,93 @@ class WeChatAddPostPage extends StatelessWidget {
               icon: const Icon(Icons.close),
             ),
             actions: [
-              GestureDetector(
-                  onTap: () => _post(),
-                  child: Center(child: Text((id == -1) ? 'POST' : 'EDIT'))),
+              Consumer<WeChatAddPostPageBloc>(
+                builder: (context, bloc, child) => GestureDetector(
+                    onTap: () => _post(bloc, context),
+                    child: Center(child: Text((id == -1) ? 'POST' : 'EDIT'))),
+              ),
               const SizedBox(
                 width: kPadSpace10x,
               ),
             ],
           ),
-          body: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: kPadSpace10x),
-                child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Consumer<WeChatAddPostPageBloc>(
-                          builder: (context, bloc, child) => ProfileItemView(
-                              onPressed: () => _openBottomSheet(context, bloc)),
-                        ),
-                        PostTextFieldView(
-                          formState: formKey,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadSpace20x,
-                                vertical: kPadSpace20x),
-                            child: ListView(
-                              children: [
-                                Selector<WeChatAddPostPageBloc,
-                                        VideoPlayerController?>(
-                                    shouldRebuild: (pre, next) => pre != next,
-                                    selector: (context, bloc) => bloc.getVideos,
-                                    builder: (context, videoPlayerController,
-                                            child) =>
-                                        (videoPlayerController == null)
-                                            ? Container()
-                                            : VideoItemView(
-                                                videoPlayerController:
-                                                    videoPlayerController,
-                                                onPressed: () => _removeVideos(
-                                                    context.read<
-                                                        WeChatAddPostPageBloc>()))),
-                                Selector<WeChatAddPostPageBloc, List<File>?>(
-                                  shouldRebuild: (pre, next) => pre != next,
-                                  selector: (context, bloc) => bloc.getPhotos,
-                                  builder: (context, files, child) => Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: files
-                                              ?.map((data) => Stack(
-                                                    children: [
-                                                      Image.file(
-                                                        data,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () =>
-                                                              _removePhoto(
-                                                                  data,
-                                                                  context.read<
-                                                                      WeChatAddPostPageBloc>()),
-                                                          icon: const Icon(
-                                                            Icons.cancel,
-                                                            color: Colors.red,
-                                                          ))
-                                                    ],
-                                                  ))
-                                              .toList() ??
-                                          []),
-                                )
-                              ],
+          body: Selector<WeChatAddPostPageBloc, bool>(
+            selector: (context, bloc) => bloc.isLoading,
+            builder: (context, isLoading, child) => Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: kPadSpace10x),
+                  child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Consumer<WeChatAddPostPageBloc>(
+                            builder: (context, bloc, child) => ProfileItemView(
+                                onPressed: () =>
+                                    _openBottomSheet(context, bloc)),
+                          ),
+                          PostTextFieldView(
+                            formState: formKey,
+                            onChanged: (string) => _changeDescription(
+                                string, context.read<WeChatAddPostPageBloc>()),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadSpace20x,
+                                  vertical: kPadSpace20x),
+                              child: ListView(
+                                children: [
+                                  Selector<WeChatAddPostPageBloc,
+                                          VideoPlayerController?>(
+                                      shouldRebuild: (pre, next) => pre != next,
+                                      selector: (context, bloc) =>
+                                          bloc.getVideos,
+                                      builder: (context, videoPlayerController,
+                                              child) =>
+                                          (videoPlayerController == null)
+                                              ? Container()
+                                              : VideoItemView(
+                                                  videoPlayerController:
+                                                      videoPlayerController,
+                                                  onPressed: () => _removeVideos(
+                                                      context.read<
+                                                          WeChatAddPostPageBloc>()))),
+                                  Selector<WeChatAddPostPageBloc, File?>(
+                                      shouldRebuild: (pre, next) => pre != next,
+                                      selector: (context, bloc) =>
+                                          bloc.getPhotos,
+                                      builder: (context, files, child) =>
+                                          (files == null)
+                                              ? Container()
+                                              : Stack(
+                                                  children: [
+                                                    Image.file(
+                                                      files,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                    IconButton(
+                                                        onPressed: () =>
+                                                            _removePhoto(
+                                                                context.read<
+                                                                    WeChatAddPostPageBloc>()),
+                                                        icon: const Icon(
+                                                          Icons.cancel,
+                                                          color: Colors.red,
+                                                        ))
+                                                  ],
+                                                ))
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )),
-              ),
-            ],
+                        ],
+                      )),
+                ),
+                Visibility(visible: isLoading, child: const LoadingWidget()),
+              ],
+            ),
           )),
     );
   }

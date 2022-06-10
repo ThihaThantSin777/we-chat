@@ -2,26 +2,58 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 
 import 'package:flutter/material.dart';
+import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
+import 'package:wechat_app/data/model/we_chat_model.dart';
 
 class WeChatAddPostPageBloc extends ChangeNotifier {
   ///State Variable
-  List<File>? _photos;
+  File? _photos;
+  File? _videoFile;
   bool _isDisposed = false;
   VideoPlayerController? _videoPlayer;
+  bool _loading = false;
+  String _description = '';
 
+  ///Getter
   VideoPlayerController? get getVideos => _videoPlayer;
-  List<File>? get getPhotos => _photos;
+  File? get getPhotos => _photos;
+  File? get getVideoFiles => _videoFile;
+  bool get isLoading => _loading;
+  String get getDescription => _description;
 
-  void setPhotos(List<File> photos) {
+  ///Model
+  final WeChatModel _weChatModel = WeChatModelImpl();
+  void setPhotos(File photos) {
     _photos = photos;
     _notifySafely();
   }
 
-  void setVideos(VideoPlayerController vl) {
+  Future<void> addPost(int id) {
+    if (id == -1) {
+      _loading = true;
+      _notifySafely();
+      return _weChatModel
+          .addNewPost(_description, _photos, _videoFile)
+          .then((_) {
+        _loading = false;
+        _notifySafely();
+      });
+    } else {
+      return Future.value('Data');
+    }
+  }
+
+  void setDescription(String description) {
+    _description = description;
+    _notifySafely();
+  }
+
+  void setVideos(VideoPlayerController vl, File file) {
+    if (file.path.isNotEmpty) {
+      _videoFile = file;
+    }
     vl
-      ..addListener(() {
-        // _notifySafely();
-      })
+      ..addListener(() {})
       ..initialize().then((_) {
         _videoPlayer?.play();
       });
@@ -29,10 +61,8 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
     _notifySafely();
   }
 
-  void removePhoto(File file) {
-    _photos?.remove(file);
-    List<File> temp = _photos?.map((data) => data).toList() ?? [];
-    _photos = temp;
+  void removePhoto() {
+    _photos = null;
     _notifySafely();
   }
 
@@ -44,9 +74,6 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
-    // _flicks?.forEach((flickManager) {
-    //   flickManager.dispose();
-    // });
     _videoPlayer?.dispose();
     _isDisposed = true;
   }
