@@ -6,7 +6,7 @@ import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/view_items/we_chat_contact_item_views/we_chat_contact_item_views.dart';
-import 'package:wechat_app/widgets/tween_animation_builder_widget.dart';
+import 'package:wechat_app/animation/tween_animated_opacity_animation.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 import 'package:azlistview/azlistview.dart';
 
@@ -22,7 +22,7 @@ class WeChatContactPage extends StatelessWidget {
             builder: (context, contactList, child) {
               WeChatContactPageBloc weChatContactPageBloc =
                   context.read<WeChatContactPageBloc>();
-              return TweenAnimatedOpacityWidget(
+              return TweenAnimatedOpacityAnimation(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

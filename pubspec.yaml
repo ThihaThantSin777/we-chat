@@ -51,6 +51,8 @@ dependencies:
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
   intl: ^0.17.0
+  cached_video_player: ^2.0.3
+  flick_video_player: any
   video_player: ^2.4.4
 
 dev_dependencies:

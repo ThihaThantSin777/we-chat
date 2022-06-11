@@ -51,3 +51,4 @@ const kFontSize19x=19.0;
 ///Duration
 const kDurationInOneSecond= Duration(seconds: 1);
 const kDurationIn500milliseconds= Duration(milliseconds: 500);
+const kDurationIn200milliseconds= Duration(milliseconds: 200);

@@ -7,7 +7,7 @@ import 'package:wechat_app/pages/we_chat_chatting_room_page.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/view_items/we_chat_home_item_views/we_chat_home_item_views.dart';
-import 'package:wechat_app/widgets/tween_animation_builder_widget.dart';
+import 'package:wechat_app/animation/tween_animated_opacity_animation.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 
 class WeChatChatHistoryPage extends StatelessWidget {
@@ -17,7 +17,7 @@ class WeChatChatHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WeChatChattingAndChatHistoryPagesBloc>(
       create: (context) => WeChatChattingAndChatHistoryPagesBloc(),
-      child: TweenAnimatedOpacityWidget(
+      child: TweenAnimatedOpacityAnimation(
         child: Selector<WeChatChattingAndChatHistoryPagesBloc,
                 List<ChatUserVO>>(
             shouldRebuild: (pre, next) => pre != next,

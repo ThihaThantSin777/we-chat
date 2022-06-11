@@ -13,6 +13,7 @@ MomentVO _$MomentVOFromJson(Map<String, dynamic> json) => MomentVO(
       postImage: json['post_image'] as String,
       postVideo: json['post_video'] as String,
       description: json['description'] as String,
+      isLiked: json['isLiked'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$MomentVOToJson(MomentVO instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$MomentVOToJson(MomentVO instance) => <String, dynamic>{
       'post_image': instance.postImage,
       'post_video': instance.postVideo,
       'description': instance.description,
+      'isLiked': instance.isLiked,
     };

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
-class TweenAnimatedOpacityWidget extends StatelessWidget {
-  const TweenAnimatedOpacityWidget(
+class TweenAnimatedOpacityAnimation extends StatelessWidget {
+  const TweenAnimatedOpacityAnimation(
       {Key? key,
       required this.child,
        this.begin=0.0,

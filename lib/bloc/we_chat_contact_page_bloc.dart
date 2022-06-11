@@ -49,7 +49,6 @@ class WeChatContactPageBloc extends ChangeNotifier {
   // 'Z':0,
 
   void _countFriendListByAlphabet() {
-    // int count = 1;
     List<String> nameListTags = (getStringVOList).map((e) => e.tag).toList();
     Set<String> nameSetTags = (getStringVOList).map((e) => e.tag).toSet();
     for (int i = 0; i < nameSetTags.length; i++) {
@@ -59,21 +58,6 @@ class WeChatContactPageBloc extends ChangeNotifier {
           .length;
       _countFriend[nameSetTags.elementAt(i)] = count;
     }
-
-    // for (var element in nameTags) {
-    //   if (!_countFriend.containsKey(element) || _countFriend.isEmpty) {
-    //     print('New');
-    //     print('Key ${_countFriend[element]}');
-    //     _countFriend[element] = count;
-    //     print('${_countFriend[element]} is added and it count $count');
-    //   } else {
-    //     print('Old');
-    //     print('Key ${_countFriend[element]}');
-    //     _countFriend[element] = (_countFriend[element])??0 + count;
-    //     print('${_countFriend[element]} is added and it count $count');
-    //   }
-    //   print('');
-    // }
     _notifySafely();
   }
 

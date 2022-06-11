@@ -41,7 +41,8 @@ class WeChatModelImpl extends WeChatModel {
             'https://st3.depositphotos.com/5392356/13703/i/1600/depositphotos_137037020-stock-photo-professional-software-developer-working-in.jpg',
         postImage: imgUrl,
         postVideo: vURL,
-        description: description);
+        description: description
+    );
 
     return Future.value(momentVO);
   }
@@ -68,16 +69,10 @@ class WeChatModelImpl extends WeChatModel {
   }
 
   @override
-  Future<void> delete(int postID) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
+  Future<void> delete(int postID) =>_weChatDataAgent.delete(postID);
 
   @override
-  Stream<MomentVO> getMomentByID(int newsFeedID) {
-    // TODO: implement getMomentByID
-    throw UnimplementedError();
-  }
+  Stream<MomentVO> getMomentByID(int newsFeedID) =>_weChatDataAgent.getMomentByID(newsFeedID);
 
   @override
   Stream<List<MomentVO>> getMoments() => _weChatDataAgent.getMoments();

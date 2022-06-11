@@ -1,15 +1,19 @@
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/data/vos/add_post_vo/add_post_vo.dart';
 import 'package:wechat_app/resources/dimension.dart';
+import 'package:wechat_app/resources/strings.dart';
+import 'package:wechat_app/widgets/video_player_widget.dart';
 
 class PostTextFieldView extends StatelessWidget {
   const PostTextFieldView(
-      {Key? key, required this.formState, required this.onChanged})
+      {Key? key, required this.formState, required this.onChanged,this.preText=''})
       : super(key: key);
   final GlobalKey<FormState> formState;
   final Function(String) onChanged;
+  final String preText;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,6 +22,7 @@ class PostTextFieldView extends StatelessWidget {
       child: Form(
           key: formState,
           child: TextFormField(
+            controller: TextEditingController(text: preText),
             onChanged: (string) => onChanged(string),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (string) {
@@ -183,6 +188,7 @@ class ImageAndVideoItemView extends StatelessWidget {
   final bool isVideo;
   final String imageLink;
   final String videoLink;
+
   @override
   Widget build(BuildContext context) {
     return PageView(
@@ -199,21 +205,18 @@ class ImageAndVideoItemView extends StatelessWidget {
           ),
         ],
         if(isVideo)...[
-          ClipRRect(
-            borderRadius:
-            BorderRadius.circular(kPadSpace10x),
-            child: Image.network(
-              videoLink,
-              fit: BoxFit.cover,
-            ),
-          )
+          VideoPlayerWidget(url: videoLink)
+
         ]
 
 
       ],
     );
   }
+
 }
+
+
 
 class DescriptionItemView extends StatelessWidget {
   const DescriptionItemView({
@@ -353,5 +356,62 @@ class LikesItemView extends StatelessWidget {
         )
 
     );
+  }
+}
+
+
+
+class DetailsImageAndVideoItemView extends StatelessWidget {
+  const DetailsImageAndVideoItemView({
+    Key? key,
+    required this.postImage,
+    required this.postVideo,
+  }) : super(key: key);
+  final String postImage;
+  final String postVideo;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: kBioTextContainerWidth,
+      child: PageView(
+        children: [
+          if(postImage!=kDefaultImage)...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(kPadSpace10x),
+              child: Image.network(postImage),
+            ),
+          ],
+          if(postVideo!=kDefaultImage)...[
+            VideoPlayerWidget(url:postVideo)
+          ]
+
+        ],
+      ),
+    );
+  }
+}
+
+class DetailsDescriptionItemView extends StatelessWidget {
+  const DetailsDescriptionItemView({
+    Key? key,
+    required this.description
+  }) : super(key: key);
+  final String description;
+  @override
+  Widget build(BuildContext context) {
+    return Text(description,style: const TextStyle(
+        color: Colors.white70
+    ),);
+  }
+}
+
+class DetailsProfileNameItemView extends StatelessWidget {
+  const DetailsProfileNameItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('Thiha Thant Sin',style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold,fontSize: kFontSize17x),);
   }
 }
