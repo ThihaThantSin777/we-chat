@@ -5,7 +5,6 @@ import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_cloud_firestore_data_agent_impl.dart';
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
 import 'package:wechat_app/persistant/impl/light_or_dark_dao_impl.dart';
-import 'package:wechat_app/resources/strings.dart';
 
 import '../../persistant/dao/light_or_dark_dao.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -27,29 +26,39 @@ class WeChatModelImpl extends WeChatModel {
   Future<MomentVO> _createMoment(
       String description, String imageURL, String videoURL) {
     String imgUrl = imageURL.isEmpty
-        ? kDefaultImage
+        ? ''
         : imageURL;
 
     String vURL = videoURL.isEmpty
-        ? kDefaultImage
+        ? ''
         : videoURL;
     int dateTime = DateTime.now().millisecond;
-    var momentVO = MomentVO(
-        id: dateTime,
-        userName: 'Thiha Thant Sin',
-        profilePicture:
-            'https://st3.depositphotos.com/5392356/13703/i/1600/depositphotos_137037020-stock-photo-professional-software-developer-working-in.jpg',
-        postImage: imgUrl,
-        postVideo: vURL,
-        description: description
-    );
 
-    return Future.value(momentVO);
+      var momentVO = MomentVO(
+          id: dateTime,
+          userName: 'Thiha Thant Sin',
+          profilePicture:
+          'https://st3.depositphotos.com/5392356/13703/i/1600/depositphotos_137037020-stock-photo-professional-software-developer-working-in.jpg',
+          postImage: imgUrl,
+          postVideo: vURL,
+          description: description
+      );
+      return Future.value(momentVO);
+
   }
+
 
   @override
   Future<void> addNewPost(
       String description, File? postImageURL, File? videoURL) {
+    if(postImageURL!=null && videoURL!=null){
+      return _weChatDataAgent.uploadFileToFirebase(postImageURL).then((imageLink) {
+        _weChatDataAgent.uploadFileToFirebase(videoURL).then((videoLink) {
+          _createMoment(description, imageLink, videoLink).then((momentVO) => _weChatDataAgent.addNewPost(momentVO));
+        });
+      });
+    }
+
     if (postImageURL != null) {
       return _weChatDataAgent
           .uploadFileToFirebase(postImageURL)
@@ -61,7 +70,7 @@ class WeChatModelImpl extends WeChatModel {
       return _weChatDataAgent
           .uploadFileToFirebase(videoURL)
           .then((downloadVideoURL) =>
-              _createMoment(description, downloadVideoURL, ''))
+              _createMoment(description, '',downloadVideoURL))
           .then((momentVO) => _weChatDataAgent.addNewPost(momentVO));
     }
     return _createMoment(description, '', '')
@@ -76,16 +85,41 @@ class WeChatModelImpl extends WeChatModel {
 
   @override
   Stream<List<MomentVO>> getMoments() => _weChatDataAgent.getMoments();
-  @override
-  Future<String> uploadFileToFirebase(File image) {
-    // TODO: implement uploadFileToFirebase
-    throw UnimplementedError();
-  }
+
 
   @override
   Future<void> editNewPost(
-      String description, File? postImageURL, File? videoURL) {
-    // TODO: implement editNewPost
-    throw UnimplementedError();
+      MomentVO momentVO, File? postImageURL, File? videoURL) {
+    if(postImageURL!=null && videoURL!=null){
+      return _weChatDataAgent.uploadFileToFirebase(postImageURL).then((imageLink) {
+        _weChatDataAgent.uploadFileToFirebase(videoURL).then((videoLink) {
+          MomentVO moment=momentVO;
+          moment.postImage=imageLink;
+          moment.postVideo=videoLink;
+          _weChatDataAgent.addNewPost(moment);
+        });
+      });
+    }
+
+    if (postImageURL != null) {
+      return _weChatDataAgent
+          .uploadFileToFirebase(postImageURL)
+          .then((downloadImageURL) {
+        MomentVO moment=momentVO;
+        moment.postImage=downloadImageURL;
+        _weChatDataAgent.addNewPost(moment);
+      });
+    }
+    if (videoURL != null) {
+      return _weChatDataAgent
+          .uploadFileToFirebase(videoURL)
+          .then((downloadVideoURL) {
+        MomentVO moment=momentVO;
+        moment.postVideo=downloadVideoURL;
+        _weChatDataAgent.addNewPost(moment);
+    });
+          }
+
+    return _weChatDataAgent.addNewPost(momentVO);
   }
 }

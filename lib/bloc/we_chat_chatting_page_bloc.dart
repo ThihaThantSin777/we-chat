@@ -20,17 +20,15 @@ List<String> personChat = [
   'I am leave door to open. I am leave door to open girl!! That you feel the way I feel for nothing! Tell me you can go to through'
 ];
 
-class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
+class WeChatChattingPagesBloc extends ChangeNotifier {
   ///State Variable
-  List<ChatUserVO> _userVOList = [];
-  List<ChattingVO> _chatList = [];
+  final List<ChattingVO> _chatList = [];
   ShowMoreIconForm _showMoreIcon = ShowMoreIconForm.add;
   bool _showMoreWidget = false;
   bool _isDisposed = false;
   File? _file;
 
   ///getter
-  List<ChatUserVO> get getUserVOList => _userVOList;
 
   List<ChattingVO> get getChattingVOList => _chatList;
 
@@ -40,8 +38,7 @@ class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
 
   File? get getFile => _file;
 
-  WeChatChattingAndChatHistoryPagesBloc() {
-    _userVOList = userVOList;
+  WeChatChattingPagesBloc() {
     _setChatTalk();
     _notifySafely();
   }
@@ -86,17 +83,7 @@ class WeChatChattingAndChatHistoryPagesBloc extends ChangeNotifier {
     _notifySafely();
   }
 
-  void remove(ChatUserVO userVO) {
-    bool cond = _userVOList.remove(userVO);
-    List<ChatUserVO> temp = [];
-    if (cond) {
-      for (var element in _userVOList) {
-        temp.add(element);
-      }
-    }
-    _userVOList = temp;
-    _notifySafely();
-  }
+
 
   @override
   void dispose() {

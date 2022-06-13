@@ -124,18 +124,18 @@ class ChattingItemView extends StatelessWidget {
 }
 
 class CircleAvatarProfileItemView extends StatelessWidget {
-  const CircleAvatarProfileItemView({Key? key, required this.isLeft})
+  const CircleAvatarProfileItemView({Key? key, required this.isLeft,required this.image})
       : super(key: key);
   final bool isLeft;
-
+  final String image;
   @override
   Widget build(BuildContext context) {
     return Visibility(
         visible: isLeft,
-        child: const CircleAvatar(
+        child:  CircleAvatar(
           backgroundColor: Colors.transparent,
           backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+              image),
         ));
   }
 }

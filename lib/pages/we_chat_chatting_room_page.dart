@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:wechat_app/bloc/we_chat_chatting_and_chat_history_pages_bloc.dart';
+import 'package:wechat_app/bloc/we_chat_chatting_page_bloc.dart';
 import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
@@ -14,12 +14,12 @@ import 'package:wechat_app/view_items/we_chat_home_item_views/we_chat_chat_item_
 import 'package:wechat_app/widgets/leading_widget.dart';
 
 class WeChatChattingRoomPage extends StatelessWidget {
-  const WeChatChattingRoomPage({Key? key, required this.title})
+  const WeChatChattingRoomPage({Key? key, required this.title,this.image='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'})
       : super(key: key);
   final String title;
-
+  final String image;
   void chooseImage(
-      String text, WeChatChattingAndChatHistoryPagesBloc bloc) async {
+      String text, WeChatChattingPagesBloc bloc) async {
     if (text == kCameraText) {
       final ImagePicker picker = ImagePicker();
       final XFile? photo = await picker.pickImage(source: ImageSource.camera);
@@ -37,8 +37,8 @@ class WeChatChattingRoomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<WeChatChattingAndChatHistoryPagesBloc>(
-      create: (context) => WeChatChattingAndChatHistoryPagesBloc(),
+    return ChangeNotifierProvider<WeChatChattingPagesBloc>(
+      create: (context) => WeChatChattingPagesBloc(),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -50,11 +50,11 @@ class WeChatChattingRoomPage extends StatelessWidget {
                 onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.user))
           ],
         ),
-        body: Consumer<WeChatChattingAndChatHistoryPagesBloc>(
+        body: Consumer<WeChatChattingPagesBloc>(
             builder: (context, bloc, child) {
           ///Declare Object
-          WeChatChattingAndChatHistoryPagesBloc weChatHomePageBloc =
-              context.read<WeChatChattingAndChatHistoryPagesBloc>();
+          WeChatChattingPagesBloc weChatHomePageBloc =
+              context.read<WeChatChattingPagesBloc>();
 
           ///Local State Variable
           List<ChattingVO> chatVOList = bloc.getChattingVOList;
@@ -73,6 +73,7 @@ class WeChatChattingRoomPage extends StatelessWidget {
                   children: [
                     CircleAvatarProfileItemView(
                       isLeft: chatVOList[index].isLeft,
+                      image: image,
                     ),
                     const SizedBox(
                       width: kPadSpace10x,
@@ -112,9 +113,9 @@ class WeChatChattingRoomPage extends StatelessWidget {
                               alignment: Alignment.topRight,
                               child: IconButton(
                                   onPressed: () {
-                                    WeChatChattingAndChatHistoryPagesBloc
+                                    WeChatChattingPagesBloc
                                         weChatHomePageBloc = context.read<
-                                            WeChatChattingAndChatHistoryPagesBloc>();
+                                            WeChatChattingPagesBloc>();
                                     weChatHomePageBloc.removeImage();
                                   },
                                   icon: const Icon(Icons.close)),

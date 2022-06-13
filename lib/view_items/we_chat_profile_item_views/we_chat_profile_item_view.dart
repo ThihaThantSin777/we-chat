@@ -3,47 +3,47 @@ import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 
-class SettingItemView extends StatelessWidget {
-  const SettingItemView({Key? key, required this.onTap}) : super(key: key);
-  final Function(String) onTap;
+class ProfileNameAndQrScanItemView extends StatelessWidget {
+  const ProfileNameAndQrScanItemView({
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.25),
-      height: kBioTextContainerWidth,
-      child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 9 / 12,
-          ),
-          itemCount: settingVOList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              child: GestureDetector(
-                onTap: () => onTap(settingVOList[index].text),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      settingVOList[index].icon,
-                      const SizedBox(
-                        height: kPadSpace10x,
-                      ),
-                      Text(settingVOList[index].text)
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const SizedBox(),
+        Container(
+          padding: const EdgeInsets.only(left: kPadSpace45x),
+          child: const ProfileNameView(),
+        ),
+        const QRCodeScanIconView()
+      ],
     );
   }
 }
 
-class BackgroundLayoutItemView extends StatelessWidget {
-  const BackgroundLayoutItemView({
+class QRCodeScanIconView extends StatelessWidget {
+  const QRCodeScanIconView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: const[
+        Icon(Icons.qr_code,size: kPadSpace25x,color: Colors.white,),
+        Icon(Icons.chevron_right,size: kPadSpace25x,color: Colors.white,)
+      ],
+    );
+  }
+}
+
+class ProfileNameView extends StatelessWidget {
+  const ProfileNameView({
     Key? key,
   }) : super(key: key);
 
@@ -51,138 +51,152 @@ class BackgroundLayoutItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: const[
+        Text('Thiha Thant Sin',style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: kFontSize19x
+        ),),
+        SizedBox(
+          height: kPadSpace5x,
+        ),
+        Text('thiha277#45',style: TextStyle(
+            color: Colors.white70
+        ),)
+      ],
+    );
+  }
+}
+
+
+class BioSettingIconLogoutItemView extends StatelessWidget {
+  const BioSettingIconLogoutItemView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Expanded(child:  BioView()),
         Expanded(
-          child: Container(
-            alignment: Alignment.centerLeft,
-            color: kPrimaryLightColor,
-          ),
+            flex: 2,
+            child: SettingIconView()
         ),
         Expanded(
-          flex: kProfileBodyFlex,
-          child: Container(
-            padding: const EdgeInsets.only(top: kPadSpace30x),
-            color: kBarColor,
-          ),
+            child: LogoutButtonView()
         ),
       ],
     );
   }
 }
 
-class LogoutButtonItemView extends StatelessWidget {
-  const LogoutButtonItemView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      elevation: 0,
-      onPressed: () {},
-      height: kPadSpace40x,
-      minWidth: kLogoutButtonWidth,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kPadSpace40x)),
-      color: Colors.white,
-      child: const Text(
-        'Log Out',
-        style: TextStyle(fontSize: kFontSize17x),
-      ),
-    );
-  }
-}
-
-class BioTextItemView extends StatelessWidget {
-  const BioTextItemView({
+class LogoutButtonView extends StatelessWidget {
+  const LogoutButtonView({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: kPadSpace70x),
-        alignment: Alignment.center,
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: const TextSpan(
-            style: TextStyle(
-              color: Colors.black54,
-            ),
-            text:
-                'Adding you as my friend doesn’t mean I like you, I did it just to increase.',
+      alignment: Alignment.center,
+      child: MaterialButton(
+        elevation: 0,
+        minWidth: 200,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kPadSpace20x)
+        ),
+        color: Colors.white,
+        onPressed: (){
+
+        },
+        child: const Text('Log out',style: TextStyle(
+            fontSize: kFontSize17x
+        ),),
+      ),
+    );
+  }
+}
+
+class SettingIconView extends StatelessWidget {
+  const SettingIconView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.only(left: kPadSpace5x,right: kPadSpace5x),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 1,
+          mainAxisSpacing: 1,
+          childAspectRatio: 4/4.3
+      ),
+      itemCount: settingVOList.length,
+      itemBuilder: (_,index)=> Card(
+        margin: const EdgeInsets.all(1),
+        elevation: 0,
+        child:Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextSpan(
-                  text: 'Edit',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.cyan,
-                      decoration: TextDecoration.underline)),
+              settingVOList[index].icon,
+              Text(settingVOList[index].text)
             ],
           ),
-        ));
+        ),
+
+      ),
+
+    );
   }
 }
 
-class QRCodeItemView extends StatelessWidget {
-  const QRCodeItemView({
+class BioView extends StatelessWidget {
+  const BioView({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: const [
-        Icon(
-          Icons.qr_code,
-          color: Colors.white,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: kPadSpace20x,vertical: kPadSpace20x),
+      alignment: Alignment.bottomCenter,
+      child: RichText(
+        maxLines: 2,
+        textAlign: TextAlign.center,
+        text: const TextSpan(
+            style: TextStyle(
+                color: Colors.black38,
+                fontSize: kFontSize12x,
+                overflow: TextOverflow.ellipsis
+            ),
+            text: 'No Pain No Gain. Success is the only way to become success. become success.',
+            children: [
+              TextSpan(
+                  text: '  '
+              ),
+              TextSpan(
+                  style:  TextStyle(
+                      color: Colors.cyan,
+                      decoration: TextDecoration.underline
+                  ),
+                  text: 'EDIT'
+              )
+            ]
         ),
-        Icon(
-          Icons.chevron_right,
-          color: Colors.white,
-        )
-      ],
+
+      ),
     );
   }
 }
 
-class ProfileNameAndIdItemView extends StatelessWidget {
-  const ProfileNameAndIdItemView({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            Text(
-              'Thomas Edision',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: kFontSize17x,
-                  color: Colors.white),
-            ),
-            SizedBox(
-              height: kPadSpace5x,
-            ),
-            Text(
-              'Thomas20456',
-              style: TextStyle(color: Colors.white70),
-            )
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class CircleAvatarProfileItemView extends StatelessWidget {
-  const CircleAvatarProfileItemView({
+class ProfileImageItemView extends StatelessWidget {
+  const ProfileImageItemView({
     Key? key,
   }) : super(key: key);
 
@@ -192,10 +206,9 @@ class CircleAvatarProfileItemView extends StatelessWidget {
       radius: kFirstBodyCircleRadius,
       backgroundColor: Colors.white,
       child: CircleAvatar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         radius: kSecondBodyCircleRadius,
-        backgroundImage: NetworkImage(
-            'https://www.diethelmtravel.com/wp-content/uploads/2016/04/bill-gates-wealthiest-person.jpg'),
+        backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
       ),
     );
   }

@@ -1,27 +1,36 @@
+import 'dart:io';
+
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/resources/strings.dart';
 
 
-class VideoPlayerWidget extends StatefulWidget {
-  const VideoPlayerWidget({Key? key,required this.url}) : super(key: key);
+class FlickManagerVideoWidget extends StatefulWidget {
+  const FlickManagerVideoWidget({Key? key,required this.url,required this.filePath}) : super(key: key);
   final String url;
+  final String filePath;
   @override
-  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
+  State<FlickManagerVideoWidget> createState() => _FlickManagerVideoWidgetState();
 }
 
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+class _FlickManagerVideoWidgetState extends State<FlickManagerVideoWidget> {
   late FlickManager flickManager;
 
   @override
   void initState(){
     super.initState();
-    if(widget.url!=kDefaultImage){
+    if(widget.url!=kDefaultImage && widget.url.isNotEmpty){
       flickManager = FlickManager(
         autoPlay: false,
         videoPlayerController:
         VideoPlayerController.network(widget.url),
+      );
+    }else{
+      flickManager = FlickManager(
+        autoPlay: true,
+        videoPlayerController:
+        VideoPlayerController.file(File(widget.filePath)),
       );
     }
   }

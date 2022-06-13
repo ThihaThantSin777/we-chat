@@ -41,10 +41,10 @@ List<ShowMoreVO>showMoreVOList=[
 
 
 List<ShowMoreVO>accountVOList=[
-  ShowMoreVO(text: kNewFriendText,  icon: const Icon(Icons.person_add,size: 55,color: Colors.black38,) ),
-  ShowMoreVO(text: kGroupChatText,  icon: const Icon(Icons.group,size: 55,color: Colors.black38,) ),
-  ShowMoreVO(text: kTagsText,  icon:const  FaIcon(FontAwesomeIcons.tags,size: 55,color: Colors.black38,) ),
-  ShowMoreVO(text: kOfficialAccountText,  icon: const Icon(Icons.switch_account,size: 55,color: Colors.black38,) ),
+  ShowMoreVO(text: kNewFriendText,  icon: const Icon(Icons.person_add_alt_1_outlined,size: kContactIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kGroupChatText,  icon: const Icon(Icons.group_add_outlined,size: kContactIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kTagsText,  icon:const  FaIcon(FontAwesomeIcons.tags,size: kContactIconSize,color: Colors.black38,) ),
+  ShowMoreVO(text: kOfficialAccountText,  icon: const Icon(Icons.switch_account_outlined,size: kContactIconSize,color: Colors.black38,) ),
 ];
 
 List<ShowMoreVO>settingVOList=[

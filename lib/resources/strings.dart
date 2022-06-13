@@ -21,6 +21,8 @@ const kOfficialAccountText='Official Accounts';
 
 ///Discover Text
 const kMomentsText='Moments';
+const kEditText='Edit';
+const kDeleteText='Delete';
 
 ///ShowMore Text
 const kFileText='Files';
@@ -44,3 +46,4 @@ const kSettingText='Settings';
 
 ///Default
 const kDefaultImage='https://www.chanchao.com.tw/images/default.jpg';
+const kDefaultVideoLink='https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';

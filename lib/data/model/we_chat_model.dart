@@ -7,10 +7,9 @@ abstract class WeChatModel {
   Future<void> addNewPost(
       String description, File? postImageURL, File? videoURL);
   Future<void> editNewPost(
-      String description, File? postImageURL, File? videoURL);
+      MomentVO momentVO, File? postImageURL, File? videoURL);
   Future<void> delete(int postID);
   Stream<MomentVO> getMomentByID(int newsFeedID);
-  Future<String> uploadFileToFirebase(File image);
 
   Stream<bool> getThemeMode();
   void saveThemeMode(bool mode);
