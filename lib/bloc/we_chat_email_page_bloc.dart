@@ -13,7 +13,7 @@ class WeChatEmailPageBloc extends ChangeNotifier{
   String _errorEmailText='';
   bool _loading = false;
   bool _isDisposed = false;
-  late UserVO _userVO;
+   UserVO ?_userVO;
 
   ///Getter
   String get getEmail=>_email;
@@ -23,13 +23,13 @@ class WeChatEmailPageBloc extends ChangeNotifier{
   ///Model
   final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
   WeChatEmailPageBloc(UserVO userVO){
-    _userVO=_userVO;
+    _userVO=userVO;
   }
 
   Future<void> registerNewUser(){
     _loading=true;
     _notifySafely();
-    UserVO newUser=_userVO;
+    UserVO newUser=_userVO!;
     newUser.email=_email;
   return  _weChatAuthModel.registerNewUser(newUser).then((value) {
       _loading=false;

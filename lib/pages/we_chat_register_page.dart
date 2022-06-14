@@ -71,6 +71,7 @@ class WeChatRegisterPage extends StatelessWidget {
                 ),
                 ChooseImageTypeItemView(
                   onChoose: () {
+                    weChatRegisterPageBloc.removePhoto();
                     navigateBack(context);
                   },
                   title: kCancelText,

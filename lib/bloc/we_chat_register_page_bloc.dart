@@ -69,7 +69,10 @@ class WeChatRegisterPageBloc extends ChangeNotifier {
         .first;
     _notifySafely();
   }
-
+  void removePhoto(){
+    _imageFile=null;
+    _notifySafely();
+  }
   void setRadioButtonSelectionState() {
     _radioButtonSelect = !_radioButtonSelect;
     _notifySafely();
