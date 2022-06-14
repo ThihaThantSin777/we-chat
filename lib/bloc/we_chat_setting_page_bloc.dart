@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
-import 'package:wechat_app/data/model/we_chat_model.dart';
+import 'package:wechat_app/data/model/we_chat_moment_model_impl.dart';
+import 'package:wechat_app/data/model/we_chat_moment_model.dart';
 
 class WeChatSettingPageBloc extends ChangeNotifier {
   bool _lightMode = true;
   bool _isDisposed = false;
-  final WeChatModel _weChatModel = WeChatModelImpl();
+  final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
 
   bool get isLightMode => _lightMode;
 

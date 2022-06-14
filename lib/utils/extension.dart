@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/resources/colors.dart';
 
 extension Navigation on Widget {
-  void navigatePush(BuildContext context, Widget nextScreen) =>
+
+  Future<Object?> navigatePush(BuildContext context, Widget nextScreen,[String animationName='slide']) =>
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => nextScreen));
 
-  void navigatePushReplacement(BuildContext context, Widget nextScreen) =>
+  Future<Object?> navigatePushReplacement(BuildContext context, Widget nextScreen) =>
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) => nextScreen));
 
-  void navigateBack(BuildContext context)=>Navigator.of(context).pop();
+  void navigateBack(BuildContext context,[Object ? object])=>Navigator.of(context).pop(object);
 
   void showSnackBar(BuildContext context,String message){
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -19,3 +20,27 @@ extension Navigation on Widget {
     ));
   }
 }
+
+extension EncryptAndDecrypt on String{
+  String encrypt(){
+    List<int>results=[];
+    for(var result in codeUnits){
+      int temp=result+10;
+      results.add(temp);
+    }
+    return results.join('|');
+  }
+
+  String decrypt(){
+    List<String>strings=split('|');
+    String decrypt='';
+    for(var result in strings){
+      int parse=int.parse(result);
+      int convert=parse-10;
+      decrypt+=String.fromCharCode(convert);
+    }
+    return decrypt;
+  }
+}
+
+

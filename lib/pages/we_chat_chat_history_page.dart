@@ -7,9 +7,10 @@ import 'package:wechat_app/data/vos/chat_user_vo/chat_user_vo.dart';
 import 'package:wechat_app/pages/we_chat_chatting_room_page.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/utils/extension.dart';
-import 'package:wechat_app/view_items/we_chat_home_item_views/we_chat_home_item_views.dart';
 import 'package:wechat_app/animation/tween_animated_opacity_animation.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
+
+import '../view_items/we_chat_chat_history_item_views/we_chat_chat_history_item_views.dart';
 
 class WeChatChatHistoryPage extends StatelessWidget {
   const WeChatChatHistoryPage({Key? key}) : super(key: key);

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 
-import '../data/model/we_chat_modeLimpl.dart';
-import '../data/model/we_chat_model.dart';
+import '../data/model/we_chat_moment_model_impl.dart';
+import '../data/model/we_chat_moment_model.dart';
 
 class WeChatAddPostPageBloc extends ChangeNotifier {
   ///State Variable
@@ -35,7 +35,7 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   String get getVideoNetWorkLink => _videoNetworkLink;
 
   ///Model
-  final WeChatModel _weChatModel = WeChatModelImpl();
+  final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
 
 
   WeChatAddPostPageBloc([int ?id]){

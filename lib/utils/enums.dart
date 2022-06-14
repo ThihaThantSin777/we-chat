@@ -10,3 +10,10 @@ enum WeChatPages {
   discoverPage,
   profilePage,
 }
+
+
+enum TextFieldInputType{
+  text,
+  phone,
+  email,
+}

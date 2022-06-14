@@ -10,8 +10,9 @@ import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
-import 'package:wechat_app/view_items/we_chat_home_item_views/we_chat_chat_item_views.dart';
 import 'package:wechat_app/widgets/leading_widget.dart';
+
+import '../view_items/we_chat_chat_history_item_views/we_chat_chat_room_views.dart';
 
 class WeChatChattingRoomPage extends StatelessWidget {
   const WeChatChattingRoomPage({Key? key, required this.title,this.image='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'})

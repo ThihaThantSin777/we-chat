@@ -42,12 +42,15 @@ const kLogoutButtonWidth=230.0;
 const kBioTextContainerWidth=400.0;
 const kProfileImageWidthAndHeight=100.0;
 const kContactIconSize=35.0;
+const kMaterialButtonWidth=200.0;
+const kMaterialButtonHeight=50.0;
 
 
 ///FontSize
 const kFontSize12x=12.0;
 const kFontSize13x=13.0;
 const kFontSize15x=15.0;
+const kFontSize16x=16.0;
 const kFontSize17x=17.0;
 const kFontSize19x=19.0;
 const kFontSize21x=21.0;

@@ -47,3 +47,27 @@ const kSettingText='Settings';
 ///Default
 const kDefaultImage='https://www.chanchao.com.tw/images/default.jpg';
 const kDefaultVideoLink='https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+
+
+///LoginSignup Text
+const kSignupWithMobile='Sign Up With Mobile';
+const kFullNameText='Full Name';
+const kHintTextForFullName='Enter Thomas';
+const kRegionText='Region';
+const kPhoneText='Phone';
+const kHintTextForPhone='Enter mobile number';
+const kPasswordText='Password';
+const kHintTextForPassword='Enter Password';
+
+
+///Choose Image Text
+const kTakePhotoText='Take Photo';
+const kChooseFromAlbumText='Choose From Album';
+const kCancelText='Cancel';
+
+
+///Email Page Text
+const kEmailVerificationText='Email Verification';
+const kEnterVerificationInformationText='Enter Verification Information';
+const kEmailText='Email';
+const kEmailHintText='Enter email address';

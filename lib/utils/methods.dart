@@ -7,9 +7,12 @@ import 'package:video_player/video_player.dart';
 import 'package:wechat_app/bloc/we_chat_add_post_page_bloc.dart';
 import 'package:wechat_app/bloc/we_chat_discover_page_bloc.dart';
 import 'package:wechat_app/resources/colors.dart';
+import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_add_post_item_views.dart';
 import 'package:wechat_app/widgets/flick_manager_video.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
+import 'package:wechat_app/utils/extension.dart';
+
 
 ///AlertBox
 Future<void> showMyDialog(BuildContext context,String title,String message) async {
@@ -34,7 +37,7 @@ Future<void> showMyDialog(BuildContext context,String title,String message) asyn
 }
 
 
-///Add Post Methods
+///Add Post Page Methods
 Widget addOrEditImage(WeChatAddPostPageBloc bloc) {
   if (bloc.getPhotos != null) {
     return Stack(
@@ -191,3 +194,7 @@ void postDelete(WeChatDiscoverPageBloc weChatDiscoverPageBloc,int id,BuildContex
     );
   });
 }
+
+
+
+

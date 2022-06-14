@@ -7,6 +7,12 @@ class UserVO {
   @JsonKey(name: 'id')
   String id;
 
+  @JsonKey(name: 'region')
+  String region;
+
+  @JsonKey(name: 'phone')
+  String phone;
+
   @JsonKey(name: 'user_name')
   String userName;
 
@@ -15,33 +21,55 @@ class UserVO {
 
   @JsonKey(name: 'password')
   String password;
+
+  @JsonKey(name: 'profile_image')
+  String profileImage;
+
+  @JsonKey(name: 'qr_code')
+  String qrCode;
+
   UserVO({
     required this.id,
     required this.userName,
-    required this.email,
+    required this.region,
+    required this.phone,
     required this.password,
+    required this.email,
+    required this.qrCode,
+    required this.profileImage
   });
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is UserVO &&
-        other.id == id &&
-        other.userName == userName &&
-        other.email == email &&
-        other.password == password;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ userName.hashCode ^ email.hashCode ^ password.hashCode;
-  }
 
   @override
   String toString() {
-    return 'UserVO(id: $id, userName: $userName, email: $email, password: $password)';
+    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode}';
   }
+
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserVO &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          region == other.region &&
+          phone == other.phone &&
+          userName == other.userName &&
+          email == other.email &&
+          password == other.password &&
+          profileImage == other.profileImage &&
+          qrCode == other.qrCode;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      region.hashCode ^
+      phone.hashCode ^
+      userName.hashCode ^
+      email.hashCode ^
+      password.hashCode ^
+      profileImage.hashCode ^
+      qrCode.hashCode;
 
   factory UserVO.fromJson(Map<String, dynamic> json) => _$UserVOFromJson(json);
 

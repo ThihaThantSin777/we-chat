@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 
 import 'package:flutter/material.dart';
-import 'package:wechat_app/data/model/we_chat_modeLimpl.dart';
-import 'package:wechat_app/data/model/we_chat_model.dart';
+import 'package:wechat_app/data/model/we_chat_moment_model_impl.dart';
+import 'package:wechat_app/data/model/we_chat_moment_model.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 
 class WeChatDiscoverPageBloc extends ChangeNotifier {
@@ -20,7 +20,7 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
 
 
   ///Model
-  final WeChatModel _weChatModel = WeChatModelImpl();
+  final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
 
   WeChatDiscoverPageBloc([int ? id]){
     _weChatModel.getMoments().listen((data) {

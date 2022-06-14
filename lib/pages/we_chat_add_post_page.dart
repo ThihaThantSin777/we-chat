@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/resources/dimension.dart';
-import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/utils/methods.dart';
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_add_post_item_views.dart';
 import 'package:wechat_app/widgets/loading_widget.dart';
