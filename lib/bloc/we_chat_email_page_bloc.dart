@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
@@ -31,6 +33,15 @@ class WeChatEmailPageBloc extends ChangeNotifier{
     _notifySafely();
     UserVO newUser=_userVO!;
     newUser.email=_email;
+    if(newUser.profileImage.isNotEmpty){
+      return _weChatAuthModel.uploadFileToFirebase(File(newUser.profileImage)).then((imageURL) {
+        newUser.profileImage=imageURL;
+        _weChatAuthModel.registerNewUser(newUser).then((value) {
+          _loading=false;
+          _notifySafely();
+        });
+      });
+    }
   return  _weChatAuthModel.registerNewUser(newUser).then((value) {
       _loading=false;
       _notifySafely();
