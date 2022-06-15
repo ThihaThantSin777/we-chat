@@ -28,6 +28,9 @@ class UserVO {
   @JsonKey(name: 'qr_code')
   String qrCode;
 
+  @JsonKey(name: 'fcm_token')
+  String fcmToken;
+
   UserVO({
     required this.id,
     required this.userName,
@@ -36,13 +39,14 @@ class UserVO {
     required this.password,
     required this.email,
     required this.qrCode,
-    required this.profileImage
+    required this.profileImage,
+    required this.fcmToken,
   });
 
 
   @override
   String toString() {
-    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode}';
+    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken}';
   }
 
 
@@ -58,7 +62,8 @@ class UserVO {
           email == other.email &&
           password == other.password &&
           profileImage == other.profileImage &&
-          qrCode == other.qrCode;
+          qrCode == other.qrCode &&
+          fcmToken == other.fcmToken;
 
   @override
   int get hashCode =>
@@ -69,7 +74,8 @@ class UserVO {
       email.hashCode ^
       password.hashCode ^
       profileImage.hashCode ^
-      qrCode.hashCode;
+      qrCode.hashCode ^
+      fcmToken.hashCode;
 
   factory UserVO.fromJson(Map<String, dynamic> json) => _$UserVOFromJson(json);
 

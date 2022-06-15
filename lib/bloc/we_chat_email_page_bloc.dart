@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
+import 'package:wechat_app/fcm/fcm_service.dart';
 
 class WeChatEmailPageBloc extends ChangeNotifier{
 
@@ -36,10 +37,16 @@ class WeChatEmailPageBloc extends ChangeNotifier{
     if(newUser.profileImage.isNotEmpty){
       return _weChatAuthModel.uploadFileToFirebase(File(newUser.profileImage)).then((imageURL) {
         newUser.profileImage=imageURL;
-        _weChatAuthModel.registerNewUser(newUser).then((value) {
-          _loading=false;
-          _notifySafely();
+        FCMService().getFCKToken().then((value) {
+          (value as Future<String?>).then((fcmToken) {
+            newUser.fcmToken=fcmToken??'';
+            _weChatAuthModel.registerNewUser(newUser).then((value) {
+              _loading=false;
+              _notifySafely();
+            });
+          });
         });
+
       });
     }
   return  _weChatAuthModel.registerNewUser(newUser).then((value) {

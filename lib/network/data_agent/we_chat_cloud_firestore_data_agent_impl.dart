@@ -87,7 +87,8 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
 
   @override
   UserVO getLoggedInUser() {
-    // TODO: implement getLoggedInUser
-    throw UnimplementedError();
+    User? user=_fireAuth.currentUser;
+    UserVO userVO=UserVO(id: user?.uid??'', userName: user?.displayName??'', region: '', phone: user?.phoneNumber??'', password: '', email: user?.email??'', qrCode: '', profileImage: user?.photoURL??'', fcmToken: '');
+    return userVO;
   }
 }
