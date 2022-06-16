@@ -55,8 +55,11 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
     _loggedInUserID=_weChatAuthModel.getLoggedInUserID();
     _notifySafely();
     _weChatRealTimeModel.getChatList(friID).listen((event) {
-      _chattingUserVo=event;
-      _notifySafely();
+     if(event!=null || event.isNotEmpty){
+       _chattingUserVo=event;
+       _notifySafely();
+     }
+
     });
 
   }

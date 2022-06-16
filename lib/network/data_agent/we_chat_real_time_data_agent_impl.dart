@@ -24,12 +24,12 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
     String loggedInUserID=auth.currentUser?.uid??'';
     databaseRef
         .child(contactsAndMessages)
-        .child(loggedInUserID).child(friID)
+        .child(loggedInUserID).child(friID).child(DateTime.now().millisecondsSinceEpoch.toString())
         .set(chattingUserVO.toJson());
 
    return databaseRef
         .child(contactsAndMessages)
-        .child(friID).child(loggedInUserID)
+        .child(friID).child(loggedInUserID).child(DateTime.now().millisecondsSinceEpoch.toString())
         .set(chattingUserVO.toJson());
 
   }
@@ -43,9 +43,18 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
   @override
   Stream<List<ChattingUserVO>> getChatList(String friID) {
     String loggedInUserID=auth.currentUser?.uid??'';
-    return databaseRef.child(contactsAndMessages).child(loggedInUserID).child(friID).onValue.map((event) {
-      return event.snapshot.value.values.map<ChattingUserVO>((element){
-        return ChattingUserVO.fromJson(Map<String,dynamic>.from(element));
+    // return databaseRef.child(contactsAndMessages).child(loggedInUserID).child(friID).onValue.map((event) {
+    //   return event.snapshot.value.values.map<ChattingUserVO>((element){
+    //     return ChattingUserVO.fromJson(Map<String,dynamic>.from(element));
+    //   }).toList();
+    // });
+    return databaseRef
+        .child(contactsAndMessages)
+        .child(loggedInUserID)
+        .child(friID)
+        .onValue.map((event){
+      return event.snapshot.children.map<ChattingUserVO>((snapshot){
+        return ChattingUserVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
       }).toList();
     });
   }
