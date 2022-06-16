@@ -10,11 +10,12 @@ import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
 const momentsCollection = 'moments';
 const fileUploadPath = 'uploads';
 const userCollection = 'users';
+const contactCollection = 'contact';
 
 class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _firebaseStorage = FirebaseStorage.instance;
-  final _fireAuth=FirebaseAuth.instance;
+  final _fireAuth = FirebaseAuth.instance;
 
   @override
   Future<void> addNewPost(MomentVO momentVO) => _firebaseFirestore
@@ -56,27 +57,27 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
         .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
   }
 
+  @override
+  bool isLoggedIn() => _fireAuth.currentUser != null;
 
   @override
-  bool isLoggedIn() =>_fireAuth.currentUser!=null;
+  Future login(String email, String password) =>
+      _fireAuth.signInWithEmailAndPassword(email: email, password: password);
 
   @override
-  Future login(String email, String password) =>_fireAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future logout() => _fireAuth.signOut();
 
   @override
-  Future logout() =>_fireAuth.signOut();
-
-  @override
-  Future registerNewUser(UserVO newUser) =>_fireAuth
-      .createUserWithEmailAndPassword(
-  email: newUser.email, password: newUser.password)
-      .then((credential) {
-       User? user= credential.user;
-       user?.updatePhotoURL(newUser.profileImage);
-       user?.updateDisplayName(newUser.userName);
-       newUser.id =newUser.qrCode= user?.uid??'';
-    _addNewUser(newUser);
-  });
+  Future registerNewUser(UserVO newUser) => _fireAuth
+          .createUserWithEmailAndPassword(
+              email: newUser.email ?? '', password: newUser.password ?? '')
+          .then((credential) {
+        User? user = credential.user;
+        user?.updatePhotoURL(newUser.profileImage);
+        user?.updateDisplayName(newUser.userName);
+        newUser.id = newUser.qrCode = user?.uid ?? '';
+        _addNewUser(newUser);
+      });
 
   Future<void> _addNewUser(UserVO newUser) {
     return _firebaseFirestore
@@ -86,9 +87,62 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
   }
 
   @override
-  UserVO getLoggedInUser() {
-    User? user=_fireAuth.currentUser;
-    UserVO userVO=UserVO(id: user?.uid??'', userName: user?.displayName??'', region: '', phone: user?.phoneNumber??'', password: '', email: user?.email??'', qrCode: '', profileImage: user?.photoURL??'', fcmToken: '');
+  String getLoggedInUserID() => _fireAuth.currentUser?.uid ?? '';
+
+  @override
+  Future<UserVO?> getLoggedInUserInfoByID(String id) {
+    Future<UserVO?> userVO;
+    try {
+      userVO = _firebaseFirestore
+          .collection(userCollection)
+          .doc(id)
+          .get()
+          .asStream()
+          .where((event) => event != null)
+          .map((event) => UserVO.fromJson(event.data() ?? {}))
+          .first;
+    } catch (e) {
+      throw Exception('Wrong ID');
+    }
     return userVO;
+  }
+
+  @override
+  Future<void> addContact(String friendID, UserVO friendUserVO) {
+    return getLoggedInUserInfoByID(_fireAuth.currentUser?.uid ?? '')
+        .then((userVO) {
+      ///Friend to Current
+      _firebaseFirestore
+          .collection(userCollection)
+          .doc(friendUserVO.id)
+          .collection(contactCollection)
+          .doc(userVO?.id.toString())
+          .set(userVO!.toJson());
+
+      ///Current to Friend
+      _firebaseFirestore
+          .collection(userCollection)
+          .doc(userVO.id.toString())
+          .collection(contactCollection)
+          .doc(friendUserVO.id)
+          .set(friendUserVO.toJson());
+    });
+  }
+
+
+  @override
+  Stream<List<UserVO>> getContactList() {
+    String id = _fireAuth.currentUser?.uid ?? '';
+    return _firebaseFirestore
+        .collection(userCollection)
+        .doc(id)
+        .collection(contactCollection)
+        .snapshots()
+        .where((event) => event != null)
+        .map((querySnapshot) {
+      return querySnapshot.docs.map<UserVO>((document) {
+        return UserVO.fromJson(document.data());
+      }).toList();
+    });
   }
 }

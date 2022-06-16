@@ -16,6 +16,10 @@ abstract class WeChatDataAgent {
   Future registerNewUser(UserVO newUser);
   Future login(String email,String password);
   bool isLoggedIn();
-  UserVO getLoggedInUser();
+  String getLoggedInUserID();
   Future logout();
+  Future<UserVO?> getLoggedInUserInfoByID(String id);
+  Stream<List<UserVO>> getContactList();
+  Future<void>addContact(String friendID,UserVO friendUserVO);
+  // Future<List<UserVO>?>
 }

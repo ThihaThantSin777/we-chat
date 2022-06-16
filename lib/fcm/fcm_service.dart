@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 
 class FCMService {
   static final FCMService _singleton = FCMService._internal();
@@ -10,8 +9,7 @@ class FCMService {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  Future<Object>  getFCKToken() async {
-
+  Future<String?> getFCMToken()async{
     return messaging.getToken();
   }
 }

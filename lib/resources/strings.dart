@@ -71,3 +71,16 @@ const kEmailVerificationText='Email Verification';
 const kEnterVerificationInformationText='Enter Verification Information';
 const kEmailText='Email';
 const kEmailHintText='Enter email address';
+
+
+///Login Page Text
+const kLoginWithEmailText='Login with Email';
+const kAccountText='Account';
+const kAccountHintText='Enter email';
+const kAccountPasswordText='Password';
+const kAccountHintPasswordText='Enter password';
+const kLoginViaMobileText='Login via mobile number';
+const kVerificationText='The above email is used only for verification';
+const kAcceptAndLoginText='Accept and login';
+const kUnableToLoginText='Unable to login';
+const kMoreOptionText='More Option';

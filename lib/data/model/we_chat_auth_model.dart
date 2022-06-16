@@ -7,6 +7,9 @@ abstract class WeChatAuthModel{
   Future registerNewUser(UserVO newUser);
   Future login(String email,String password);
   bool isLoggedIn();
-  UserVO getLoggedInUser();
+  String getLoggedInUserID();
   Future logout();
+  Future<UserVO?> getLoggedInUserInfoByID(String id);
+  Future<void>addContact(String friendID,UserVO friendUserVO);
+  Stream<List<UserVO>> getContactList();
 }

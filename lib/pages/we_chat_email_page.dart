@@ -36,88 +36,92 @@ class WeChatEmailPage extends StatelessWidget {
                 ),
               ),
             ),
-            body: Selector<WeChatEmailPageBloc, String>(
-                selector: (context, bloc) => bloc.getEmail,
-                builder: (context, email, child) {
-                  WeChatEmailPageBloc weChatEmailPageBloc =
-                      context.read<WeChatEmailPageBloc>();
-                  return Padding(
-                    padding: const EdgeInsets.all(kPadSpace30x),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          kEmailVerificationText,
-                          style: TextStyle(
-                              fontSize: kFontSize23x,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(
-                          height: kPadSpace50x,
-                        ),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            kEnterVerificationInformationText,
-                            style: TextStyle(
-                              color: Colors.white60,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: kPadSpace5x,
-                        ),
-                        Column(
+            body: ListView(
+              children: [
+                Selector<WeChatEmailPageBloc, String>(
+                    selector: (context, bloc) => bloc.getEmail,
+                    builder: (context, email, child) {
+                      WeChatEmailPageBloc weChatEmailPageBloc =
+                          context.read<WeChatEmailPageBloc>();
+                      return Padding(
+                        padding: const EdgeInsets.all(kPadSpace30x),
+                        child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            RegisterTextFieldWidget(
-                                onChange: (string) {
-                                  weChatEmailPageBloc.setEmail(string);
-                                  weChatEmailPageBloc.setErrorEmailText(string);
-                                },
-                                preFixText: kEmailText,
-                                hintText: kEmailHintText,
-                                textInput: TextFieldInputType.email,
-                                onPressedShowPassword: () {}),
+                            const Text(
+                              kEmailVerificationText,
+                              style: TextStyle(
+                                  fontSize: kFontSize23x,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                            ),
                             const SizedBox(
-                              height: kPadSpace10x,
+                              height: kPadSpace50x,
                             ),
-                            Selector<WeChatEmailPageBloc, String>(
-                                selector: (context, bloc) => bloc.getErrorEmailText,
-                                builder: (context, errorText, child) =>
-                                    ErrorTextFieldWidget(
-                                      isError: errorText.startsWith('Error:'),
-                                      errorText: errorText,
-                                    )),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.5,
-                            ),
-                            Selector<WeChatEmailPageBloc, String>(
-                              selector: (context, bloc) => bloc.getErrorEmailText,
-                              builder: (context, errorText, child) => Container(
-                                alignment: Alignment.center,
-                                child: MaterialButtonWidget(
-                                    onPressed: () {
-                                      weChatEmailPageBloc.setErrorEmailText(email);
-                                      if (errorText.isEmpty) {
-                                       weChatEmailPageBloc.registerNewUser().then((value) {
-                                         navigatePush(context, const WeChatHomePage());
-                                       }).catchError((error)=> debugPrint(error));
-                                      }
-                                    },
-                                    color: kUploadImageBottomSheetColor,
-                                    textColor: Colors.white30,
-                                    childText: 'OK'),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child: const Text(
+                                kEnterVerificationInformationText,
+                                style: TextStyle(
+                                  color: Colors.white60,
+                                ),
                               ),
+                            ),
+                            const SizedBox(
+                              height: kPadSpace5x,
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RegisterTextFieldWidget(
+                                    onChange: (string) {
+                                      weChatEmailPageBloc.setEmail(string);
+                                      weChatEmailPageBloc.setErrorEmailText(string);
+                                    },
+                                    preFixText: kEmailText,
+                                    hintText: kEmailHintText,
+                                    textInput: TextFieldInputType.email,
+                                    onPressedShowPassword: () {}),
+                                const SizedBox(
+                                  height: kPadSpace10x,
+                                ),
+                                Selector<WeChatEmailPageBloc, String>(
+                                    selector: (context, bloc) => bloc.getErrorEmailText,
+                                    builder: (context, errorText, child) =>
+                                        ErrorTextFieldWidget(
+                                          isError: errorText.startsWith('Error:'),
+                                          errorText: errorText,
+                                        )),
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height * 0.5,
+                                ),
+                                Selector<WeChatEmailPageBloc, String>(
+                                  selector: (context, bloc) => bloc.getErrorEmailText,
+                                  builder: (context, errorText, child) => Container(
+                                    alignment: Alignment.center,
+                                    child: MaterialButtonWidget(
+                                        onPressed: () {
+                                          weChatEmailPageBloc.setErrorEmailText(email);
+                                          if (errorText.isEmpty) {
+                                           weChatEmailPageBloc.registerNewUser().then((value) {
+                                             navigatePush(context, const WeChatHomePage());
+                                           }).catchError((error)=> debugPrint(error));
+                                          }
+                                        },
+                                        color: kUploadImageBottomSheetColor,
+                                        textColor: Colors.white30,
+                                        childText: 'OK'),
+                                  ),
+                                )
+                              ],
                             )
                           ],
-                        )
-                      ],
-                    ),
-                  );
-                }),
+                        ),
+                      );
+                    }),
+              ],
+            ),
           ),
           Selector<WeChatEmailPageBloc,bool>(
             selector: (context,bloc)=>bloc.isLoading,

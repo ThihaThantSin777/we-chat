@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
+import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
+import 'package:wechat_app/resources/strings.dart';
 
 
 
 class AtoZContactItemView extends StatelessWidget {
   const AtoZContactItemView(
-      {Key? key, required this.stringVO, required this.countFriends,required this.onTap})
+      {Key? key, required this.userVO, required this.countFriends,required this.onTap})
       : super(key: key);
-  final StringVO stringVO;
+  final UserVO userVO;
   final Map<String, int> countFriends;
   final Function(String) onTap;
   @override
   Widget build(BuildContext context) {
-    int count = int.parse(countFriends[stringVO.tag].toString());
+    int count = int.parse(countFriends[userVO.userName?[0]].toString());
     String totalFriends = '$count ${(count <= 1) ? 'friend' : 'friends'}';
     return
       Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Visibility(
-          visible: stringVO.isShowSuspension,
+          visible: userVO.isShowSuspension,
           child: Container(
             color: kBarColor,
             padding: const EdgeInsets.only(left: kPadSpace10x),
@@ -33,7 +35,7 @@ class AtoZContactItemView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  stringVO.getSuspensionTag(),
+                  userVO.getSuspensionTag(),
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: kFontSize17x,
@@ -55,12 +57,12 @@ class AtoZContactItemView extends StatelessWidget {
         ),
         ListTile(
           contentPadding: const EdgeInsets.symmetric(vertical: kPadSpace5x,horizontal: kPadSpace5x),
-          onTap: ()=>onTap(stringVO.title),
-          leading: const CircleAvatar(
+          onTap: ()=>onTap(userVO.userName??''),
+          leading:  CircleAvatar(
             backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage('https://cdn.now.howstuffworks.com/media-content/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg')
+            backgroundImage: NetworkImage(userVO.profileImage??kDefaultImage)
           ),
-          title: Text(stringVO.title),
+          title: Text(userVO.userName??''),
         ),
       ],
     );

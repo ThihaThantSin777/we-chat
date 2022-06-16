@@ -1,35 +1,36 @@
+import 'package:azlistview/azlistview.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_vo.g.dart';
 
 @JsonSerializable()
-class UserVO {
+class UserVO extends ISuspensionBean{
   @JsonKey(name: 'id')
-  String id;
+  String ?id;
 
   @JsonKey(name: 'region')
-  String region;
+  String ?region;
 
   @JsonKey(name: 'phone')
-  String phone;
+  String? phone;
 
   @JsonKey(name: 'user_name')
-  String userName;
+  String? userName;
 
   @JsonKey(name: 'email')
-  String email;
+  String? email;
 
   @JsonKey(name: 'password')
-  String password;
+  String ?password;
 
   @JsonKey(name: 'profile_image')
-  String profileImage;
+  String? profileImage;
 
   @JsonKey(name: 'qr_code')
-  String qrCode;
+  String? qrCode;
 
   @JsonKey(name: 'fcm_token')
-  String fcmToken;
+  String? fcmToken;
 
   UserVO({
     required this.id,
@@ -48,7 +49,7 @@ class UserVO {
   String toString() {
     return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken}';
   }
-
+  UserVO.normal();
 
   @override
   bool operator ==(Object other) =>
@@ -80,4 +81,7 @@ class UserVO {
   factory UserVO.fromJson(Map<String, dynamic> json) => _$UserVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserVOToJson(this);
+
+  @override
+  String getSuspensionTag()=>userName?[0].toUpperCase()??'';
 }

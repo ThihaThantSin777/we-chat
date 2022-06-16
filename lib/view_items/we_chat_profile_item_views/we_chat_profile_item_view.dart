@@ -6,7 +6,9 @@ import 'package:wechat_app/resources/dimension.dart';
 class ProfileNameAndQrScanItemView extends StatelessWidget {
   const ProfileNameAndQrScanItemView({
     Key? key,
+    required this.onTap
   }) : super(key: key);
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,9 @@ class ProfileNameAndQrScanItemView extends StatelessWidget {
           padding: const EdgeInsets.only(left: kPadSpace45x),
           child: const ProfileNameView(),
         ),
-        const QRCodeScanIconView()
+         QRCodeScanIconView(
+           onTap: ()=>onTap(),
+         )
       ],
     );
   }
@@ -28,16 +32,20 @@ class ProfileNameAndQrScanItemView extends StatelessWidget {
 class QRCodeScanIconView extends StatelessWidget {
   const QRCodeScanIconView({
     Key? key,
+    required this.onTap
   }) : super(key: key);
-
+  final Function onTap;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: const[
-        Icon(Icons.qr_code,size: kPadSpace25x,color: Colors.white,),
-        Icon(Icons.chevron_right,size: kPadSpace25x,color: Colors.white,)
-      ],
+    return GestureDetector(
+      onTap: ()=>onTap(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const[
+          Icon(Icons.qr_code,size: kPadSpace25x,color: Colors.white,),
+          Icon(Icons.chevron_right,size: kPadSpace25x,color: Colors.white,)
+        ],
+      ),
     );
   }
 }
@@ -72,20 +80,23 @@ class ProfileNameView extends StatelessWidget {
 class BioSettingIconLogoutItemView extends StatelessWidget {
   const BioSettingIconLogoutItemView({
     Key? key,
+    required this.onPressed
   }) : super(key: key);
-
+  final Function onPressed;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: const [
-        Expanded(child:  BioView()),
-        Expanded(
+      children:  [
+        const  Expanded(child:  BioView()),
+        const  Expanded(
             flex: 2,
             child: SettingIconView()
         ),
         Expanded(
-            child: LogoutButtonView()
+            child: LogoutButtonView(
+              onPressed: ()=>onPressed(),
+            )
         ),
       ],
     );
@@ -95,8 +106,9 @@ class BioSettingIconLogoutItemView extends StatelessWidget {
 class LogoutButtonView extends StatelessWidget {
   const LogoutButtonView({
     Key? key,
+    required this.onPressed
   }) : super(key: key);
-
+  final Function onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,9 +120,7 @@ class LogoutButtonView extends StatelessWidget {
             borderRadius: BorderRadius.circular(kPadSpace20x)
         ),
         color: Colors.white,
-        onPressed: (){
-
-        },
+        onPressed: ()=>onPressed(),
         child: const Text('Log out',style: TextStyle(
             fontSize: kFontSize17x
         ),),

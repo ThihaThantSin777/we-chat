@@ -11,12 +11,12 @@ import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
 
 class WeChatHomePage extends StatelessWidget {
-  const WeChatHomePage({Key? key}) : super(key: key);
-
+  const WeChatHomePage({Key? key,this.pageIndex=0}) : super(key: key);
+  final int pageIndex;
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WeChatHomePageBloc>(
-      create: (context) => WeChatHomePageBloc(),
+      create: (context) => WeChatHomePageBloc(pageIndex),
       child: Selector<WeChatHomePageBloc, int>(
           selector: (context, bloc) => bloc.getPageIndex,
           builder: (context, pageIndex, child) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wechat_app/pages/we_chat_login_page.dart';
 import 'package:wechat_app/pages/we_chat_register_page.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
@@ -10,41 +11,39 @@ import '../view_items/we_chat_start_item_views/we_chat_start_item_view.dart';
 class WeChatStartPage extends StatelessWidget {
   const WeChatStartPage({Key? key}) : super(key: key);
 
-  void actionOnRegisterButton(BuildContext context){
+  void actionOnRegisterButton(BuildContext context) {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kPadSpace20x)
-      ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kPadSpace20x)),
         backgroundColor: kUploadImageBottomSheetColor,
-        context: context, builder: (context){
-      return SignInBottomSheetItemView(
-        onPressedForMobileNumber: (){
-            navigateBack(context);
-            navigatePush(context, WeChatRegisterPage());
-        },
-      );
-    });
+        context: context,
+        builder: (context) {
+          return SignInBottomSheetItemView(
+            onPressedForMobileNumber: () {
+              navigateBack(context);
+              navigatePush(context, const WeChatRegisterPage());
+            },
+          );
+        });
   }
-  
+
+  void actionOnRLoginButton(BuildContext context) {
+    navigatePush(context, const WeChatLoginPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children:  [
+        children: [
           const BackgroundImageItemView(),
           const LanguageItemView(),
           LoginSignUpButtonItemView(
-            onPressedLogin: (){
-
-            },
-            onPressedSignup: ()=>actionOnRegisterButton(context),
+            onPressedLogin: () => actionOnRLoginButton(context),
+            onPressedSignup: () => actionOnRegisterButton(context),
           )
         ],
       ),
     );
   }
 }
-
-
-
-

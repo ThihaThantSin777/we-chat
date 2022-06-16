@@ -34,17 +34,16 @@ class WeChatEmailPageBloc extends ChangeNotifier{
     _notifySafely();
     UserVO newUser=_userVO!;
     newUser.email=_email;
-    if(newUser.profileImage.isNotEmpty){
-      return _weChatAuthModel.uploadFileToFirebase(File(newUser.profileImage)).then((imageURL) {
+    if(newUser.profileImage?.isNotEmpty??false){
+      return _weChatAuthModel.uploadFileToFirebase(File(newUser.profileImage??'')).then((imageURL) {
         newUser.profileImage=imageURL;
-        FCMService().getFCKToken().then((value) {
-          (value as Future<String?>).then((fcmToken) {
+        FCMService().getFCMToken().then((fcmToken) {
             newUser.fcmToken=fcmToken??'';
             _weChatAuthModel.registerNewUser(newUser).then((value) {
               _loading=false;
               _notifySafely();
             });
-          });
+
         });
 
       });
