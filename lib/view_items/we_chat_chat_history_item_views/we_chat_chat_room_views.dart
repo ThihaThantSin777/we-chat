@@ -16,33 +16,29 @@ class ShowMoreIconItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () => onPressed(),
-        icon: AnimatedSwitcher(
-            // transitionBuilder: (child,animation){
-            //   return ScaleTransition(
-            //       scale: animation,
-            //     child: child,
-            //   );
-            // },
-            key: UniqueKey(),
-            duration: kDurationIn500milliseconds,
-            child: (showMoreIcon == ShowMoreIconForm.add)
-                ? const Icon(Icons.add)
-                : (showMoreIcon == ShowMoreIconForm.close)
-                    ? const Icon(Icons.close)
-                    : const Icon(Icons.send)));
+        icon: AnimatedCrossFade(
+          duration: kDurationIn500milliseconds,
+          firstChild: const Icon(Icons.add),
+          secondChild:  const Icon(Icons.close),
+          crossFadeState:  (showMoreIcon == ShowMoreIconForm.add)?CrossFadeState.showFirst:CrossFadeState.showSecond,
+        ));
   }
 }
 
 class TextFieldItemView extends StatelessWidget {
   const TextFieldItemView(
-      {Key? key, required this.onChange, required this.onTap})
+      {Key? key, required this.onChange, required this.onTap,required this.onSubmitted})
       : super(key: key);
   final Function(String) onChange;
   final Function onTap;
+  final Function(String) onSubmitted;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         child: TextField(
+         textInputAction: TextInputAction.send,
+          maxLines: null,
+      onSubmitted: (text)=>onSubmitted(text),
       onTap: () => onTap(),
       onChanged: (string) => onChange(string),
       decoration: InputDecoration(

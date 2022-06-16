@@ -10,6 +10,13 @@ import '../../persistant/dao/light_or_dark_dao.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 class WeChatMomentModelImpl extends WeChatMomentModel {
+
+  WeChatMomentModelImpl._internal();
+
+  static final WeChatMomentModelImpl _singleton=WeChatMomentModelImpl._internal();
+
+  factory WeChatMomentModelImpl()=>_singleton;
+
   final LightOrDarkDAO _lightOrDarkDAO = LightOrDarkDAOImpl();
   final WeChatDataAgent _weChatDataAgent = WeChatCloudFireStoreDataAgentImpl();
   @override

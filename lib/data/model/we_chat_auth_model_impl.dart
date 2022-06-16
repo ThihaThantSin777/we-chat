@@ -6,6 +6,10 @@ import 'package:wechat_app/network/data_agent/we_chat_cloud_firestore_data_agent
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
 
 class WeChatAuthModelImpl extends WeChatAuthModel {
+  WeChatAuthModelImpl._internal();
+  static final WeChatAuthModelImpl _singleton=WeChatAuthModelImpl._internal();
+
+  factory WeChatAuthModelImpl()=>_singleton;
   final WeChatDataAgent _weChatDataAgent = WeChatCloudFireStoreDataAgentImpl();
 
   @override

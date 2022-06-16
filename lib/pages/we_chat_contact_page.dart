@@ -89,10 +89,9 @@ class WeChatContactPage extends StatelessWidget {
                                                 context,
                                                 WeChatChattingRoomPage(
                                                   title: name,
-                                                  image: contactList[index]
-                                                      .profileImage ??
-                                                      kDefaultImage,
-                                                )),
+                                                  friID: contactList[index].id.toString(),
+                                                )
+                                            ),
                                             userVO: contactList[index],
                                             countFriends: countFriends,
                                           );

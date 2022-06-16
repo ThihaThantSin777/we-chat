@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chat_history_page_bloc.dart';
-import 'package:wechat_app/bloc/we_chat_chatting_page_bloc.dart';
 import 'package:wechat_app/data/vos/chat_user_vo/chat_user_vo.dart';
 import 'package:wechat_app/pages/we_chat_chatting_room_page.dart';
 import 'package:wechat_app/resources/dimension.dart';
@@ -55,7 +54,7 @@ class WeChatChatHistoryPage extends StatelessWidget {
                               onTap: () => navigatePush(
                                   context,
                                   WeChatChattingRoomPage(
-                                      title: userVOList[index].name)),
+                                      title: userVOList[index].name,friID: '')),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

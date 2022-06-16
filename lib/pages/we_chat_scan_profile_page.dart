@@ -32,6 +32,7 @@ class WeChatScanProfilePage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
+                          width: double.infinity,
                             color: Colors.white,
                             child: (userVO.id!=null)?
                             Selector<WeChatScanProfilePageBloc,bool>(

@@ -13,6 +13,11 @@ const userCollection = 'users';
 const contactCollection = 'contact';
 
 class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
+  WeChatCloudFireStoreDataAgentImpl._internal();
+  static final WeChatCloudFireStoreDataAgentImpl _singleton=WeChatCloudFireStoreDataAgentImpl._internal();
+
+  factory WeChatCloudFireStoreDataAgentImpl()=>_singleton;
+
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _firebaseStorage = FirebaseStorage.instance;
   final _fireAuth = FirebaseAuth.instance;

@@ -2,7 +2,6 @@ import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
-import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 
 class WeChatContactPageBloc extends ChangeNotifier {

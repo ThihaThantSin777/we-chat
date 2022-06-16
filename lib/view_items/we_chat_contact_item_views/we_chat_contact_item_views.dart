@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
-import 'package:wechat_app/data/vos/strings_vo/strings_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';

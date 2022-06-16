@@ -27,16 +27,18 @@ class WeChatScanProfilePageBloc extends ChangeNotifier{
        _weChatAuthModel.getLoggedInUserInfoByID(id).then((value) {
          _userVO=value;
          _notifySafely();
+         _weChatAuthModel.getContactList().listen((event) {
+           event.forEach((element) {
+             if(element.id.toString()==_userVO?.id.toString()){
+               _alreadyFri=true;
+               _notifySafely();
+             }
+           });
+
+         });
        });
      }
-    _weChatAuthModel.getContactList().listen((event) {
-      event.forEach((element) {
-        if(element.id.toString()==_userVO?.id.toString()){
-          _alreadyFri=true;
-          _notifySafely();
-        }
-      });
-    });
+
   }
 
   Future<void> addFriend(){

@@ -19,6 +19,7 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
     );
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
+      'isShowSuspension': instance.isShowSuspension,
       'id': instance.id,
       'region': instance.region,
       'phone': instance.phone,

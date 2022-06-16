@@ -72,34 +72,55 @@ class ScanProfileSuccessItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String image=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
       children: [
-        ScanProfileImageItemView(
-          imageURL: image,
-        ),
-        const SizedBox(
-          height: kPadSpace10x,
-        ),
-        ScanProfileNameItemView(
-          name: userVO?.userName??'None',
-        ),
-        const SizedBox(
-          height: kPadSpace10x,
-        ),
-        Visibility(
-          visible: !isAlreadyFri,
-          child: ScanProfileCancelOrAddItemView(
-            onAdd: ()=>onAdd(),
-            onCancel: (){
-             onCancel();
-            },
-          ),
-        ),
         Visibility(
           visible: isAlreadyFri,
-          child: Text('${userVO?.userName} is already in your contact. '),
-        )
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(onPressed: ()=>onCancel(), icon: const Icon(Icons.cancel,color: Colors.red,size: kPadSpace40x,)),
+
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ScanProfileImageItemView(
+                imageURL: image,
+              ),
+              const SizedBox(
+                height: kPadSpace10x,
+              ),
+              ScanProfileNameItemView(
+                name: userVO?.userName??'None',
+              ),
+              const SizedBox(
+                height: kPadSpace10x,
+              ),
+              Visibility(
+                visible: !isAlreadyFri,
+                child: ScanProfileCancelOrAddItemView(
+                  onAdd: ()=>onAdd(),
+                  onCancel: (){
+                   onCancel();
+                  },
+                ),
+              ),
+              Visibility(
+                visible: isAlreadyFri,
+                child: Text('${userVO?.userName} is already in your contact. ',style: const TextStyle(
+                  fontSize: kFontSize19x,
+                  color: Colors.red
+                ),),
+              ),
+              const SizedBox(
+                height: kPadSpace10x,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -6,7 +6,6 @@ import 'package:wechat_app/pages/we_chat_add_post_page.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
-import 'package:wechat_app/utils/methods.dart';
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_discover_item_views.dart';
 import 'package:wechat_app/widgets/leading_widget.dart';
 import 'package:wechat_app/utils/extension.dart';
@@ -15,7 +14,16 @@ import '../widgets/small_profile_widget.dart';
 
 class WeChatDiscoverPage extends StatelessWidget {
   const WeChatDiscoverPage({Key? key}) : super(key: key);
-
+  void postDelete(WeChatDiscoverPageBloc weChatDiscoverPageBloc,int id,BuildContext context){
+    weChatDiscoverPageBloc.deletePost(id).then((value) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              backgroundColor: kPrimaryLightColor,
+              content: Text('1 post delete',style: TextStyle(color: Colors.white),)
+          )
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WeChatDiscoverPageBloc>(

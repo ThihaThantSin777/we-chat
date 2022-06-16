@@ -1,5 +1,4 @@
 enum ShowMoreIconForm {
-  send,
   close,
   add,
 }

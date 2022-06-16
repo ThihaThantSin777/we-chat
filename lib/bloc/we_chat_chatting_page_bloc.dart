@@ -2,9 +2,18 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:wechat_app/data/model/we_chat_auth_model.dart';
+import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
+import 'package:wechat_app/data/model/we_chat_moment_model_impl.dart';
+import 'package:wechat_app/data/model/we_chat_real_time_model.dart';
+import 'package:wechat_app/data/model/we_chat_real_time_model_impl.dart';
+import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
 import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
+import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
+import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
 
+import '../data/model/we_chat_moment_model.dart';
 import '../data/vos/chat_user_vo/chat_user_vo.dart';
 
 List<String> personChat = [
@@ -22,25 +31,34 @@ List<String> personChat = [
 
 class WeChatChattingPagesBloc extends ChangeNotifier {
   ///State Variable
-  final List<ChattingVO> _chatList = [];
   ShowMoreIconForm _showMoreIcon = ShowMoreIconForm.add;
   bool _showMoreWidget = false;
   bool _isDisposed = false;
   File? _file;
-
+  String _message='';
+  String _friendID='';
+  String _loggedInUserID='';
+  List<ChattingUserVO>_chattingUserVo=[];
   ///getter
-
-  List<ChattingVO> get getChattingVOList => _chatList;
-
   ShowMoreIconForm get getShowMoreIcon => _showMoreIcon;
-
   bool get isShowMoreWidget => _showMoreWidget;
-
   File? get getFile => _file;
+  List<ChattingUserVO> get getChattingUserVO=>_chattingUserVo;
+  String get getLoggedInUserID=>_loggedInUserID;
 
-  WeChatChattingPagesBloc() {
-    _setChatTalk();
+
+  final WeChatRealTimeModel _weChatRealTimeModel=WeChatRealTimeModelImpl();
+  final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
+
+  WeChatChattingPagesBloc(String friID) {
+    _friendID=friID;
+    _loggedInUserID=_weChatAuthModel.getLoggedInUserID();
     _notifySafely();
+    _weChatRealTimeModel.getChatList(friID).listen((event) {
+      _chattingUserVo=event;
+      _notifySafely();
+    });
+
   }
 
   void addImage(File path) {
@@ -53,23 +71,30 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
     _notifySafely();
   }
 
-  void _setChatTalk() {
-    Random random = Random();
 
-    for (int i = 1; i <= 100; i++) {
-      int number = random.nextInt(10);
-      bool isLeft = number % 2 == 0;
-      ChattingVO chattingVO = ChattingVO(personChat[number], isLeft);
-      _chatList.add(chattingVO);
+  void sendMessage(){
+    if(_message.isNotEmpty){
+      if(_file!=null){
+    String id=_weChatAuthModel.getLoggedInUserID();
+    _weChatAuthModel.getLoggedInUserInfoByID(id).then((userVO) {
+          _weChatAuthModel.uploadFileToFirebase(File(_file?.path??'')).then((imageURL) {
+            ChattingUserVO chattingUserVO=_getChattingVO(userVO,imageURL);
+            _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
+          });
+    });
     }
+    }
+  }
+
+  ChattingUserVO _getChattingVO(UserVO? userVO,String imageURL){
+    return ChattingUserVO(userID: userVO?.id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: _message, file: imageURL, timeStamp: DateTime.now());
   }
 
   void setIsShowMoreIconState(String text) {
     if (text.isEmpty) {
       _showMoreIcon = ShowMoreIconForm.add;
-    } else {
-      _showMoreIcon = ShowMoreIconForm.send;
     }
+    _message=text;
     _notifySafely();
   }
 

@@ -2,7 +2,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:wechat_app/data/model/we_chat_real_time_model_impl.dart';
 import 'package:wechat_app/data/vos/chat_user_vo/chat_user_vo.dart';
+import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+
+import '../data/model/we_chat_real_time_model.dart';
 
 
 class WeChatChatHistoryPageBloc extends ChangeNotifier{
@@ -15,7 +19,9 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
   ///Getter
   List<ChatUserVO> get getUserVOList => _userVOList;
 
+
   WeChatChatHistoryPageBloc(){
+
     _userVOList = userVOList;
   }
   void remove(ChatUserVO userVO) {
