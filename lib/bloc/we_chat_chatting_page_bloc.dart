@@ -74,15 +74,21 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
 
   void sendMessage(){
     if(_message.isNotEmpty){
-      if(_file!=null){
+
     String id=_weChatAuthModel.getLoggedInUserID();
     _weChatAuthModel.getLoggedInUserInfoByID(id).then((userVO) {
-          _weChatAuthModel.uploadFileToFirebase(File(_file?.path??'')).then((imageURL) {
-            ChattingUserVO chattingUserVO=_getChattingVO(userVO,imageURL);
-            _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
-          });
+      if(_file!=null) {
+        _weChatAuthModel.uploadFileToFirebase(File(_file?.path ?? '')).then((
+            imageURL) {
+          ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL);
+          _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
+        });
+      }else{
+        ChattingUserVO chattingUserVO = _getChattingVO(userVO, '');
+        _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
+      }
     });
-    }
+
     }
   }
 
