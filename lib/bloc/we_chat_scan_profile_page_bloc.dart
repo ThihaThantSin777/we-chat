@@ -9,12 +9,14 @@ class WeChatScanProfilePageBloc extends ChangeNotifier{
 ///State Variable
   bool _isDisposed=false;
   bool _loading=false;
+  bool _alreadyFri=false;
   UserVO ? _userVO;
 
 
   ///Getter
   UserVO ? get getUserVO=>_userVO;
   bool get isLoading=>_loading;
+  bool get isAlreadyFri=>_alreadyFri;
 
   ///Model
   final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
@@ -27,7 +29,14 @@ class WeChatScanProfilePageBloc extends ChangeNotifier{
          _notifySafely();
        });
      }
-
+    _weChatAuthModel.getContactList().listen((event) {
+      event.forEach((element) {
+        if(element.id.toString()==_userVO?.id.toString()){
+          _alreadyFri=true;
+          _notifySafely();
+        }
+      });
+    });
   }
 
   Future<void> addFriend(){

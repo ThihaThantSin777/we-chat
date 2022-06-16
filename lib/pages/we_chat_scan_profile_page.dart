@@ -34,18 +34,23 @@ class WeChatScanProfilePage extends StatelessWidget {
                         Container(
                             color: Colors.white,
                             child: (userVO.id!=null)?
-                            ScanProfileSuccessItemView(
-                              userVO: userVO,
-                              onCancel: (){
-                                navigatePushReplacement(context,const WeChatQRCodePage());
-                              },
-                              onAdd: (){
-                                weChatScanProfilePageBloc.addFriend().then((value) {
-                                  navigatePushReplacement(context,  WeChatHomePage(
-                                    pageIndex: WeChatPages.contactPage.index,
-                                  ));
-                                });
-                              },
+                            Selector<WeChatScanProfilePageBloc,bool>(
+                              selector: (context,bloc)=>bloc.isAlreadyFri,
+                              builder: (context,isAlreadyFri,child)=>
+                              ScanProfileSuccessItemView(
+                                isAlreadyFri: isAlreadyFri,
+                                userVO: userVO,
+                                onCancel: (){
+                                  navigatePushReplacement(context,const WeChatQRCodePage());
+                                },
+                                onAdd: (){
+                                  weChatScanProfilePageBloc.addFriend().then((value) {
+                                    navigatePushReplacement(context,  WeChatHomePage(
+                                      pageIndex: WeChatPages.contactPage.index,
+                                    ));
+                                  });
+                                },
+                              ),
                             ):ScanProfileUnSuccessItemView(
                                 onPressed: ()=> navigatePushReplacement(context,const WeChatQRCodePage())
                             )

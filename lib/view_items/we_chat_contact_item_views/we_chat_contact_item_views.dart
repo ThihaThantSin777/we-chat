@@ -17,6 +17,7 @@ class AtoZContactItemView extends StatelessWidget {
   final Function(String) onTap;
   @override
   Widget build(BuildContext context) {
+    String image=(userVO.profileImage?.isEmpty??true)?kDefaultImage:userVO.profileImage.toString();
     int count = int.parse(countFriends[userVO.userName?[0]].toString());
     String totalFriends = '$count ${(count <= 1) ? 'friend' : 'friends'}';
     return
@@ -60,7 +61,7 @@ class AtoZContactItemView extends StatelessWidget {
           onTap: ()=>onTap(userVO.userName??''),
           leading:  CircleAvatar(
             backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(userVO.profileImage??kDefaultImage)
+            backgroundImage: NetworkImage(image)
           ),
           title: Text(userVO.userName??''),
         ),

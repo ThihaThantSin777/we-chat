@@ -62,18 +62,21 @@ class ScanProfileSuccessItemView extends StatelessWidget {
     Key? key,
     required this.userVO,
     required this.onCancel,
-    required this.onAdd
+    required this.onAdd,
+    required this.isAlreadyFri
   }) : super(key: key);
   final UserVO ? userVO;
   final Function onCancel;
   final Function onAdd;
+  final bool isAlreadyFri;
   @override
   Widget build(BuildContext context) {
+    String image=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ScanProfileImageItemView(
-          imageURL: userVO?.profileImage??kDefaultImage,
+          imageURL: image,
         ),
         const SizedBox(
           height: kPadSpace10x,
@@ -84,12 +87,19 @@ class ScanProfileSuccessItemView extends StatelessWidget {
         const SizedBox(
           height: kPadSpace10x,
         ),
-        ScanProfileCancelOrAddItemView(
-          onAdd: ()=>onAdd(),
-          onCancel: (){
-           onCancel();
-          },
+        Visibility(
+          visible: !isAlreadyFri,
+          child: ScanProfileCancelOrAddItemView(
+            onAdd: ()=>onAdd(),
+            onCancel: (){
+             onCancel();
+            },
+          ),
         ),
+        Visibility(
+          visible: isAlreadyFri,
+          child: Text('${userVO?.userName} is already in your contact. '),
+        )
       ],
     );
   }
