@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
+import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_cloud_firestore_data_agent_impl.dart';
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
@@ -24,6 +25,25 @@ void main() async {
   WeChatAuthModel weChatAuthModel=WeChatAuthModelImpl();
   WeChatDataAgent weChatDataAgent=WeChatCloudFireStoreDataAgentImpl();
   WeChatRealTimeDataAgent weChatRealTimeDataAgent=WeChatRealTimeDataAgentImpl();
+  //weChatRealTimeDataAgent.test('CigwtF2npsaU8hbkTWTegO6zOyk2');
+ // weChatRealTimeDataAgent.test2().listen((event) {
+ //  event.forEach((id) {
+ //    String ids=id??'';
+ //     weChatRealTimeDataAgent.test(ids).then((value) {
+ //       // print(value);
+ //     List<ChattingUserVO> a=  value.where((element) => element.userID==ids).toList();
+ //     ChattingUserVO last=a.last;
+ //     print('ID =====> ${last.userID}');
+ //     print('Name =======> ${last.name}');
+ //     print('Photo =====> ${last.profilePic}');
+ //     print('Message =====> ${last.message}');
+ //     print('');
+ //     });
+ //
+ //  });
+ //
+ // });
+
 }
 
 class MyApp extends StatelessWidget {

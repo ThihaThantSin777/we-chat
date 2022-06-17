@@ -27,26 +27,23 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
 
   ///Model
  final WeChatRealTimeModel _weChatRealTimeDataAgent=WeChatRealTimeModelImpl();
-  final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
   WeChatChatHistoryPageBloc(){
-    List<ChattingUserVO>temp=[];
-    _weChatRealTimeDataAgent.chatHistoryIDList().listen((friID) {
-      if(friID.isNotEmpty){
-        for (var id in friID) {
-          _weChatAuthModel.getLoggedInUserInfoByID(id??'').then((userVO) {
-            _weChatRealTimeDataAgent.getAllChatByID(id??'').listen((event) {
-             if(event.isNotEmpty){
-               ChattingUserVO chattingUserVO=ChattingUserVO(userID: id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: event.last.message, file: event.last.file, timeStamp: event.last.timeStamp);
-               temp.add(chattingUserVO);
-               _chattingUserVOList=temp;
-               _notifySafely();
-             }
-            });
-          });
-        }
+
+    _weChatRealTimeDataAgent.getFriendsID().listen((event) {
+      List<ChattingUserVO>temp=[];
+      for (var id in event) {
+        String ids=id??'';
+        _weChatRealTimeDataAgent.getAllChattingList(ids).then((value) {
+          List<ChattingUserVO> a=  value.where((element) => element.userID==ids).toList();
+          ChattingUserVO last=a.last;
+         temp.add(last);
+          _chattingUserVOList=temp;
+          _notifySafely();
+        });
       }
 
     });
+
   }
   Future<void> remove(String friID) {
     _loading=true;
