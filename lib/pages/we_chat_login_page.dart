@@ -40,8 +40,7 @@ class WeChatLoginPage extends StatelessWidget {
               ),
               body: Padding(
                 padding: const EdgeInsets.all(kPadSpace40x),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: ListView(
                   children: [
                     const LoginTitleItemView(),
                     const SizedBox(

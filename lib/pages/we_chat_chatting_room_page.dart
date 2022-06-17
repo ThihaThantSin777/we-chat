@@ -67,13 +67,14 @@ class WeChatChattingRoomPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: kPadSpace10x),
                     itemCount: chatVOList.length,
                     itemBuilder: (context, index) => Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: (chatVOList[index].userID==loggedInUserID)
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
                       children: [
                         CircleAvatarProfileItemView(
                           isLeft: chatVOList[index].userID!=loggedInUserID,
-                          image: chatVOList[index].profilePic,
+                          image: (chatVOList[index].profilePic.isEmpty)?kDefaultImage:chatVOList[index].profilePic,
                         ),
                         const SizedBox(
                           width: kPadSpace10x,
@@ -81,6 +82,7 @@ class WeChatChattingRoomPage extends StatelessWidget {
                         ChattingItemView(
                           text: chatVOList[index].message,
                           isLeft: chatVOList[index].userID!=loggedInUserID,
+                          imageLink: chatVOList[index].file,
                         )
                       ],
                     ),
@@ -155,19 +157,24 @@ class WeChatChattingRoomPage extends StatelessWidget {
                               const Expanded(flex: 1, child: MicroPhoneItemView()),
                               Expanded(
                                 flex: 7,
-                                child: TextFieldItemView(
-                                  onSubmitted: (text){
-                                    weChatChattingPagesBloc.sendMessage();
-                                  },
-                                  onTap: () {
-                                    if (weChatChattingPagesBloc.isShowMoreWidget) {
-                                      weChatChattingPagesBloc.setIsShowMoreWidgetState();
-                                    }
-                                  },
-                                  onChange: (string) {
-                                    weChatChattingPagesBloc
-                                        .setIsShowMoreIconState(string);
-                                  },
+                                child: Selector<WeChatChattingPagesBloc,TextEditingController>(
+                                  selector: (context,bloc)=>bloc.getMessage,
+                                  builder: (context,textEditingController,child)=>
+                                   TextFieldItemView(
+                                     textEditingController: textEditingController,
+                                    onSubmitted: (text){
+                                      weChatChattingPagesBloc.sendMessage();
+                                    },
+                                    onTap: () {
+                                      if (weChatChattingPagesBloc.isShowMoreWidget) {
+                                        weChatChattingPagesBloc.setIsShowMoreWidgetState();
+                                      }
+                                    },
+                                    onChange: (string) {
+                                      weChatChattingPagesBloc
+                                          .setIsShowMoreIconState(string);
+                                    },
+                                  ),
                                 ),
                               ),
                               Expanded(

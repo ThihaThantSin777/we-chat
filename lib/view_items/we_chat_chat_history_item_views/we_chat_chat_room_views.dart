@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
+import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
+import 'package:wechat_app/widgets/wating_widget.dart';
 
 class ShowMoreIconItemView extends StatelessWidget {
   const ShowMoreIconItemView(
@@ -19,26 +22,35 @@ class ShowMoreIconItemView extends StatelessWidget {
         icon: AnimatedCrossFade(
           duration: kDurationIn500milliseconds,
           firstChild: const Icon(Icons.add),
-          secondChild:  const Icon(Icons.close),
-          crossFadeState:  (showMoreIcon == ShowMoreIconForm.add)?CrossFadeState.showFirst:CrossFadeState.showSecond,
+          secondChild: const Icon(Icons.close),
+          crossFadeState: (showMoreIcon == ShowMoreIconForm.add)
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
         ));
   }
 }
 
 class TextFieldItemView extends StatelessWidget {
   const TextFieldItemView(
-      {Key? key, required this.onChange, required this.onTap,required this.onSubmitted})
+      {Key? key,
+      required this.onChange,
+      required this.onTap,
+      required this.onSubmitted,
+      required this.textEditingController
+      })
       : super(key: key);
   final Function(String) onChange;
   final Function onTap;
   final Function(String) onSubmitted;
+  final TextEditingController textEditingController;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         child: TextField(
-         textInputAction: TextInputAction.send,
-          maxLines: null,
-      onSubmitted: (text)=>onSubmitted(text),
+          controller: textEditingController,
+      textInputAction: TextInputAction.send,
+      maxLines: null,
+      onSubmitted: (text) => onSubmitted(text),
       onTap: () => onTap(),
       onChanged: (string) => onChange(string),
       decoration: InputDecoration(
@@ -73,6 +85,7 @@ class ShowMoreItemView extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
   final Function(String) onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -101,37 +114,64 @@ class ShowMoreItemView extends StatelessWidget {
 }
 
 class ChattingItemView extends StatelessWidget {
-  const ChattingItemView({Key? key, required this.text, required this.isLeft})
+  const ChattingItemView(
+      {Key? key,
+      required this.text,
+      required this.isLeft,
+      required this.imageLink})
       : super(key: key);
   final String text;
   final bool isLeft;
+  final String imageLink;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minWidth: 50, maxWidth: 200),
-      padding: const EdgeInsets.symmetric(
-          horizontal: kPadSpace10x, vertical: kPadSpace10x),
-      alignment: (isLeft) ? Alignment.topLeft : Alignment.topRight,
-      decoration: BoxDecoration(
-          color: kBarColor, borderRadius: BorderRadius.circular(kPadSpace20x)),
-      child: Text(text),
+    int textLength=text.length;
+    return Column(
+      crossAxisAlignment:
+          (isLeft) ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(kPadSpace10x),
+          alignment: Alignment.center,
+          width: textLength<kPadSpace20x?kProfileImageWidthAndHeight:kMaterialButtonWidth,
+            height: textLength<kPadSpace20x?kPadSpace50x:null,
+            decoration: BoxDecoration(
+              color: kBarColor,
+              borderRadius: BorderRadius.circular(kPadSpace10x)
+            ),
+            child: Text(text)),
+        const SizedBox(
+          height: kPadSpace10x,
+        ),
+        Visibility(
+          visible: imageLink.isNotEmpty,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: kProfileImageWidthAndHeight,
+            child: Image.network(imageLink),
+          ),
+        )
+      ],
     );
   }
 }
 
 class CircleAvatarProfileItemView extends StatelessWidget {
-  const CircleAvatarProfileItemView({Key? key, required this.isLeft,required this.image})
+  const CircleAvatarProfileItemView(
+      {Key? key, required this.isLeft, required this.image})
       : super(key: key);
   final bool isLeft;
   final String image;
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
         visible: isLeft,
-        child:  CircleAvatar(
+        child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          backgroundImage: NetworkImage(
-              image),
+          backgroundImage: NetworkImage(image),
         ));
   }
 }
