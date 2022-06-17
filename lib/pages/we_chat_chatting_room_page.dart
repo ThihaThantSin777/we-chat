@@ -7,11 +7,14 @@ import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chatting_page_bloc.dart';
 import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
 import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
+import 'package:wechat_app/pages/we_chat_image_details_page.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
+import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/widgets/leading_widget.dart';
+import 'package:wechat_app/widgets/wating_widget.dart';
 
 import '../view_items/we_chat_chat_history_item_views/we_chat_chat_room_views.dart';
 
@@ -63,6 +66,9 @@ class WeChatChattingRoomPage extends StatelessWidget {
                   if(chatVOList.isEmpty){
                     return Container();
                   }
+                  if(chatVOList==null){
+                    return const WaitingWidget();
+                  }
                   return  ListView.separated(
                     padding: const EdgeInsets.only(top: kPadSpace10x),
                     itemCount: chatVOList.length,
@@ -80,6 +86,9 @@ class WeChatChattingRoomPage extends StatelessWidget {
                           width: kPadSpace10x,
                         ),
                         ChattingItemView(
+                          onImageDetailsPage: (imageLink){
+                              navigatePush(context, WeChatImageDetailsPage(imageLink: imageLink,));
+                          },
                           text: chatVOList[index].message,
                           isLeft: chatVOList[index].userID!=loggedInUserID,
                           imageLink: chatVOList[index].file,

@@ -118,11 +118,14 @@ class ChattingItemView extends StatelessWidget {
       {Key? key,
       required this.text,
       required this.isLeft,
-      required this.imageLink})
+      required this.imageLink,
+      required this.onImageDetailsPage
+      })
       : super(key: key);
   final String text;
   final bool isLeft;
   final String imageLink;
+  final Function(String) onImageDetailsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +153,16 @@ class ChattingItemView extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             height: kProfileImageWidthAndHeight,
-            child: Image.network(imageLink),
+            child:GestureDetector(
+              onTap: ()=>onImageDetailsPage(imageLink),
+              child: Hero(
+                tag: imageLink,
+                child: CachedNetworkImage(
+                  imageUrl: imageLink,
+                  placeholder: (context,string)=>const WaitingWidget(),
+                ),
+              ),
+            ),
           ),
         )
       ],
