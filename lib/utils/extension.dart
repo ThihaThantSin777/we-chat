@@ -20,14 +20,46 @@ extension Navigation on Widget {
           MaterialPageRoute(builder: (context) => nextScreen),
           (route) => false);
 
-  void showSnackBar(BuildContext context, String message) {
+  void showSnackBar(BuildContext context, String message,{Color color =kPrimaryLightColor}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         message,
         style: const TextStyle(color: Colors.white),
       ),
-      backgroundColor: kPrimaryLightColor,
+      backgroundColor: color,
     ));
+  }
+  Future<bool?> showMyDialog(BuildContext context,String text) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children:  <Widget>[
+                Text(text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -50,5 +82,14 @@ extension EncryptAndDecrypt on String {
       decrypt += String.fromCharCode(convert);
     }
     return decrypt;
+  }
+}
+
+
+extension EmailValidation on String {
+  bool isValidEmail() {
+    return RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(this);
   }
 }

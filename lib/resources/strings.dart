@@ -45,9 +45,8 @@ const kSettingText='Settings';
 
 
 ///Default
-const kDefaultImage='https://www.chanchao.com.tw/images/default.jpg';
+const kDefaultImage='https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg';
 const kDefaultVideoLink='https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
-
 
 ///LoginSignup Text
 const kSignupWithMobile='Sign Up With Mobile';

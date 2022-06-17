@@ -8,6 +8,7 @@ import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/view_items/we_chat_profile_item_views/we_chat_profile_item_view.dart';
 import 'package:wechat_app/widgets/loading_widget.dart';
+import 'package:wechat_app/widgets/wating_widget.dart';
 
 class WeChatProfilePage extends StatelessWidget {
   const WeChatProfilePage({Key? key}) : super(key: key);
@@ -28,13 +29,24 @@ class WeChatProfilePage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).viewPadding.top * 1.5),
-                              color: kPrimaryLightColor,
-                              child:  ProfileNameAndQrScanItemView(
-                                onTap: ()=>navigatePush(context, const WeChatQRCodePage()),
-                              ),
+                            child: Selector<WeChatProfilePageBloc,String>(
+                              selector: (context,bloc)=>bloc.getID,
+                              builder: (context,id,child)=>
+
+                            Selector<WeChatProfilePageBloc,String>(
+                              selector: (context,bloc)=>bloc.getName,
+                              builder: (context,name,child)=>
+                               Container(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).viewPadding.top * 1.5),
+                                  color: kPrimaryLightColor,
+                                  child:  ProfileNameAndQrScanItemView(
+                                    id: id,
+                                    name: name,
+                                    onTap: ()=>navigatePushRemoveUntil(context, const WeChatQRCodePage()),
+                                  ),
+                                ),
+                            ),
                             )),
                         Expanded(
                             flex: 3,
@@ -42,17 +54,27 @@ class WeChatProfilePage extends StatelessWidget {
                               color: kBarColor,
                               child: BioSettingIconLogoutItemView(
                                 onPressed: (){
-                                 weChatProfilePageBloc.logout().then((value) => navigatePushReplacement(context,const WeChatStartPage()));
+                                  showMyDialog(context, 'Are you sure want to logout').then((value) {
+                                    if(value??false){
+                                      weChatProfilePageBloc.logout().then((value) => navigatePushRemoveUntil(context,const WeChatStartPage()));
+                                    }
+                                  });
                                 },
                               ),
                             ))
                       ],
                     ),
                   ),
-                  Positioned(
+                  Selector<WeChatProfilePageBloc,String>(
+                  selector: (context,bloc)=>bloc.getProfilePicture,
+                  builder: (context,imageURL,child)=>
+                  (imageURL.isEmpty)?const WaitingWidget():  Positioned(
                     top: MediaQuery.of(context).viewPadding.top * 3.4,
                     left: MediaQuery.of(context).size.width * 0.33,
-                    child: const ProfileImageItemView(),
+                    child:  ProfileImageItemView(
+                      imageURL: imageURL,
+                    ),
+                  ),
                   ),
 
                 ],

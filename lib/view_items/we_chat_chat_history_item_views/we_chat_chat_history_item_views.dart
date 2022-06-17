@@ -58,8 +58,8 @@ class ProfileItemView extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageURL,
       imageBuilder: (context, imageProvider) => Container(
-        width: kProfileImageCircleShapeWidth,
-        height: kProfileImageCircleShapeHeight,
+        width: kPadSpace50x,
+        height: kPadSpace50x,
         margin: const EdgeInsets.only(left: kPadSpace10x),
         decoration: BoxDecoration(
           shape: BoxShape.circle,

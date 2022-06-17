@@ -42,14 +42,23 @@ class WeChatChatHistoryPage extends StatelessWidget {
                               endActionPane: ActionPane(
                                 motion: const DrawerMotion(),
                                 dismissible: DismissiblePane(onDismissed: () {
-                                  weChatHomePageBloc
-                                      .remove(userVOList[index].userID);
+                                  showMyDialog(context, 'Are you sure want to delete this conservation?').then((value) {
+                                    if(value??false){
+                                      weChatHomePageBloc
+                                          .remove(userVOList[index].userID);
+                                    }
+                                  });
+
                                 }),
                                 children: [
                                   SlidableAction(
                                     onPressed: (context) {
-                                      weChatHomePageBloc
-                                          .remove(userVOList[index].userID);
+                                      showMyDialog(context, 'Are you sure want to delete this conservation?').then((value) {
+                                        if(value??false){
+                                          weChatHomePageBloc
+                                              .remove(userVOList[index].userID);
+                                        }
+                                      });
                                     },
                                     foregroundColor: Colors.red,
                                     icon: Icons.cancel_rounded,

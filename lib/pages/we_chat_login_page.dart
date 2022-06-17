@@ -122,8 +122,8 @@ class WeChatLoginPage extends StatelessWidget {
                         onPressed: () {
                           WeChatLoginPageBloc weChatLoginBloc=context.read<WeChatLoginPageBloc>();
                           weChatLoginBloc.login().then((value) {
-                            navigatePushReplacement(context, const WeChatHomePage());
-                          }).catchError((error)=>showSnackBar(context,error.toString()));
+                            navigatePushRemoveUntil(context, const WeChatHomePage());
+                          }).catchError((error)=>showSnackBar(context,error.toString(),color: Colors.red));
                         },
                         color: kButtonColor,
                         textColor: Colors.white,

@@ -380,12 +380,13 @@ class BackgroundImageItemView extends StatelessWidget {
 class SmallProfileImageItemView extends StatelessWidget {
   const SmallProfileImageItemView({
     Key? key,
+    required this.image
   }) : super(key: key);
-
+  final String image;
   @override
   Widget build(BuildContext context) {
     return  CachedNetworkImage(
-      imageUrl: 'https://static.wikia.nocookie.net/naruto/images/d/de/Boruto_Infobox.png',
+      imageUrl: image,
       imageBuilder: (context, imageProvider) => Container(
         width: kProfileImageCircleShapeWidth,
         height: kProfileImageCircleShapeWidth,

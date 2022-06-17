@@ -6,6 +6,8 @@ import 'package:wechat_app/pages/we-chat_profile_page.dart';
 import 'package:wechat_app/pages/we_chat_chat_history_page.dart';
 import 'package:wechat_app/pages/we_chat_contact_page.dart';
 import 'package:wechat_app/pages/we_chat_discover_page.dart';
+import 'package:wechat_app/pages/we_chat_qr_code_page.dart';
+import 'package:wechat_app/utils/enums.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
@@ -28,7 +30,7 @@ class WeChatHomePage extends StatelessWidget {
               resizeToAvoidBottomInset: false,
               appBar: (pageIndex == kProfilePageIndex)
                   ? null
-                  : _buildAppBar(pageIndex),
+                  : _buildAppBar(pageIndex,context),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: pageIndex,
                 onTap: (pageIndex) =>
@@ -74,18 +76,26 @@ class WeChatHomePage extends StatelessWidget {
     }
   }
 
-  AppBar _buildAppBar(int pageIndex) {
+  AppBar _buildAppBar(int pageIndex,context) {
     switch (pageIndex) {
       case kChatHistoryPageIndex:
         return AppBar(
           title: const Text(kWeChatAppName),
-          actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.add))],
+          actions: [IconButton(onPressed: () {
+            navigatePush(context,  WeChatHomePage(
+              pageIndex: WeChatPages.contactPage.index,
+            ));
+          }, icon: const Icon(Icons.add))],
         );
       default:
         return AppBar(
           title: const Text(kContactTitle),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.person_add))
+            IconButton(onPressed: () {
+              navigatePushRemoveUntil(context,  WeChatQRCodePage(
+                previousPageIndex: WeChatPages.contactPage.index,
+              ));
+            }, icon: const Icon(Icons.person_add))
           ],
         );
     }

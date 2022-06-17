@@ -101,7 +101,7 @@ class WeChatRegisterPageBloc extends ChangeNotifier {
       }
       _notifySafely();
 
-      if(isSelect && _userName.isNotEmpty && _phone.isNotEmpty && _password.isNotEmpty){
+      if(isSelect && _userName.isNotEmpty && _phone.isNotEmpty && _password.isNotEmpty &&_password.length>=8){
         return Future.value(true);
       }
       return Future.value(false);

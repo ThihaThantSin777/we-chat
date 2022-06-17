@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/bloc/we_chat_add_post_page_bloc.dart';
-import 'package:wechat_app/bloc/we_chat_discover_page_bloc.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/view_items/we_chat_discover_item_views/we_chat_add_post_item_views.dart';

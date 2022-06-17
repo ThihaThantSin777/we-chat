@@ -68,10 +68,17 @@ class WeChatDiscoverPage extends StatelessWidget {
                               top: MediaQuery.of(context).size.width * 0.55,
                               right: MediaQuery.of(context).viewPadding.right,
                               child: const ProfileNameItemView()),
-                          Positioned(
-                            top: MediaQuery.of(context).size.width * 0.5,
-                            left: MediaQuery.of(context).size.width * 0.23,
-                            child: const SmallProfileImageItemView(),
+                          Selector<WeChatDiscoverPageBloc,String>(
+                            selector: (context ,bloc ) =>bloc.getProfileImage,
+                            builder: ( context, image,  child) =>
+                            (image.isEmpty)?const WaitingWidget():    Positioned(
+                              top: MediaQuery.of(context).size.width * 0.5,
+                              left: MediaQuery.of(context).size.width * 0.23,
+                              child:  SmallProfileImageItemView(
+                                image: image,
+                              ),
+                            ),
+
                           )
                         ],
                       ),
@@ -185,7 +192,11 @@ class WeChatDiscoverPage extends StatelessWidget {
                                                   ));
                                                 },
                                                 onDelete: () {
-                                                  postDelete(context.read<WeChatDiscoverPageBloc>(), momentLisVO?[index].id??-1, context);
+                                                showMyDialog(context, 'Are you sure want to delete this moment?').then((value) {
+                                                  if(value??false){
+                                                    postDelete(context.read<WeChatDiscoverPageBloc>(), momentLisVO?[index].id??-1, context);
+                                                  }
+                                                });
                                                 },
                                                 isFavorite: momentLisVO?[index]
                                                         .isLiked ??

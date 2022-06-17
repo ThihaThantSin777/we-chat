@@ -57,52 +57,61 @@ class WeChatChattingRoomPage extends StatelessWidget {
         ),
         body: Stack(
             children: [
-              Selector<WeChatChattingPagesBloc,List<ChattingUserVO>>(
-                selector: (context,bloc)=>bloc.getChattingUserVO,
-                builder: (context,chatVOList,child){
-                  WeChatChattingPagesBloc weChatChattingPagesBloc=context.read<WeChatChattingPagesBloc>();
-                  String loggedInUserID=weChatChattingPagesBloc.getLoggedInUserID;
-                  if(chatVOList.isEmpty){
-                    return Container();
-                  }
-                  if(chatVOList==null){
-                    return const WaitingWidget();
-                  }
-                  return  ListView.separated(
-                    padding: const EdgeInsets.only(top: kPadSpace10x),
-                    itemCount: chatVOList.length,
-                    itemBuilder: (context, index) => Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: (chatVOList[index].userID==loggedInUserID)
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      children: [
-                        CircleAvatarProfileItemView(
-                          isLeft: chatVOList[index].userID!=loggedInUserID,
-                          image: (chatVOList[index].profilePic.isEmpty)?kDefaultImage:chatVOList[index].profilePic,
+              ListView(
+                children: [
+                  Selector<WeChatChattingPagesBloc,List<ChattingUserVO>>(
+                    selector: (context,bloc)=>bloc.getChattingUserVO,
+                    builder: (context,chatVOList,child){
+                      WeChatChattingPagesBloc weChatChattingPagesBloc=context.read<WeChatChattingPagesBloc>();
+                      String loggedInUserID=weChatChattingPagesBloc.getLoggedInUserID;
+                      if(chatVOList.isEmpty){
+                        return Container();
+                      }
+                      if(chatVOList==null){
+                        return const WaitingWidget();
+                      }
+                      return  ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(top: kPadSpace10x),
+                        itemCount: chatVOList.length,
+                        itemBuilder: (context, index) => Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: (chatVOList[index].userID==loggedInUserID)
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
+                            CircleAvatarProfileItemView(
+                              isLeft: chatVOList[index].userID!=loggedInUserID,
+                              image: (chatVOList[index].profilePic.isEmpty)?kDefaultImage:chatVOList[index].profilePic,
+                            ),
+                            const SizedBox(
+                              width: kPadSpace10x,
+                            ),
+                            ChattingItemView(
+                              onImageDetailsPage: (imageLink){
+                                  navigatePush(context, WeChatImageDetailsPage(imageLink: imageLink,));
+                              },
+                              text: chatVOList[index].message,
+                              isLeft: chatVOList[index].userID!=loggedInUserID,
+                              imageLink: chatVOList[index].file,
+                            )
+                          ],
                         ),
+                        separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(
-                          width: kPadSpace10x,
+                          height: kPadSpace20x,
                         ),
-                        ChattingItemView(
-                          onImageDetailsPage: (imageLink){
-                              navigatePush(context, WeChatImageDetailsPage(imageLink: imageLink,));
-                          },
-                          text: chatVOList[index].message,
-                          isLeft: chatVOList[index].userID!=loggedInUserID,
-                          imageLink: chatVOList[index].file,
-                        )
-                      ],
-                    ),
-                    separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                      height: kPadSpace20x,
-                    ),
-                  );
+                      );
 
-                }
+                    }
 
 
+                  ),
+                  const SizedBox(
+                    height: kPadSpace90x,
+                  ),
+                ],
               ),
               Align(
                 alignment: Alignment.bottomCenter,

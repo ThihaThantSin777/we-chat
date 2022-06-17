@@ -42,7 +42,7 @@ class WeChatScanProfilePage extends StatelessWidget {
                                 isAlreadyFri: isAlreadyFri,
                                 userVO: userVO,
                                 onCancel: (){
-                                  navigatePushReplacement(context,const WeChatQRCodePage());
+                                  navigatePushRemoveUntil(context,const WeChatQRCodePage());
                                 },
                                 onAdd: (){
                                   weChatScanProfilePageBloc.addFriend().then((value) {

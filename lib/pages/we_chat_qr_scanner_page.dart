@@ -35,7 +35,7 @@ class WeChatQrScannerPage extends StatelessWidget {
                     weChatQRScannerPageBloc.setQRViewController =
                         qrCodeController;
                     qrCodeController.scannedDataStream.listen((event) {
-                      navigatePushReplacement(context,
+                      navigatePushRemoveUntil(context,
                           WeChatScanProfilePage(id: event.code??''));
                       //   navigatePush(context, WeChatQRCodePage(id: event.code.toString(),));
                     });

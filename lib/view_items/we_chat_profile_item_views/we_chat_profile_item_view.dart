@@ -6,10 +6,13 @@ import 'package:wechat_app/resources/dimension.dart';
 class ProfileNameAndQrScanItemView extends StatelessWidget {
   const ProfileNameAndQrScanItemView({
     Key? key,
-    required this.onTap
+    required this.onTap,
+    required this.id,
+    required this.name
   }) : super(key: key);
   final Function onTap;
-
+  final String name;
+  final String id;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,7 +22,10 @@ class ProfileNameAndQrScanItemView extends StatelessWidget {
         const SizedBox(),
         Container(
           padding: const EdgeInsets.only(left: kPadSpace45x),
-          child: const ProfileNameView(),
+          child:  ProfileNameView(
+            id: id,
+            name: name,
+          ),
         ),
          QRCodeScanIconView(
            onTap: ()=>onTap(),
@@ -53,22 +59,25 @@ class QRCodeScanIconView extends StatelessWidget {
 class ProfileNameView extends StatelessWidget {
   const ProfileNameView({
     Key? key,
+    required this.name,
+    required this.id
   }) : super(key: key);
-
+  final String name;
+  final String id;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: const[
-        Text('Thiha Thant Sin',style: TextStyle(
+      children: [
+        Text(name,style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
             fontSize: kFontSize19x
         ),),
-        SizedBox(
+        const SizedBox(
           height: kPadSpace5x,
         ),
-        Text('thiha277#45',style: TextStyle(
+        Text(id,style: const TextStyle(
             color: Colors.white70
         ),)
       ],
@@ -208,17 +217,18 @@ class BioView extends StatelessWidget {
 class ProfileImageItemView extends StatelessWidget {
   const ProfileImageItemView({
     Key? key,
+    required this.imageURL
   }) : super(key: key);
-
+  final String imageURL;
   @override
   Widget build(BuildContext context) {
-    return const CircleAvatar(
+    return  CircleAvatar(
       radius: kFirstBodyCircleRadius,
       backgroundColor: Colors.white,
       child: CircleAvatar(
         backgroundColor: Colors.white,
         radius: kSecondBodyCircleRadius,
-        backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+        backgroundImage: NetworkImage(imageURL),
       ),
     );
   }

@@ -1,6 +1,3 @@
-
-
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
@@ -47,7 +44,7 @@ class WeChatLoginPageBloc extends ChangeNotifier{
 String _validateForEmail(String text){
    if(text.isEmpty){
     return 'Error: Please enter email';
-   }else if(!EmailValidator.validate(text)){
+   }else if(!text.isValidEmail()){
      return 'Error: Wrong email format';
    }
    return '';
@@ -61,8 +58,9 @@ String _validateForEmail(String text){
   }
   Future login(){
     if(_email.isEmpty || _password.isEmpty){
-      validate('text', kAccountText);
-      validate('text', kPasswordText);
+      validate('', kAccountText);
+      validate('', kPasswordText);
+      
     }
     if(_email.isNotEmpty && _password.isNotEmpty){
       _loading=true;

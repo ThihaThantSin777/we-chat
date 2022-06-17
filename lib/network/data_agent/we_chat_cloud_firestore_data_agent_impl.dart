@@ -12,7 +12,7 @@ const fileUploadPath = 'uploads';
 const userCollection = 'users';
 const contactCollection = 'contact';
 
-class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
+class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
   WeChatCloudFireStoreDataAgentImpl._internal();
   static final WeChatCloudFireStoreDataAgentImpl _singleton=WeChatCloudFireStoreDataAgentImpl._internal();
 
@@ -53,7 +53,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent {
       .where((documentSnapShot) => documentSnapShot != null)
       .map((documentSnapShot) => MomentVO.fromJson(documentSnapShot.data()!));
 
-  @override
+   @override
   Future<String> uploadFileToFirebase(File image) {
     return _firebaseStorage
         .ref(fileUploadPath)

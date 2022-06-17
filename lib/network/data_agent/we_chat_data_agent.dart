@@ -9,7 +9,7 @@ abstract class WeChatDataAgent {
   Future<void> addNewPost(MomentVO momentVO);
   Future<void> delete(int postID);
   Stream<MomentVO> getMomentByID(int newsFeedID);
-  Future<String> uploadFileToFirebase(File image);
+   Future<String> uploadFileToFirebase(File image);
 
 
   ///Auth
@@ -21,5 +21,5 @@ abstract class WeChatDataAgent {
   Future<UserVO?> getLoggedInUserInfoByID(String id);
   Stream<List<UserVO>> getContactList();
   Future<void>addContact(String friendID,UserVO friendUserVO);
-  // Future<List<UserVO>?>
+
 }

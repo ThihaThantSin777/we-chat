@@ -105,8 +105,8 @@ class WeChatEmailPage extends StatelessWidget {
                                           weChatEmailPageBloc.setErrorEmailText(email);
                                           if (errorText.isEmpty) {
                                            weChatEmailPageBloc.registerNewUser().then((value) {
-                                             navigatePush(context, const WeChatHomePage());
-                                           }).catchError((error)=> debugPrint(error));
+                                             navigatePushRemoveUntil(context, const WeChatHomePage());
+                                           }).catchError((error)=> showSnackBar(context, error.toString(),color: Colors.red));
                                           }
                                         },
                                         color: kUploadImageBottomSheetColor,
