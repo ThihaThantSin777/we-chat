@@ -60,28 +60,33 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
 
 
   void sendMessage(){
-    if(_message.text.isNotEmpty){
+    String tempMessage=_message.text;
+    String tempFilePath=_file?.path??'';
+    _file=null;
+    _message.clear();
+
+    if(tempMessage.isNotEmpty){
 
     String id=_weChatAuthModel.getLoggedInUserID();
     _weChatAuthModel.getLoggedInUserInfoByID(id).then((userVO) {
-      if(_file!=null) {
-        _weChatAuthModel.uploadFileToFirebase(File(_file?.path ?? '')).then((
+      if(tempFilePath.isNotEmpty) {
+        _weChatAuthModel.uploadFileToFirebase(File(tempFilePath)).then((
             imageURL) {
-          ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL);
+          ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL,tempMessage);
           _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
-          _file=null;
         });
       }else{
-        ChattingUserVO chattingUserVO = _getChattingVO(userVO, '');
+        ChattingUserVO chattingUserVO = _getChattingVO(userVO, '',tempMessage);
         _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       }
-    });
 
+    });
+    _notifySafely();
     }
   }
 
-  ChattingUserVO _getChattingVO(UserVO? userVO,String imageURL){
-    return ChattingUserVO(userID: userVO?.id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: _message.text, file: imageURL, timeStamp: DateTime.now());
+  ChattingUserVO _getChattingVO(UserVO? userVO,String imageURL,String message){
+    return ChattingUserVO(userID: userVO?.id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: message, file: imageURL, timeStamp: DateTime.now());
   }
 
   void setIsShowMoreIconState(String text) {
