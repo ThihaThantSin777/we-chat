@@ -30,7 +30,6 @@ class ChattingUserVO {
       required this.message,
       required this.file,
       required this.timeStamp});
-
   @override
   String toString() {
     return 'ChattingUserVO{userID: $userID, name: $name, profilePic: $profilePic, message: $message, file: $file, timeStamp: $timeStamp}';

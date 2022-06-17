@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chatting_page_bloc.dart';
 import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_vo.dart';
 import 'package:wechat_app/pages/we_chat_image_details_page.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';

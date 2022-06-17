@@ -58,5 +58,33 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
       }).toList();
     });
   }
-  
+
+  @override
+  Stream<List<String?>> chatHistoryIDList() {
+    String loggedInUserID = auth.currentUser?.uid ?? '';
+   return  databaseRef
+        .child(contactsAndMessages)
+        .child(loggedInUserID)
+        .onValue
+        .map((event){
+      return event.snapshot.children.map((snapshot){
+        return snapshot.key;
+      }).toList();
+    });
+
+  }
+
+  @override
+  Stream<List<ChattingUserVO>> getAllChatByID(String id) {
+    String loggedInUserID = auth.currentUser?.uid ?? '';
+    return databaseRef
+        .child(contactsAndMessages)
+        .child(loggedInUserID)
+        .child(id)
+        .onValue.map((event){
+      return event.snapshot.children.map<ChattingUserVO>((snapshot){
+        return ChattingUserVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
+      }).toList();
+    });
+  }
 }

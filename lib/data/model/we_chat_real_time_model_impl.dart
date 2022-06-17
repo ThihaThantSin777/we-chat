@@ -16,4 +16,10 @@ class WeChatRealTimeModelImpl extends WeChatRealTimeModel{
   @override
   Stream<List<ChattingUserVO>> getChatList(String friID) =>_weChatRealTimeDataAgent.getChatList(friID);
 
+  @override
+  Stream<List<String?>> chatHistoryIDList() =>_weChatRealTimeDataAgent.chatHistoryIDList();
+
+  @override
+  Stream<List<ChattingUserVO>> getAllChatByID(String id) =>_weChatRealTimeDataAgent.getAllChatByID(id);
+
 }
