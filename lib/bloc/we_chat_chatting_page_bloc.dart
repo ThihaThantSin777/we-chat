@@ -18,7 +18,7 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
   bool _showMoreWidget = false;
   bool _isDisposed = false;
   File? _file;
-  TextEditingController _message=TextEditingController();
+  final TextEditingController _message=TextEditingController();
   String _friendID='';
   String _loggedInUserID='';
   List<ChattingUserVO>_chattingUserVo=[];
@@ -89,6 +89,7 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
       _showMoreIcon = ShowMoreIconForm.add;
     }
     _message.text=text;
+    _message.selection = TextSelection.fromPosition(TextPosition(offset: _message.text.length));
     _notifySafely();
   }
 
