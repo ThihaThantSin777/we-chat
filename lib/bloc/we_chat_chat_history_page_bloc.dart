@@ -31,21 +31,34 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
 
     _weChatRealTimeDataAgent.getFriendsID().listen((event) {
       List<ChattingUserVO>temp=[];
-      for (var id in event) {
-        String ids=id??'';
-        _weChatRealTimeDataAgent.getAllChattingList(ids).then((value) {
-          List<ChattingUserVO> a=  value.where((element) => element.userID==ids).toList();
-          ChattingUserVO last=a.last;
-         temp.add(last);
-          _chattingUserVOList=temp;
-          _notifySafely();
-        });
+      if(event.isEmpty){
+       _chattingUserVOList=[];
+       _notifySafely();
+      }else{
+        for (var id in event) {
+          String ids=id??'';
+          _weChatRealTimeDataAgent.getAllChattingList(ids).then((value) {
+            if(value.isNotEmpty){
+              ChattingUserVO lastData=value.last;
+              List<ChattingUserVO> noLoggedInUserVo=  value.where((element) => element.userID==ids).toList();
+              if(noLoggedInUserVo.isNotEmpty){
+                ChattingUserVO noLoggedInUserVoLastData=noLoggedInUserVo.last;
+                noLoggedInUserVoLastData.message=(lastData.message.isEmpty && lastData.file.isNotEmpty)?'Photo':lastData.message;
+                temp.add(noLoggedInUserVoLastData);
+                _chattingUserVOList=temp;
+                _notifySafely();
+              }
+            }
+          });
+        }
       }
+
 
     });
 
   }
   Future<void> remove(String friID) {
+    print('remove $friID');
     _loading=true;
     _notifySafely();
     return _weChatRealTimeDataAgent.deleteChat(friID).then((value) {

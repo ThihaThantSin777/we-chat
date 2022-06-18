@@ -38,6 +38,7 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
   @override
   Future<void> deleteChat(String friID) {
     String loggedInUserID=auth.currentUser?.uid??'';
+    print('logged in id $loggedInUserID');
     databaseRef.child(contactsAndMessages).child(friID).child(loggedInUserID).remove();
     return databaseRef.child(contactsAndMessages).child(loggedInUserID).child(friID).remove();
   }
@@ -56,37 +57,7 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
     });
   }
 
-  @override
-  Stream<List<String?>> chatHistoryIDList() {
-    String loggedInUserID = auth.currentUser?.uid ?? '';
-   return  databaseRef
-        .child(contactsAndMessages)
-        .child(loggedInUserID)
-        .onValue
-        .map((event){
-      return event.snapshot.children.map((snapshot){
-        return snapshot.key;
-      }).toList();
-    });
 
-  }
-
-  @override
-  Stream<List<ChattingUserVO>> getAllChatByID(String id) {
-    String loggedInUserID = auth.currentUser?.uid ?? '';
-
-
-     return    databaseRef
-         .child(contactsAndMessages)
-         .child(loggedInUserID)
-         .child(id)
-         .onValue.map((event){
-       return event.snapshot.children.map<ChattingUserVO>((snapshot){
-         return ChattingUserVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
-       }).toList();
-     });
-
-  }
 
   @override
   Future<List<ChattingUserVO>> getAllChattingList(String friID) {
