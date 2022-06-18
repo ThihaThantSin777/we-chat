@@ -47,13 +47,13 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
                 lastData.profilePic=userVO?.profileImage??'';
                 String subMessage=lastData.message;
                 if(lastData.message.isEmpty && lastData.file.isNotEmpty){
-                  subMessage='Photo';
+                  subMessage='${lastData.name} is sent a photo';
                 }
                 if(lastData.message.isEmpty && lastData.videoFile.isNotEmpty){
-                  subMessage='Video';
+                  subMessage='${lastData.name} is sent a video';
                 }
                 if(lastData.message.isEmpty && lastData.file.isNotEmpty && lastData.videoFile.isNotEmpty){
-                  subMessage='Photo and Video';
+                  subMessage='${lastData.name} is sent a photo and a video';
                 }
                 lastData.message=subMessage;
                   temp.add(lastData);
