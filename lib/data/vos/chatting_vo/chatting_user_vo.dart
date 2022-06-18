@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'chatting_user_vo.g.dart';
@@ -20,6 +19,9 @@ class ChattingUserVO {
   @JsonKey(name: 'file')
   String file;
 
+  @JsonKey(name: 'video_file')
+  String videoFile;
+
   @JsonKey(name: 'time_stamp')
   DateTime timeStamp;
 
@@ -29,11 +31,15 @@ class ChattingUserVO {
       required this.profilePic,
       required this.message,
       required this.file,
+      required this.videoFile,
       required this.timeStamp});
+
+
   @override
   String toString() {
-    return 'ChattingUserVO{userID: $userID, name: $name, profilePic: $profilePic, message: $message, file: $file, timeStamp: $timeStamp}';
+    return 'ChattingUserVO{userID: $userID, name: $name, profilePic: $profilePic, message: $message, file: $file, videoFile: $videoFile, timeStamp: $timeStamp}';
   }
+
 
   @override
   bool operator ==(Object other) =>
@@ -45,6 +51,7 @@ class ChattingUserVO {
           profilePic == other.profilePic &&
           message == other.message &&
           file == other.file &&
+          videoFile == other.videoFile &&
           timeStamp == other.timeStamp;
 
   @override
@@ -54,10 +61,11 @@ class ChattingUserVO {
       profilePic.hashCode ^
       message.hashCode ^
       file.hashCode ^
+      videoFile.hashCode ^
       timeStamp.hashCode;
 
+  factory ChattingUserVO.fromJson(Map<String, dynamic> json) =>
+      _$ChattingUserVOFromJson(json);
 
-  factory ChattingUserVO.fromJson(Map<String,dynamic>json)=>_$ChattingUserVOFromJson(json);
-
-  Map<String,dynamic>toJson()=>_$ChattingUserVOToJson(this);
+  Map<String, dynamic> toJson() => _$ChattingUserVOToJson(this);
 }

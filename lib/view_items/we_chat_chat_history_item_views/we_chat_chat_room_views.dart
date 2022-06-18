@@ -36,18 +36,18 @@ class TextFieldItemView extends StatelessWidget {
       required this.onChange,
       required this.onTap,
       required this.onSubmitted,
-      required this.textEditingController
-      })
+      required this.textEditingController})
       : super(key: key);
   final Function(String) onChange;
   final Function onTap;
   final Function(String) onSubmitted;
   final TextEditingController textEditingController;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         child: TextField(
-          controller: textEditingController,
+      controller: textEditingController,
       textInputAction: TextInputAction.send,
       maxLines: null,
       onSubmitted: (text) => onSubmitted(text),
@@ -119,8 +119,7 @@ class ChattingItemView extends StatelessWidget {
       required this.text,
       required this.isLeft,
       required this.imageLink,
-      required this.onImageDetailsPage
-      })
+      required this.onImageDetailsPage})
       : super(key: key);
   final String text;
   final bool isLeft;
@@ -129,21 +128,22 @@ class ChattingItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int textLength=text.length;
+    int textLength = text.length;
     return Column(
       crossAxisAlignment:
           (isLeft) ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          padding: const EdgeInsets.all(kPadSpace10x),
-          alignment: Alignment.center,
-          width: textLength<kPadSpace20x?kProfileImageWidthAndHeight:kMaterialButtonWidth,
-            height: textLength<kPadSpace20x?kPadSpace50x:null,
+            padding: const EdgeInsets.all(kPadSpace10x),
+            alignment: Alignment.center,
+            width: textLength < kPadSpace20x
+                ? kProfileImageWidthAndHeight
+                : kMaterialButtonWidth,
+            height: textLength < kPadSpace20x ? kPadSpace50x : null,
             decoration: BoxDecoration(
-              color: kBarColor,
-              borderRadius: BorderRadius.circular(kPadSpace10x)
-            ),
+                color: kBarColor,
+                borderRadius: BorderRadius.circular(kPadSpace10x)),
             child: Text(text)),
         const SizedBox(
           height: kPadSpace10x,
@@ -153,13 +153,21 @@ class ChattingItemView extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             height: kProfileImageWidthAndHeight,
-            child:GestureDetector(
-              onTap: ()=>onImageDetailsPage(imageLink),
+            child: GestureDetector(
+              onTap: () => onImageDetailsPage(imageLink),
               child: Hero(
                 tag: imageLink,
                 child: CachedNetworkImage(
                   imageUrl: imageLink,
-                  placeholder: (context,string)=>const WaitingWidget(),
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: kPadSpace50x,
+                    height: kPadSpace50x,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(kPadSpace10x),
+                      image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                    ),
+                  ),
+                  placeholder: (context, string) => const WaitingWidget(),
                 ),
               ),
             ),
