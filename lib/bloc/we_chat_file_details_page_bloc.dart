@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-class WeChatImageDetailsPageBloc extends ChangeNotifier {
+class WeChatFileDetailsPageBloc extends ChangeNotifier {
 ///State Variable
   bool _isDisposed=false;
-  String _imageLink='';
+  String _fileLink='';
 
 
   ///Getter
-  String get getImageLink=>_imageLink;
+  String get getImageLink=>_fileLink;
 
-  WeChatImageDetailsPageBloc(String imageLink){
-    _imageLink=imageLink;
+  WeChatFileDetailsPageBloc(String fileLink){
+    _fileLink=fileLink;
     _notifySafely();
   }
 

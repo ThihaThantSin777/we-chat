@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
-import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
+import 'package:wechat_app/widgets/flick_manager_video.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 
 class ShowMoreIconItemView extends StatelessWidget {
@@ -119,12 +119,14 @@ class ChattingItemView extends StatelessWidget {
       required this.text,
       required this.isLeft,
       required this.imageLink,
+      required this.videoLink,
       required this.onImageDetailsPage})
       : super(key: key);
   final String text;
   final bool isLeft;
   final String imageLink;
-  final Function(String) onImageDetailsPage;
+  final String videoLink;
+  final Function(String,bool) onImageDetailsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -134,27 +136,95 @@ class ChattingItemView extends StatelessWidget {
           (isLeft) ? CrossAxisAlignment.start : CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-            padding: const EdgeInsets.all(kPadSpace10x),
-            alignment: Alignment.center,
-            width: textLength < kPadSpace20x
-                ? kProfileImageWidthAndHeight
-                : kMaterialButtonWidth,
-            height: textLength < kPadSpace20x ? kPadSpace50x : null,
-            decoration: BoxDecoration(
-                color: kBarColor,
-                borderRadius: BorderRadius.circular(kPadSpace10x)),
-            child: Text(text)),
-        const SizedBox(
-          height: kPadSpace10x,
-        ),
-        Visibility(
-          visible: imageLink.isNotEmpty,
-          child: SizedBox(
+        if (imageLink.isNotEmpty && text.isNotEmpty) ...[
+          Container(
+              padding: const EdgeInsets.all(kPadSpace10x),
+              decoration: BoxDecoration(
+                  color: kBarColor,
+                  borderRadius: BorderRadius.circular(kPadSpace10x)),
+              child: Column(
+                crossAxisAlignment: (isLeft)
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(text),
+                  const SizedBox(
+                    height: kPadSpace5x,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: kProfileImageWidthAndHeight,
+                    child: GestureDetector(
+                      onTap: () => onImageDetailsPage(imageLink,true),
+                      child: Hero(
+                        tag: imageLink,
+                        child: CachedNetworkImage(
+                          imageUrl: imageLink,
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: kPadSpace50x,
+                            height: kPadSpace50x,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(kPadSpace10x),
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          placeholder: (context, string) =>
+                              const WaitingWidget(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        ] else if (videoLink.isNotEmpty && text.isNotEmpty) ...[
+          Container(
+              padding: const EdgeInsets.all(kPadSpace10x),
+              decoration: BoxDecoration(
+                  color: kBarColor,
+                  borderRadius: BorderRadius.circular(kPadSpace10x)),
+              child: Column(
+                crossAxisAlignment: (isLeft)
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(text),
+                  const SizedBox(
+                    height: kPadSpace5x,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: GestureDetector(
+                      onTap: () => onImageDetailsPage(imageLink,false),
+                      child: Hero(
+                          tag: videoLink,
+                          child: FlickManagerVideoWidget(
+                            url: videoLink,
+                            filePath: '',
+                          )),
+                    ),
+                  ),
+                ],
+              )),
+        ] else if (text.isNotEmpty) ...[
+          Container(
+              padding: const EdgeInsets.all(kPadSpace10x),
+              alignment:
+                  (isLeft) ? Alignment.centerLeft : Alignment.centerRight,
+              width: textLength < kPadSpace40x ? null : kMaterialButtonWidth,
+              height: null,
+              decoration: BoxDecoration(
+                  color: kBarColor,
+                  borderRadius: BorderRadius.circular(kPadSpace10x)),
+              child: Text(text)),
+        ] else if (imageLink.isNotEmpty) ...[
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             height: kProfileImageWidthAndHeight,
             child: GestureDetector(
-              onTap: () => onImageDetailsPage(imageLink),
+              onTap: () => onImageDetailsPage(imageLink,true),
               child: Hero(
                 tag: imageLink,
                 child: CachedNetworkImage(
@@ -164,7 +234,8 @@ class ChattingItemView extends StatelessWidget {
                     height: kPadSpace50x,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(kPadSpace10x),
-                      image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.cover),
                     ),
                   ),
                   placeholder: (context, string) => const WaitingWidget(),
@@ -172,7 +243,23 @@ class ChattingItemView extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ] else if (videoLink.isNotEmpty) ...[
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: GestureDetector(
+              onTap: () => onImageDetailsPage(imageLink,false),
+              child: Hero(
+                  tag: videoLink,
+                  child: FlickManagerVideoWidget(
+                    url: videoLink,
+                    filePath: '',
+                  )),
+            ),
+          ),
+        ],
+        const SizedBox(
+          height: kPadSpace5x,
+        ),
       ],
     );
   }

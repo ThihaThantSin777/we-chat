@@ -61,6 +61,33 @@ extension Navigation on Widget {
       },
     );
   }
+
+  Future<void> showMyWarningDialog(BuildContext context,String text) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Warning'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children:  <Widget>[
+                Text(text),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 extension EncryptAndDecrypt on String {
