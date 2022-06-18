@@ -65,8 +65,7 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
     _file=null;
     _message.clear();
 
-    if(tempMessage.isNotEmpty){
-
+    if(tempMessage.isNotEmpty ){
     String id=_weChatAuthModel.getLoggedInUserID();
     _weChatAuthModel.getLoggedInUserInfoByID(id).then((userVO) {
       if(tempFilePath.isNotEmpty) {

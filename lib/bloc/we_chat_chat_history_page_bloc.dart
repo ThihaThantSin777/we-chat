@@ -27,6 +27,7 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
 
   ///Model
  final WeChatRealTimeModel _weChatRealTimeDataAgent=WeChatRealTimeModelImpl();
+ final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
   WeChatChatHistoryPageBloc(){
 
     _weChatRealTimeDataAgent.getFriendsID().listen((event) {
@@ -38,17 +39,20 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
         for (var id in event) {
           String ids=id??'';
           _weChatRealTimeDataAgent.getAllChattingList(ids).then((value) {
-            if(value.isNotEmpty){
-              ChattingUserVO lastData=value.last;
-              List<ChattingUserVO> noLoggedInUserVo=  value.where((element) => element.userID==ids).toList();
-              if(noLoggedInUserVo.isNotEmpty){
-                ChattingUserVO noLoggedInUserVoLastData=noLoggedInUserVo.last;
-                noLoggedInUserVoLastData.message=(lastData.message.isEmpty && lastData.file.isNotEmpty)?'Photo':lastData.message;
-                temp.add(noLoggedInUserVoLastData);
-                _chattingUserVOList=temp;
-                _notifySafely();
+            _weChatAuthModel.getLoggedInUserInfoByID(ids).then((userVO){
+              if(value.isNotEmpty){
+                ChattingUserVO lastData=value.last;
+                lastData.userID=userVO?.id??'';
+                lastData.name=userVO?.userName??'';
+                lastData.profilePic=userVO?.profileImage??'';
+                lastData.message=(lastData.message.isEmpty)?'Photo':lastData.message;
+                  temp.add(lastData);
+                  _chattingUserVOList=temp;
+                  _notifySafely();
+                // }
               }
-            }
+            });
+
           });
         }
       }
