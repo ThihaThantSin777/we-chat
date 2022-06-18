@@ -75,7 +75,6 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
 
   Future<void>_sendingMethods(String message,UserVO? userVO,String imageFile,String videoFile){
     if(imageFile.isNotEmpty && videoFile.isNotEmpty){
-      print('1');
       _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
         _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
           ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoURL);
@@ -84,32 +83,27 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
       });
 
     }else if(message.isNotEmpty && videoFile.isNotEmpty){
-      print('2');
       _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
         ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if( message.isNotEmpty && imageFile.isNotEmpty){
-      print('3');
       _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
         ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if(videoFile.isNotEmpty){
-      print('4');
       _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
         ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if(imageFile.isNotEmpty){
-      print('5');
       _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
         ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
 
     }else if(message.isNotEmpty){
-      print('6');
       ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoFile);
       return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
     }

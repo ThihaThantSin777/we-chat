@@ -111,7 +111,6 @@ class WeChatChattingRoomPage extends StatelessWidget {
                                     ),
                                     ChattingItemView(
                                       onImageDetailsPage: (imageLink,cond) {
-                                        print('A');
                                         navigatePush(
                                             context,
                                             WeChatFileDetailsPage(
