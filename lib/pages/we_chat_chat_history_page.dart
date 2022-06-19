@@ -30,10 +30,19 @@ class WeChatChatHistoryPage extends StatelessWidget {
                   WeChatChatHistoryPageBloc weChatHomePageBloc =
                       context.read<WeChatChatHistoryPageBloc>();
                   return (userVOList.isEmpty)
-                      ? const WaitingWidget(
+                      ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                        children: const[
+                          Icon(Icons.sentiment_dissatisfied_outlined,color: Colors.grey,size: kPadSpace50x,),
+                           SizedBox(
+                            height: kPadSpace20x,
+                          ),
+                          WaitingWidget(
                     isAddCircularProgressIndicator: false,
                     text: 'There is no chat list now. Let\'s start chat!!!',
-                  )
+                  ),
+                        ],
+                      )
                       : ListView.builder(
                           itemCount: (userVOList.length),
                           itemBuilder: (BuildContext context, int index) {
