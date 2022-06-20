@@ -3,6 +3,74 @@
 part of 'user_vo.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class UserVOAdapter extends TypeAdapter<UserVO> {
+  @override
+  final int typeId = 1;
+
+  @override
+  UserVO read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return UserVO(
+      id: fields[0] as String?,
+      userName: fields[3] as String?,
+      region: fields[1] as String?,
+      phone: fields[2] as String?,
+      password: fields[5] as String?,
+      email: fields[4] as String?,
+      qrCode: fields[7] as String?,
+      profileImage: fields[6] as String?,
+      fcmToken: fields[8] as String?,
+      backgroundImage: fields[9] as String?,
+      bioText: fields[10] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, UserVO obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.region)
+      ..writeByte(2)
+      ..write(obj.phone)
+      ..writeByte(3)
+      ..write(obj.userName)
+      ..writeByte(4)
+      ..write(obj.email)
+      ..writeByte(5)
+      ..write(obj.password)
+      ..writeByte(6)
+      ..write(obj.profileImage)
+      ..writeByte(7)
+      ..write(obj.qrCode)
+      ..writeByte(8)
+      ..write(obj.fcmToken)
+      ..writeByte(9)
+      ..write(obj.backgroundImage)
+      ..writeByte(10)
+      ..write(obj.bioText);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserVOAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
@@ -16,7 +84,9 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
       qrCode: json['qr_code'] as String?,
       profileImage: json['profile_image'] as String?,
       fcmToken: json['fcm_token'] as String?,
-    );
+      backgroundImage: json['background_image'] as String?,
+      bioText: json['bio_text'] as String?,
+    )..isShowSuspension = json['isShowSuspension'] as bool;
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'isShowSuspension': instance.isShowSuspension,
@@ -29,4 +99,6 @@ Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'profile_image': instance.profileImage,
       'qr_code': instance.qrCode,
       'fcm_token': instance.fcmToken,
+      'background_image': instance.backgroundImage,
+      'bio_text': instance.bioText,
     };

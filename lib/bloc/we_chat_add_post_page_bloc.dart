@@ -4,7 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wechat_app/data/model/we_chat_auth_model.dart';
+import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
+import 'package:wechat_app/resources/strings.dart';
 
 import '../data/model/we_chat_moment_model_impl.dart';
 import '../data/model/we_chat_moment_model.dart';
@@ -16,6 +19,8 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   bool _isDisposed = false;
   VideoPlayerController? _videoPlayer;
   bool _loading = false;
+  String _profileName='';
+  String _profileImage='';
   String _description = '';
   String _imageNetworkLink = '';
   String _videoNetworkLink = '';
@@ -33,13 +38,20 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   TextEditingController? get getController=>_controller;
   String get getImageNetWorkLink => _imageNetworkLink;
   String get getVideoNetWorkLink => _videoNetworkLink;
+  String get getProfileName=>_profileName;
+  String get getProfileImage=>_profileImage;
 
   ///Model
   final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
-
+  final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
 
   WeChatAddPostPageBloc([int ?id]){
     _controller=TextEditingController();
+    _weChatAuthModel.getUserVoStreamEvent().listen((userVO) {
+      _profileName=userVO?.userName??'';
+      _profileImage=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
+      _notifySafely();
+    });
     if(id!=null){
       _prePopulateData(id);
     }

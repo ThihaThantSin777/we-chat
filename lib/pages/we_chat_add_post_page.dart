@@ -218,10 +218,20 @@ class WeChatAddPostPage extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ProfileItemView(
-                              onPressed: () {
-                                openBottomSheet(context, bloc);
-                              },
+                            Selector<WeChatAddPostPageBloc,String>(
+                              selector: (context,bloc)=>bloc.getProfileName,
+                              builder: (context,profileName,child)=>
+                            Selector<WeChatAddPostPageBloc,String>(
+                                selector: (context,bloc)=>bloc.getProfileImage,
+                                builder: (context,profileImage,child)=>
+                                (profileName.isEmpty || profileImage.isEmpty)?const WaitingWidget():   ProfileItemView(
+                                  profileName: profileName,
+                                  profileImage: profileImage,
+                                  onPressed: () {
+                                    openBottomSheet(context, bloc);
+                                  },
+                                ),
+                            ),
                             ),
                             PostTextFieldView(
                                 formState: formKey,

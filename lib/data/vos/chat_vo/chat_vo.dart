@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'chatting_user_vo.g.dart';
+part 'chat_vo.g.dart';
 
 @JsonSerializable()
-class ChattingUserVO {
+class ChatVO {
   @JsonKey(name: 'user_id')
   String userID;
 
@@ -25,7 +25,7 @@ class ChattingUserVO {
   @JsonKey(name: 'time_stamp')
   DateTime timeStamp;
 
-  ChattingUserVO(
+  ChatVO(
       {required this.userID,
       required this.name,
       required this.profilePic,
@@ -44,7 +44,7 @@ class ChattingUserVO {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChattingUserVO &&
+      other is ChatVO &&
           runtimeType == other.runtimeType &&
           userID == other.userID &&
           name == other.name &&
@@ -64,8 +64,8 @@ class ChattingUserVO {
       videoFile.hashCode ^
       timeStamp.hashCode;
 
-  factory ChattingUserVO.fromJson(Map<String, dynamic> json) =>
-      _$ChattingUserVOFromJson(json);
+  factory ChatVO.fromJson(Map<String, dynamic> json) =>
+      _$ChatVOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChattingUserVOToJson(this);
+  Map<String, dynamic> toJson() => _$ChatVOToJson(this);
 }

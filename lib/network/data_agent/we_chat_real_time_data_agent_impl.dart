@@ -2,7 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_real_tim_data_gent.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -21,7 +21,7 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
   var auth = FirebaseAuth.instance;
 
   @override
-  Future<void> addChatToServer(ChattingUserVO chattingUserVO,String friID) {
+  Future<void> addChatToServer(ChatVO chattingUserVO,String friID) {
     String loggedInUserID=auth.currentUser?.uid??'';
     databaseRef
         .child(contactsAndMessages)
@@ -44,15 +44,15 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
   }
 
   @override
-  Stream<List<ChattingUserVO>> getChatList(String friID) {
+  Stream<List<ChatVO>> getChatList(String friID) {
     String loggedInUserID=auth.currentUser?.uid??'';
     return databaseRef
         .child(contactsAndMessages)
         .child(loggedInUserID)
         .child(friID)
         .onValue.map((event){
-      return event.snapshot.children.map<ChattingUserVO>((snapshot){
-        return ChattingUserVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
+      return event.snapshot.children.map<ChatVO>((snapshot){
+        return ChatVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
       }).toList();
     });
   }
@@ -60,15 +60,15 @@ class WeChatRealTimeDataAgentImpl extends WeChatRealTimeDataAgent{
 
 
   @override
-  Future<List<ChattingUserVO>> getAllChattingList(String friID) {
+  Future<List<ChatVO>> getAllChattingList(String friID) {
     String loggedInUserID = auth.currentUser?.uid ?? '';
    return databaseRef
         .child(contactsAndMessages)
         .child(loggedInUserID)
         .child(friID)
         .onValue.map((event){
-      return event.snapshot.children.map<ChattingUserVO>((snapshot){
-        return ChattingUserVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
+      return event.snapshot.children.map<ChatVO>((snapshot){
+        return ChatVO.fromJson(Map<String,dynamic>.from(snapshot.value as Map));
       }).toList();
     }).first;
 

@@ -24,7 +24,7 @@ class WeChatScanProfilePageBloc extends ChangeNotifier{
 
   WeChatScanProfilePageBloc(String? id){
      if(id!=null && id.isNotEmpty){
-       _weChatAuthModel.getLoggedInUserInfoByID(id).then((value) {
+       _weChatAuthModel.getUserInfoByID(id).then((value) {
          _userVO=value;
          _notifySafely();
          _weChatAuthModel.getContactList().listen((event) {

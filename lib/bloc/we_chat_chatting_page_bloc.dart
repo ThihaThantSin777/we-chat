@@ -5,7 +5,7 @@ import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
 import 'package:wechat_app/data/model/we_chat_real_time_model.dart';
 import 'package:wechat_app/data/model/we_chat_real_time_model_impl.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
@@ -23,14 +23,14 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
   final TextEditingController _message=TextEditingController();
   String _friendID='';
   String _loggedInUserID='';
-  List<ChattingUserVO>_chattingUserVo=[];
+  List<ChatVO>_chattingUserVo=[];
   ///getter
   ShowMoreIconForm get getShowMoreIcon => _showMoreIcon;
   bool get isShowMoreWidget => _showMoreWidget;
   bool get isLoading=>_loading;
   File? get getFile => _file;
   File? get getVideoFile=>_videoFile;
-  List<ChattingUserVO> get getChattingUserVO=>_chattingUserVo;
+  List<ChatVO> get getChattingUserVO=>_chattingUserVo;
   String get getLoggedInUserID=>_loggedInUserID;
   TextEditingController get getMessage=>_message;
 
@@ -75,36 +75,36 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
 
   Future<void>_sendingMethods(String message,UserVO? userVO,String imageFile,String videoFile){
     if(imageFile.isNotEmpty && videoFile.isNotEmpty){
-      _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
-        _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
-          ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoURL);
+      _weChatAuthModel.uploadProfileFileToFirebase(File(imageFile)).then((imageURL) {
+        _weChatAuthModel.uploadProfileFileToFirebase(File(videoFile)).then((videoURL) {
+          ChatVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoURL);
           return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
         });
       });
 
     }else if(message.isNotEmpty && videoFile.isNotEmpty){
-      _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
-        ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
+      _weChatAuthModel.uploadProfileFileToFirebase(File(videoFile)).then((videoURL) {
+        ChatVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if( message.isNotEmpty && imageFile.isNotEmpty){
-      _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
-        ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
+      _weChatAuthModel.uploadProfileFileToFirebase(File(imageFile)).then((imageURL) {
+        ChatVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if(videoFile.isNotEmpty){
-      _weChatAuthModel.uploadFileToFirebase(File(videoFile)).then((videoURL) {
-        ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
+      _weChatAuthModel.uploadProfileFileToFirebase(File(videoFile)).then((videoURL) {
+        ChatVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoURL);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
     }else if(imageFile.isNotEmpty){
-      _weChatAuthModel.uploadFileToFirebase(File(imageFile)).then((imageURL) {
-        ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
+      _weChatAuthModel.uploadProfileFileToFirebase(File(imageFile)).then((imageURL) {
+        ChatVO chattingUserVO = _getChattingVO(userVO, imageURL, message, videoFile);
         return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
       });
 
     }else if(message.isNotEmpty){
-      ChattingUserVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoFile);
+      ChatVO chattingUserVO = _getChattingVO(userVO, imageFile, message, videoFile);
       return _weChatRealTimeModel.addChatToServer(chattingUserVO, _friendID);
     }
     return Future.value('');
@@ -120,7 +120,7 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
       _loading=true;
       _notifySafely();
       String id=_weChatAuthModel.getLoggedInUserID();
-      _weChatAuthModel.getLoggedInUserInfoByID(id).then((userVO) {
+      _weChatAuthModel.getUserInfoByID(id).then((userVO) {
         _sendingMethods(tempMessage, userVO, tempFilePath, tempVideoFilePath);
       }).then((value) {
         _loading=false;
@@ -129,8 +129,8 @@ class WeChatChattingPagesBloc extends ChangeNotifier {
     }
   }
 
-  ChattingUserVO _getChattingVO(UserVO? userVO,String imageURL,String message,String videoURL){
-    return ChattingUserVO(userID: userVO?.id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: message, file: imageURL, videoFile:  videoURL,timeStamp: DateTime.now());
+  ChatVO _getChattingVO(UserVO? userVO,String imageURL,String message,String videoURL){
+    return ChatVO(userID: userVO?.id??'', name: userVO?.userName??'', profilePic: userVO?.profileImage??kDefaultImage, message: message, file: imageURL, videoFile:  videoURL,timeStamp: DateTime.now());
   }
 
   void setIsShowMoreIconState(String text) {

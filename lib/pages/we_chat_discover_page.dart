@@ -11,19 +11,23 @@ import 'package:wechat_app/widgets/leading_widget.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 import '../widgets/small_profile_widget.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class WeChatDiscoverPage extends StatelessWidget {
   const WeChatDiscoverPage({Key? key}) : super(key: key);
-  void postDelete(WeChatDiscoverPageBloc weChatDiscoverPageBloc,int id,BuildContext context){
+
+  void postDelete(WeChatDiscoverPageBloc weChatDiscoverPageBloc, int id,
+      BuildContext context) {
     weChatDiscoverPageBloc.deletePost(id).then((value) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              backgroundColor: kPrimaryLightColor,
-              content: Text('1 post delete',style: TextStyle(color: Colors.white),)
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: kPrimaryLightColor,
+          content: Text(
+            '1 post delete',
+            style: TextStyle(color: Colors.white),
+          )));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WeChatDiscoverPageBloc>(
@@ -58,27 +62,47 @@ class WeChatDiscoverPage extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              BackgroundImageItemView(),
-                              DateTimeItemView(),
-                              NewMomentsItemView(),
+                            children: [
+                              Selector<WeChatDiscoverPageBloc, String>(
+                                  selector: (context, bloc) =>
+                                      bloc.getBackgroundImage,
+                                  builder: (context, backgroundImage, child) =>
+                                      (backgroundImage.isEmpty)
+                                          ? const WaitingWidget()
+                                          : BackgroundImageItemView(
+                                              backgroundImage: backgroundImage,
+                                            )),
+                              const DateTimeItemView(),
+                              NewMomentsItemView(
+                                moments: (momentLisVO?.isEmpty ?? true)
+                                    ? 0
+                                    : momentLisVO?.length ?? 0,
+                              ),
                             ],
                           ),
                           Positioned(
                               top: MediaQuery.of(context).size.width * 0.55,
-                              right: MediaQuery.of(context).viewPadding.right,
-                              child: const ProfileNameItemView()),
-                          Selector<WeChatDiscoverPageBloc,String>(
-                            selector: (context ,bloc ) =>bloc.getProfileImage,
-                            builder: ( context, image,  child) =>
-                            (image.isEmpty)?const WaitingWidget():    Positioned(
-                              top: MediaQuery.of(context).size.width * 0.5,
-                              left: MediaQuery.of(context).size.width * 0.23,
-                              child:  SmallProfileImageItemView(
-                                image: image,
-                              ),
-                            ),
-
+                              right: kPadSpace10x,
+                              child: Selector<WeChatDiscoverPageBloc, String>(
+                                  selector: (context, bloc) =>
+                                      bloc.getProfileName,
+                                  builder: (context, profileName, child) =>
+                                      ProfileNameItemView(
+                                        profileName: profileName,
+                                      ))),
+                          Selector<WeChatDiscoverPageBloc, String>(
+                            selector: (context, bloc) => bloc.getProfileImage,
+                            builder: (context, image, child) => (image.isEmpty)
+                                ? const WaitingWidget()
+                                : Positioned(
+                                    top:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.23,
+                                    child: SmallProfileImageItemView(
+                                      image: image,
+                                    ),
+                                  ),
                           )
                         ],
                       ),
@@ -94,8 +118,7 @@ class WeChatDiscoverPage extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: momentLisVO?.length,
-                              itemBuilder: (context, index) =>
-                                  Stack(
+                              itemBuilder: (context, index) => Stack(
                                 children: [
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -104,10 +127,10 @@ class WeChatDiscoverPage extends StatelessWidget {
                                       Container(
                                         padding: const EdgeInsets.only(
                                             right: kPadSpace10x),
-                                        child: const Text(
-                                          '3 min agao',
-                                          style:
-                                              TextStyle(color: Colors.black38),
+                                        child: TimeAgoItemView(
+                                          dateTime:
+                                              momentLisVO?[index].timeStamp ??
+                                                  DateTime.now(),
                                         ),
                                       ),
                                       const SizedBox(
@@ -187,19 +210,35 @@ class WeChatDiscoverPage extends StatelessWidget {
                                                       .setIsShowCommentTextFieldState();
                                                 },
                                                 onEdit: () {
-                                                  navigatePush(context,  WeChatAddPostPage(
-                                                    id: momentLisVO?[index].id??-1,
-                                                  ));
+                                                  navigatePush(
+                                                      context,
+                                                      WeChatAddPostPage(
+                                                        id: momentLisVO?[index]
+                                                                .id ??
+                                                            -1,
+                                                      ));
                                                 },
                                                 onDelete: () {
-                                                showMyDialog(context, 'Are you sure want to delete this moment?').then((value) {
-                                                  if(value??false){
-                                                    postDelete(context.read<WeChatDiscoverPageBloc>(), momentLisVO?[index].id??-1, context);
-                                                  }
-                                                });
+                                                  showMyDialog(context,
+                                                          'Are you sure want to delete this moment?')
+                                                      .then((value) {
+                                                    if (value ?? false) {
+                                                      postDelete(
+                                                          context.read<
+                                                              WeChatDiscoverPageBloc>(),
+                                                          momentLisVO?[index]
+                                                                  .id ??
+                                                              -1,
+                                                          context);
+                                                    }
+                                                  });
                                                 },
                                                 isFavorite: momentLisVO?[index]
                                                         .isLiked ??
+                                                    false,
+                                                isOriginalUploader: momentLisVO?[
+                                                            index]
+                                                        .isOriginalUploader ??
                                                     false,
                                               )
                                             ],
@@ -224,14 +263,19 @@ class WeChatDiscoverPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  const Padding(
-                                      padding:
-                                          EdgeInsets.only(left: kPadSpace20x),
-                                      child: SmallProfileWidget(
-                                        width: 60,
-                                        height: 60,
-                                        imageURL:
-                                            'https://media.comicbook.com/2021/03/boruto-naruto-kawaki-karma-anime-1259593.jpeg',
+                                  Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: kPadSpace20x),
+                                      child: Selector<WeChatDiscoverPageBloc,
+                                          String>(
+                                        selector: (context, bloc) =>
+                                            bloc.getProfileImage,
+                                        builder: (context, imageURL, child) =>
+                                            SmallProfileWidget(
+                                          width: 60,
+                                          height: 60,
+                                          imageURL: imageURL,
+                                        ),
                                       )),
                                 ],
                               ),
@@ -269,6 +313,7 @@ class WeChatDiscoverPage extends StatelessWidget {
                       child: Visibility(
                           visible: detailsMomentVO != null,
                           child: DetailsItemView(
+                            isOriginalUploader: detailsMomentVO?.isOriginalUploader??false,
                             momentVO: detailsMomentVO,
                           )),
                     ))
@@ -279,4 +324,16 @@ class WeChatDiscoverPage extends StatelessWidget {
   }
 }
 
+class TimeAgoItemView extends StatelessWidget {
+  const TimeAgoItemView({Key? key, required this.dateTime}) : super(key: key);
+  final DateTime dateTime;
 
+  @override
+  Widget build(BuildContext context) {
+    final ago = DateTime.now().subtract(Duration(minutes: dateTime.minute));
+    return Text(
+      timeago.format(ago, locale: 'en'),
+      style: const TextStyle(color: Colors.black38),
+    );
+  }
+}

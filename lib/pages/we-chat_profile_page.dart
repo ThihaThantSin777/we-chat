@@ -5,6 +5,7 @@ import 'package:wechat_app/bloc/we_chat_profile_page_bloc.dart';
 import 'package:wechat_app/pages/we_chat_qr_code_page.dart';
 import 'package:wechat_app/pages/we_chat_start_page.dart';
 import 'package:wechat_app/resources/colors.dart';
+import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/view_items/we_chat_profile_item_views/we_chat_profile_item_view.dart';
 import 'package:wechat_app/widgets/loading_widget.dart';
@@ -48,20 +49,28 @@ class WeChatProfilePage extends StatelessWidget {
                                 ),
                             ),
                             )),
-                        Expanded(
-                            flex: 3,
-                            child: Container(
-                              color: kBarColor,
-                              child: BioSettingIconLogoutItemView(
-                                onPressed: (){
-                                  showMyDialog(context, 'Are you sure want to logout').then((value) {
-                                    if(value??false){
-                                      weChatProfilePageBloc.logout().then((value) => navigatePushRemoveUntil(context,const WeChatStartPage()));
-                                    }
-                                  });
-                                },
-                              ),
-                            ))
+                        Selector<WeChatProfilePageBloc,String>(
+                          selector: (context,bloc)=>bloc.getBioText,
+                          builder: (context,bioText,child)=>
+                         Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: kBarColor,
+                                child: BioSettingIconLogoutItemView(
+                                  onEdit: (){
+
+                                  },
+                                  bioText: (bioText.isEmpty)?kWriteYourBioText:bioText,
+                                  onPressed: (){
+                                    showMyDialog(context, 'Are you sure want to logout').then((value) {
+                                      if(value??false){
+                                        weChatProfilePageBloc.logout().then((value) => navigatePushRemoveUntil(context,const WeChatStartPage()));
+                                      }
+                                    });
+                                  },
+                                ),
+                              )),
+                        )
                       ],
                     ),
                   ),

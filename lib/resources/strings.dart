@@ -47,6 +47,7 @@ const kSettingText='Settings';
 ///Default
 const kDefaultImage='https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg';
 const kDefaultVideoLink='https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
+const kDefaultBackgroundImage='https://www.darren-young.com/wp-content/uploads/2015/04/default-placeholder.png';
 
 ///LoginSignup Text
 const kSignupWithMobile='Sign Up With Mobile';
@@ -83,3 +84,7 @@ const kVerificationText='The above email is used only for verification';
 const kAcceptAndLoginText='Accept and login';
 const kUnableToLoginText='Unable to login';
 const kMoreOptionText='More Option';
+
+
+///Bio Text Default
+const kWriteYourBioText='Write your bio text';

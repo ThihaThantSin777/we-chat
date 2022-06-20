@@ -1,10 +1,11 @@
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 
 abstract class WeChatRealTimeDataAgent{
-  Stream<List<ChattingUserVO>> getChatList(String friID);
-  Future<void> addChatToServer(ChattingUserVO chattingUserVO,String friID);
+  Stream<List<ChatVO>> getChatList(String friID);
+  Future<void> addChatToServer(ChatVO chattingUserVO,String friID);
   Future<void>deleteChat(String friID);
-  Future<List<ChattingUserVO>> getAllChattingList(String friID);
+  Future<List<ChatVO>> getAllChattingList(String friID);
   Stream<List<String?>>getFriendsID();
 
 }

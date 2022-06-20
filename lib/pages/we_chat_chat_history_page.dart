@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chat_history_page_bloc.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 import 'package:wechat_app/pages/we_chat_chatting_room_page.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
@@ -23,7 +23,7 @@ class WeChatChatHistoryPage extends StatelessWidget {
       child: TweenAnimatedOpacityAnimation(
         child: Stack(
           children: [
-            Selector<WeChatChatHistoryPageBloc, List<ChattingUserVO>>(
+            Selector<WeChatChatHistoryPageBloc, List<ChatVO>>(
                 shouldRebuild: (pre, next) => pre != next,
                 selector: (context, bloc) => bloc.getChattingUserVOList,
                 builder: (context, userVOList, child) {

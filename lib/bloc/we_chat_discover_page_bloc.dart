@@ -1,5 +1,4 @@
-import 'dart:io';
-import 'package:video_player/video_player.dart';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_moment_model_impl.dart';
@@ -9,6 +8,7 @@ import 'package:wechat_app/resources/strings.dart';
 
 import '../data/model/we_chat_auth_model.dart';
 import '../data/model/we_chat_auth_model_impl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class WeChatDiscoverPageBloc extends ChangeNotifier {
   ///State Variable
@@ -17,26 +17,39 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
   List<MomentVO>?_momentVO;
   MomentVO ? _detailsMoment;
   String _profileImage='';
+  String _profileBackgroundImage='';
+  String _profileName='';
 
   ///Getter
   bool get isShowCommentTextField=>_showCommentTextField;
   List<MomentVO>?get getMomentVO=>_momentVO;
   MomentVO ? get getDetailsMoment=>_detailsMoment;
   String get getProfileImage=>_profileImage;
-
+  String get getBackgroundImage=>_profileBackgroundImage;
+  String get getProfileName=>_profileName;
 
   ///Model
   final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
   final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
-
+  DateTime _getSystemTime() {
+    return DateTime.now();
+  }
   WeChatDiscoverPageBloc([int ? id]){
-    String id=_weChatAuthModel.getLoggedInUserID();
-    _weChatAuthModel.getLoggedInUserInfoByID(id).then((value) {
-      _profileImage=value?.profileImage??kDefaultImage;
-      _notifySafely();
-    });
+
+   _weChatAuthModel.getUserVoStreamEvent().listen((userVO) {
+     _profileImage=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
+     _profileBackgroundImage=userVO?.backgroundImage??'';
+     _profileName=userVO?.userName??'';
+     _notifySafely();
+   });
     _weChatModel.getMoments().listen((data) {
-      _momentVO=data;
+      _momentVO=data.map((moments) {
+        String id=_weChatAuthModel.getLoggedInUserID();
+        if(id==moments.userID){
+          moments.isOriginalUploader=true;
+        }
+        return moments;
+      }).toList();
      _notifySafely();
     },
       onError: (error)=>debugPrint(error)

@@ -5,24 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
 import 'package:wechat_app/data/model/we_chat_real_time_model_impl.dart';
-import 'package:wechat_app/data/vos/chat_user_vo/chat_user_vo.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
-import 'package:wechat_app/network/data_agent/we_chat_real_time_data_agent_impl.dart';
-import 'package:wechat_app/resources/strings.dart';
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 
 import '../data/model/we_chat_real_time_model.dart';
-import '../network/data_agent/we_chat_real_tim_data_gent.dart';
 
 
 class WeChatChatHistoryPageBloc extends ChangeNotifier{
 
   ///State Variable
-  List<ChattingUserVO>_chattingUserVOList=[];
+  List<ChatVO>_chattingUserVOList=[];
   bool _isDisposed = false;
   bool _loading=false;
 
   ///Getter
-  List<ChattingUserVO> get getChattingUserVOList=>_chattingUserVOList;
+  List<ChatVO> get getChattingUserVOList=>_chattingUserVOList;
   bool get isLoading=>_loading;
 
   ///Model
@@ -31,7 +27,7 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
   WeChatChatHistoryPageBloc(){
 
     _weChatRealTimeDataAgent.getFriendsID().listen((event) {
-      List<ChattingUserVO>temp=[];
+      List<ChatVO>temp=[];
       if(event.isEmpty){
        _chattingUserVOList=[];
        _notifySafely();
@@ -39,9 +35,9 @@ class WeChatChatHistoryPageBloc extends ChangeNotifier{
         for (var id in event) {
           String ids=id??'';
           _weChatRealTimeDataAgent.getAllChattingList(ids).then((value) {
-            _weChatAuthModel.getLoggedInUserInfoByID(ids).then((userVO){
+            _weChatAuthModel.getUserInfoByID(ids).then((userVO){
               if(value.isNotEmpty){
-                ChattingUserVO lastData=value.last;
+                ChatVO lastData=value.last;
                 lastData.userID=userVO?.id??'';
                 lastData.name=userVO?.userName??'';
                 lastData.profilePic=userVO?.profileImage??'';

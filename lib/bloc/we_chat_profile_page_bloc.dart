@@ -11,19 +11,22 @@ class WeChatProfilePageBloc extends ChangeNotifier{
   String _id='';
   String _name='';
   String _profilePicture='';
+  String _bioText='';
 
   ///Getter
   bool get isLoading=>_loading;
   String get getID=>_id;
   String get getName=>_name;
   String get getProfilePicture=>_profilePicture;
+  String get getBioText=>_bioText;
 
   final WeChatAuthModel _auth=WeChatAuthModelImpl();
 
   WeChatProfilePageBloc(){
-    String id=_auth.getLoggedInUserID();
-    _auth.getLoggedInUserInfoByID(id).then((userVO) {
+    _auth.getUserVoStreamEvent().listen((userVO) {
+        String id=userVO?.id??'';
       _name=userVO?.userName??'';
+      _bioText=userVO?.bioText??'';
       _id='$_name#${id[0]}${id[1]}${id[2]}${id[3]}${id[4]}${id[5]}';
       _profilePicture=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
       _notifySafely();

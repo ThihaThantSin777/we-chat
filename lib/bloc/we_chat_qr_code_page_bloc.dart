@@ -6,7 +6,7 @@ import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 
 
 class WeChatQRCodePageBloc extends ChangeNotifier{
-  ///Satate Variable
+  ///Satae Variable
   bool _isDisposed=false;
   String _qrCode='';
   UserVO? _scanUserVO;
@@ -23,7 +23,7 @@ class WeChatQRCodePageBloc extends ChangeNotifier{
   WeChatQRCodePageBloc(){
 
       String id=_weChatAuthModel.getLoggedInUserID();
-      _weChatAuthModel.getLoggedInUserInfoByID(id).then((value) {
+      _weChatAuthModel.getUserInfoByID(id).then((value) {
         _qrCode=value?.qrCode??'None';
         _notifySafely();
       });

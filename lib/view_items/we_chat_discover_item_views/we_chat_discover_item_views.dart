@@ -323,15 +323,17 @@ import 'package:wechat_app/widgets/wating_widget.dart';
 class NewMomentsItemView extends StatelessWidget {
   const NewMomentsItemView({
     Key? key,
+    required this.moments
   }) : super(key: key);
-
+  final int moments;
   @override
   Widget build(BuildContext context) {
+    String textMoments=(moments<=1)?'$moments moment':'$moments moments';
     return Container(
       padding: const EdgeInsets.only(right: kPadSpace10x, top: kPadSpace10x),
-      child: const Text(
-        '23 new moments',
-        style: TextStyle(fontWeight: FontWeight.w500),
+      child:  Text(
+        textMoments,
+        style: const TextStyle(fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -357,22 +359,19 @@ class DateTimeItemView extends StatelessWidget {
 class BackgroundImageItemView extends StatelessWidget {
   const BackgroundImageItemView({
     Key? key,
+    required this.backgroundImage
   }) : super(key: key);
-
+  final String backgroundImage;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.3,
-      child: Image.network(
-        'https://m.media-amazon.com/images/M/MV5BMDFjYTc1ODgtNjRlNi00ZDllLTg3ZGYtMjJlYTA0NjBkYWZlXkEyXkFqcGdeQXRyYW5zY29kZS13b3JrZmxvdw@@._V1_.jpg',
+      child: CachedNetworkImage(
+        imageUrl: backgroundImage,
+        placeholder: (context,string)=>const WaitingWidget(),
         fit: BoxFit.cover,
-        loadingBuilder: (_, child, chuck) {
-          if (chuck == null) {
-            return child;
-          }
-          return const WaitingWidget();
-        },
-      ),
+      )
     );
   }
 }
@@ -405,12 +404,13 @@ class SmallProfileImageItemView extends StatelessWidget {
 class ProfileNameItemView extends StatelessWidget {
   const ProfileNameItemView({
     Key? key,
+    required this.profileName
   }) : super(key: key);
-
+  final String profileName;
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'Uzumaki Boruto',
+    return  Text(
+      profileName,
       style: TextStyle(color: Colors.white, fontSize: kFontSize23x),
     );
   }
@@ -473,6 +473,7 @@ class FavoriteCommentIconItemView extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
     required this.isFavorite,
+    required this.isOriginalUploader,
     this.color=Colors.black38
   }) : super(key: key);
   final Function onPressedForFavorite;
@@ -481,6 +482,7 @@ class FavoriteCommentIconItemView extends StatelessWidget {
   final Function onDelete;
   final bool isFavorite;
   final Color color;
+  final bool isOriginalUploader;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -506,26 +508,29 @@ class FavoriteCommentIconItemView extends StatelessWidget {
         const SizedBox(
           width: kPadSpace5x,
         ),
-        PopupMenuButton(
-            onSelected: (value){
-              if(value==kEditText){
-                onEdit();
-              }
-              if(value==kDeleteText){
-                onDelete();
-              }
-            },
-            icon: Icon(Icons.more_horiz,color: color,),
-            itemBuilder: (context){
-          return [
-           const PopupMenuItem(
-              value: kEditText,
-                child: Text(kEditText)),
-           const PopupMenuItem(
-                value: kDeleteText,
-                child: Text(kDeleteText)),
-          ];
-        }),
+        Visibility(
+          visible: isOriginalUploader,
+          child: PopupMenuButton(
+              onSelected: (value){
+                if(value==kEditText){
+                  onEdit();
+                }
+                if(value==kDeleteText){
+                  onDelete();
+                }
+              },
+              icon: Icon(Icons.more_horiz,color: color,),
+              itemBuilder: (context){
+            return [
+             const PopupMenuItem(
+                value: kEditText,
+                  child: Text(kEditText)),
+             const PopupMenuItem(
+                  value: kDeleteText,
+                  child: Text(kDeleteText)),
+            ];
+          }),
+        ),
 
       ],
     );
@@ -703,8 +708,9 @@ class WhoCommentView extends StatelessWidget {
 
 
 class DetailsItemView extends StatelessWidget {
-  const DetailsItemView({Key? key, required this.momentVO}) : super(key: key);
+  const DetailsItemView({Key? key, required this.momentVO,required this.isOriginalUploader}) : super(key: key);
   final MomentVO? momentVO;
+  final bool isOriginalUploader;
 
   @override
   Widget build(BuildContext context) {
@@ -739,6 +745,7 @@ class DetailsItemView extends StatelessWidget {
               onDelete: () {},
               isFavorite: momentVO?.isLiked ?? false,
               color: Colors.white70,
+              isOriginalUploader: isOriginalUploader,
             )
           ],
         ),

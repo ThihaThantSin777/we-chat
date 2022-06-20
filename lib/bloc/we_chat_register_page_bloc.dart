@@ -114,7 +114,7 @@ class WeChatRegisterPageBloc extends ChangeNotifier {
   }
 
   UserVO getUserVO(){
-    UserVO userVO=UserVO(id: 'id', userName: _userName, region: _regionObject.name, phone: '${_regionObject.phNo}$_phone', password: _password.encrypt(), email: '', profileImage: _imageFile?.path??'',qrCode: '',fcmToken: '');
+    UserVO userVO=UserVO(id: 'id', userName: _userName, region: _regionObject.name, phone: '${_regionObject.phNo}$_phone', password: _password.encrypt(), email: '', profileImage: _imageFile?.path??'',qrCode: '',fcmToken: '',backgroundImage: kDefaultBackgroundImage,bioText: '');
     return userVO;
   }
 

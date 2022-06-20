@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'chatting_user_vo.dart';
+part of 'chat_vo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChattingUserVO _$ChattingUserVOFromJson(Map<String, dynamic> json) =>
-    ChattingUserVO(
+ChatVO _$ChatVOFromJson(Map<String, dynamic> json) => ChatVO(
       userID: json['user_id'] as String,
       name: json['name'] as String,
       profilePic: json['profile_pic'] as String,
@@ -17,8 +16,7 @@ ChattingUserVO _$ChattingUserVOFromJson(Map<String, dynamic> json) =>
       timeStamp: DateTime.parse(json['time_stamp'] as String),
     );
 
-Map<String, dynamic> _$ChattingUserVOToJson(ChattingUserVO instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ChatVOToJson(ChatVO instance) => <String, dynamic>{
       'user_id': instance.userID,
       'name': instance.name,
       'profile_pic': instance.profilePic,

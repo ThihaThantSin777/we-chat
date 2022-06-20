@@ -34,9 +34,8 @@ class WeChatEmailPageBloc extends ChangeNotifier {
     _notifySafely();
     UserVO newUser = _userVO!;
     newUser.email = _email;
-    if (newUser.profileImage?.isNotEmpty ?? false) {
       return _weChatAuthModel
-          .uploadFileToFirebase(File(newUser.profileImage ?? ''))
+          .uploadProfileFileToFirebase(File(newUser.profileImage ?? ''))
           .then((imageURL) {
         newUser.profileImage = imageURL;
         FCMService().getFCMToken().then((fcmToken) {
@@ -47,11 +46,7 @@ class WeChatEmailPageBloc extends ChangeNotifier {
           });
         });
       });
-    }
-    return _weChatAuthModel.registerNewUser(newUser).then((value) {
-      _loading = false;
-      _notifySafely();
-    });
+
   }
 
   void setEmail(String email) {

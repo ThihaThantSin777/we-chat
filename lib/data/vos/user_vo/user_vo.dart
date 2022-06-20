@@ -1,37 +1,58 @@
 import 'package:azlistview/azlistview.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wechat_app/persistant/constant/hive_constant.dart';
 
 part 'user_vo.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: kHiveTypeUserVo)
 class UserVO extends ISuspensionBean{
   @JsonKey(name: 'id')
+  @HiveField(0)
   String ?id;
 
   @JsonKey(name: 'region')
+  @HiveField(1)
   String ?region;
 
   @JsonKey(name: 'phone')
+  @HiveField(2)
   String? phone;
 
   @JsonKey(name: 'user_name')
+  @HiveField(3)
   String? userName;
 
   @JsonKey(name: 'email')
+  @HiveField(4)
   String? email;
 
   @JsonKey(name: 'password')
+  @HiveField(5)
   String ?password;
 
   @JsonKey(name: 'profile_image')
+  @HiveField(6)
   String? profileImage;
 
   @JsonKey(name: 'qr_code')
+  @HiveField(7)
   String? qrCode;
 
   @JsonKey(name: 'fcm_token')
+  @HiveField(8)
   String? fcmToken;
 
+  @JsonKey(name: 'background_image')
+  @HiveField(9)
+  String? backgroundImage;
+
+  @JsonKey(name: 'bio_text')
+  @HiveField(10)
+  String? bioText;
+
+  UserVO.normal();
   UserVO({
     required this.id,
     required this.userName,
@@ -42,14 +63,16 @@ class UserVO extends ISuspensionBean{
     required this.qrCode,
     required this.profileImage,
     required this.fcmToken,
+    required this.backgroundImage,
+    required this.bioText
   });
 
 
   @override
   String toString() {
-    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken}';
+    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken, backgroundImage: $backgroundImage, bioText: $bioText}';
   }
-  UserVO.normal();
+
 
   @override
   bool operator ==(Object other) =>
@@ -64,7 +87,9 @@ class UserVO extends ISuspensionBean{
           password == other.password &&
           profileImage == other.profileImage &&
           qrCode == other.qrCode &&
-          fcmToken == other.fcmToken;
+          fcmToken == other.fcmToken &&
+          backgroundImage == other.backgroundImage &&
+          bioText == other.bioText;
 
   @override
   int get hashCode =>
@@ -76,7 +101,9 @@ class UserVO extends ISuspensionBean{
       password.hashCode ^
       profileImage.hashCode ^
       qrCode.hashCode ^
-      fcmToken.hashCode;
+      fcmToken.hashCode ^
+      backgroundImage.hashCode ^
+      bioText.hashCode;
 
   factory UserVO.fromJson(Map<String, dynamic> json) => _$UserVOFromJson(json);
 

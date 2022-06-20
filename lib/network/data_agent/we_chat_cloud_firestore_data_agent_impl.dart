@@ -6,21 +6,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
+import 'package:wechat_app/persistant/dao/user_dao.dart';
+import 'package:wechat_app/persistant/impl/user_dao_impl.dart';
 
 const momentsCollection = 'moments';
-const fileUploadPath = 'uploads';
+const momentsFileUploadPath = 'uploads';
+const profilesFileUploadPath='profile';
+const chatsFileUploadPath='profile';
 const userCollection = 'users';
 const contactCollection = 'contact';
 
 class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
   WeChatCloudFireStoreDataAgentImpl._internal();
   static final WeChatCloudFireStoreDataAgentImpl _singleton=WeChatCloudFireStoreDataAgentImpl._internal();
-
   factory WeChatCloudFireStoreDataAgentImpl()=>_singleton;
 
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final _firebaseStorage = FirebaseStorage.instance;
   final _fireAuth = FirebaseAuth.instance;
+  final UserDAO _userDAO=UserDAOImpl();
 
   @override
   Future<void> addNewPost(MomentVO momentVO) => _firebaseFirestore
@@ -54,9 +58,12 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
       .map((documentSnapShot) => MomentVO.fromJson(documentSnapShot.data()!));
 
    @override
-  Future<String> uploadFileToFirebase(File image) {
+  Future<String> uploadMomentsFileToFirebase(File image) {
+    if(image.path.isEmpty){
+      return Future.value('');
+    }
     return _firebaseStorage
-        .ref(fileUploadPath)
+        .ref(momentsFileUploadPath)
         .child('${DateTime.now().millisecondsSinceEpoch}')
         .putFile(image)
         .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
@@ -81,6 +88,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         user?.updatePhotoURL(newUser.profileImage);
         user?.updateDisplayName(newUser.userName);
         newUser.id = newUser.qrCode = user?.uid ?? '';
+        _userDAO.save(newUser);
         _addNewUser(newUser);
       });
 
@@ -95,7 +103,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
   String getLoggedInUserID() => _fireAuth.currentUser?.uid ?? '';
 
   @override
-  Future<UserVO?> getLoggedInUserInfoByID(String id) {
+  Future<UserVO?> getUserInfoByID(String id) {
     Future<UserVO?> userVO;
     try {
       userVO = _firebaseFirestore
@@ -114,8 +122,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
 
   @override
   Future<void> addContact(String friendID, UserVO friendUserVO) {
-    return getLoggedInUserInfoByID(_fireAuth.currentUser?.uid ?? '')
-        .then((userVO) {
+    return getLoggedInUserInfo().then((userVO) {
       ///Friend to Current
       _firebaseFirestore
           .collection(userCollection)
@@ -132,12 +139,13 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
           .doc(friendUserVO.id)
           .set(friendUserVO.toJson());
     });
+
   }
 
 
   @override
   Stream<List<UserVO>> getContactList() {
-    String id = _fireAuth.currentUser?.uid ?? '';
+    String id = getLoggedInUserID();
     return _firebaseFirestore
         .collection(userCollection)
         .doc(id)
@@ -149,5 +157,23 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         return UserVO.fromJson(document.data());
       }).toList();
     });
+  }
+
+  @override
+  Future<UserVO?> getLoggedInUserInfo() {
+    String id = getLoggedInUserID();
+   return getUserInfoByID(id);
+  }
+
+  @override
+  Future<String> uploadProfileFilesToFirebase(File image) {
+    if(image.path.isEmpty){
+      return Future.value('');
+    }
+    return _firebaseStorage
+        .ref(profilesFileUploadPath)
+        .child('${DateTime.now().millisecondsSinceEpoch}')
+        .putFile(image)
+        .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
   }
 }

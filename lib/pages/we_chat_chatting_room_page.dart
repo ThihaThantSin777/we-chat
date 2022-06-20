@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_app/bloc/we_chat_chatting_page_bloc.dart';
-import 'package:wechat_app/data/vos/chatting_vo/chatting_user_vo.dart';
+import 'package:wechat_app/data/vos/chat_vo/chat_vo.dart';
 import 'package:wechat_app/pages/we_chat_file_details_page.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
@@ -74,7 +74,7 @@ class WeChatChattingRoomPage extends StatelessWidget {
                         const SizedBox(
                           height: kPadSpace90x,
                         ),
-                        Selector<WeChatChattingPagesBloc, List<ChattingUserVO>>(
+                        Selector<WeChatChattingPagesBloc, List<ChatVO>>(
                             selector: (context, bloc) => bloc.getChattingUserVO,
                             builder: (context, chatVOList, child) {
                               WeChatChattingPagesBloc weChatChattingPagesBloc =

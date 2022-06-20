@@ -1,9 +1,8 @@
-///const key
-const lightModeKey='LIGHT_MODE';
-const darkModeKey='DARK_MODE';
+///Hive type
+const kHiveTypeUserVo=1;
+const kHiveTypeMomentVo=2;
 
-///HiveType
-const hiveTypeForTheme=1;
 
-///BOX NAME
-const boxNameForTheme='BOX_NAME_FOR_THEME';
+///Box Name
+const kBoxNameForUserVO='BOX_NAME_FOR_USER_VO';
+const kBoxNameForMomentVO='BOX_NAME_FOR_MOMENT_VO';

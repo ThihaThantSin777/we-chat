@@ -1,10 +1,10 @@
-class ChatUserVO {
+class ChatContactUserVo {
   String imagePath;
   String name;
   String subMessage;
   String time;
 
-  ChatUserVO(
+  ChatContactUserVo(
       {required this.imagePath,
       required this.name,
       required this.subMessage,
@@ -13,7 +13,7 @@ class ChatUserVO {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ChatUserVO &&
+      other is ChatContactUserVo &&
           runtimeType == other.runtimeType &&
           imagePath == other.imagePath &&
           name == other.name &&

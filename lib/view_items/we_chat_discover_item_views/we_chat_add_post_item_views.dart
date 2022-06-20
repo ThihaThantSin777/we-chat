@@ -34,15 +34,16 @@ class PhotoAndVideosChooseItemView extends StatelessWidget {
 
 
 class ProfileItemView extends StatelessWidget {
-  const ProfileItemView({Key? key, required this.onPressed}) : super(key: key);
+  const ProfileItemView({Key? key, required this.onPressed,required this.profileImage,required this.profileName}) : super(key: key);
   final Function onPressed;
+  final String profileImage;
+  final String profileName;
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const CircleAvatar(
-          backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg')),
-      title: const Text('Thiha Thant Sin'),
+      leading:  CircleAvatar(
+          backgroundImage: NetworkImage(profileImage)),
+      title:  Text(profileName),
       trailing: IconButton(
           onPressed: () => onPressed(), icon: const Icon(Icons.open_with)),
     );

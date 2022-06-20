@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/vos/show_more_vo/show_more_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
+import 'package:wechat_app/resources/strings.dart';
 
 class ProfileNameAndQrScanItemView extends StatelessWidget {
   const ProfileNameAndQrScanItemView({
@@ -89,15 +91,22 @@ class ProfileNameView extends StatelessWidget {
 class BioSettingIconLogoutItemView extends StatelessWidget {
   const BioSettingIconLogoutItemView({
     Key? key,
-    required this.onPressed
+    required this.onPressed,
+    required this.onEdit,
+    required this.bioText
   }) : super(key: key);
   final Function onPressed;
+  final Function onEdit;
+  final String bioText;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children:  [
-        const  Expanded(child:  BioView()),
+          Expanded(child:  BioView(
+          onEdit: ()=>onEdit(),
+           bioText: bioText,
+        )),
         const  Expanded(
             flex: 2,
             child: SettingIconView()
@@ -177,8 +186,11 @@ class SettingIconView extends StatelessWidget {
 class BioView extends StatelessWidget {
   const BioView({
     Key? key,
+    required this.onEdit,
+    required this.bioText,
   }) : super(key: key);
-
+  final Function onEdit;
+  final String bioText;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -187,23 +199,24 @@ class BioView extends StatelessWidget {
       child: RichText(
         maxLines: 2,
         textAlign: TextAlign.center,
-        text: const TextSpan(
-            style: TextStyle(
+        text:  TextSpan(
+            style: const TextStyle(
                 color: Colors.black38,
                 fontSize: kFontSize12x,
                 overflow: TextOverflow.ellipsis
             ),
-            text: 'No Pain No Gain. Success is the only way to become success. become success.',
+            text: bioText,
             children: [
-              TextSpan(
+              const TextSpan(
                   text: '  '
               ),
               TextSpan(
-                  style:  TextStyle(
+                  recognizer:  TapGestureRecognizer()..onTap = () =>onEdit(),
+                  style:  const TextStyle(
                       color: Colors.cyan,
                       decoration: TextDecoration.underline
                   ),
-                  text: 'EDIT'
+                  text: bioText==kWriteYourBioText?'Write':'Edit'
               )
             ]
         ),
