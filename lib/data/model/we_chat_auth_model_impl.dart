@@ -20,14 +20,17 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
   String getLoggedInUserID() => _weChatDataAgent.getLoggedInUserID();
 
   @override
-  bool isLoggedIn() => _weChatDataAgent.isLoggedIn();
+  bool isLoggedIn() => _weChatDataAgent.isLoggedIn() || _userDAO.isUserLoggedOut();
 
   @override
   Future login(String email, String password) =>
       _weChatDataAgent.login(email, password);
 
   @override
-  Future logout() => _weChatDataAgent.logout();
+  Future logout() {
+    _userDAO.deleteUserVO();
+    return _weChatDataAgent.logout();
+  }
 
   @override
   Future registerNewUser(UserVO newUser) =>
