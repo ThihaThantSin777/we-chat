@@ -24,12 +24,14 @@ class WeChatProfilePageBloc extends ChangeNotifier{
 
   WeChatProfilePageBloc(){
     _auth.getUserVoStreamEvent().listen((userVO) {
-        String id=userVO?.id??'';
-      _name=userVO?.userName??'';
-      _bioText=userVO?.bioText??'';
+    if(userVO!=null){
+      String id=userVO.id??'';
+      _name=userVO.userName??'';
+      _bioText=userVO.bioText??'';
       _id='$_name#${id[0]}${id[1]}${id[2]}${id[3]}${id[4]}${id[5]}';
-      _profilePicture=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
+      _profilePicture=(userVO.profileImage?.isEmpty??true)?kDefaultImage:userVO.profileImage??'';
       _notifySafely();
+    }
     });
   }
 

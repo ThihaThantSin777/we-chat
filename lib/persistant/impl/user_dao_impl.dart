@@ -12,7 +12,13 @@ class UserDAOImpl extends UserDAO{
   void deleteUserVO() =>_getUserVOBox().clear();
 
   @override
-  UserVO? getUserVO() =>_getUserVOBox().values.first;
+  UserVO? getUserVO(){
+   List<UserVO>? temp=_getUserVOBox().values.toList();
+   if(temp.isNotEmpty){
+     return temp.first;
+   }
+   return null;
+  }
 
   @override
   Stream getUserVOStream() =>_getUserVOBox().watch();
