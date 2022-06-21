@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
+import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 import 'package:wechat_app/data/vos/user_vo/user_vo.dart';
 import 'package:wechat_app/network/data_agent/we_chat_cloud_firestore_data_agent_impl.dart';
 import 'package:wechat_app/network/data_agent/we_chat_data_agent.dart';
+import 'package:wechat_app/persistant/dao/moment_dao.dart';
 import 'package:wechat_app/persistant/dao/user_dao.dart';
+import 'package:wechat_app/persistant/impl/moment_dao_impl.dart';
 import 'package:wechat_app/persistant/impl/user_dao_impl.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -15,6 +18,7 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
   factory WeChatAuthModelImpl()=>_singleton;
   final WeChatDataAgent _weChatDataAgent = WeChatCloudFireStoreDataAgentImpl();
   final UserDAO _userDAO=UserDAOImpl();
+  final MomentDAO _momentDAO=MomentDaoImpl();
 
   @override
   String getLoggedInUserID() => _weChatDataAgent.getLoggedInUserID();
@@ -26,9 +30,19 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
   Future login(String email, String password) {
 
     return _weChatDataAgent.login(email, password).then((value) {
-      UserVO ?userVO=_userDAO.getUserVO(_weChatDataAgent.getLoggedInUserID());
-      userVO?.isLogout=false;
-      _userDAO.save(userVO??UserVO.normal());
+      UserVO ?userVO=_userDAO.getUserVO(getLoggedInUserID());
+      if(userVO!=null){
+        userVO.isLogout=false;
+        _userDAO.save(userVO);
+      }else{
+        getLoggedInUserInfo().then((userVO) {
+          _userDAO.save(userVO??UserVO.normal());
+        });
+      }
+      _weChatDataAgent.getMoments().listen((data) {
+        List<MomentVO>temp=data.where((element) => element.userID==getLoggedInUserID()).toList();
+        _momentDAO.saveList(temp);
+      });
     });
   }
 

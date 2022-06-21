@@ -31,10 +31,15 @@ class UserDAOImpl extends UserDAO{
   @override
   bool isUserLoggedOut(String id) {
     UserVO ? userVo=_getUserVOBox().get(id);
-    if(userVo?.isLogout??false){
-      return true;
+    if(userVo!=null){
+      if(userVo.isLogout??false){
+        return true;
+      }else{
+        return false;
+      }
     }
-    return false;
+
+    return true;
   }
 
   @override

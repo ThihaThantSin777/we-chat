@@ -81,8 +81,10 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
   bool isLoggedIn() => _fireAuth.currentUser != null;
 
   @override
-  Future login(String email, String password) =>
-      _fireAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future login(String email, String password) {
+   return _fireAuth.signInWithEmailAndPassword(email: email, password: password);
+  }
+
 
   @override
   Future logout() => _fireAuth.signOut();

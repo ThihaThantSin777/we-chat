@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_moment_model_impl.dart';
 import 'package:wechat_app/data/model/we_chat_moment_model.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
+import 'package:wechat_app/persistant/dao/moment_dao.dart';
+import 'package:wechat_app/persistant/impl/moment_dao_impl.dart';
 import 'package:wechat_app/resources/strings.dart';
 
 import '../data/model/we_chat_auth_model.dart';
@@ -31,9 +33,6 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
   ///Model
   final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
   final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
-  DateTime _getSystemTime() {
-    return DateTime.now();
-  }
   WeChatDiscoverPageBloc([int ? id]){
 
    _weChatAuthModel.getUserVoStreamEvent(_weChatAuthModel.getLoggedInUserID()).listen((userVO) {
@@ -56,6 +55,9 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
     },
       onError: (error)=>debugPrint(error)
     );
+
+    MomentDAO momentDAO=MomentDaoImpl();
+    print(momentDAO.getMomentVOList());
 
   }
   Future<void> deletePost(int id){
