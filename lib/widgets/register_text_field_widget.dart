@@ -23,11 +23,11 @@ class RegisterTextFieldWidget extends StatelessWidget {
   final TextFieldInputType textInput;
   final String prefixPhoneNo;
 
-
   @override
   Widget build(BuildContext context) {
 
     return ListTile(
+
           minLeadingWidth: kPadSpace90x,
           shape: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.black38)),

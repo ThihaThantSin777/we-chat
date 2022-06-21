@@ -11,7 +11,7 @@ import 'package:wechat_app/widgets/leading_widget.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 import '../widgets/small_profile_widget.dart';
-import 'package:timeago/timeago.dart' as timeago;
+
 
 class WeChatDiscoverPage extends StatelessWidget {
   const WeChatDiscoverPage({Key? key}) : super(key: key);
@@ -317,20 +317,6 @@ class WeChatDiscoverPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class TimeAgoItemView extends StatelessWidget {
-  const TimeAgoItemView({Key? key, required this.dateTime}) : super(key: key);
-  final DateTime dateTime;
-
-  @override
-  Widget build(BuildContext context) {
-    final ago = DateTime.now().subtract(Duration(minutes: dateTime.minute));
-    return Text(
-      timeago.format(ago, locale: 'en'),
-      style: const TextStyle(color: Colors.black38),
     );
   }
 }

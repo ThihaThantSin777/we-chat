@@ -91,4 +91,7 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
 
   @override
   Future<UserVO?> getLoggedInUserInfo() =>_weChatDataAgent.getLoggedInUserInfo();
+
+  @override
+  List<UserVO>? getUserVoList() =>_userDAO.getUserVoList();
 }

@@ -5,6 +5,8 @@ abstract class UserDAO{
 
   UserVO ? getUserVO(String id);
 
+  List<UserVO>? getUserVoList();
+
   void deleteUserVO();
 
   Stream getUserVOStream();

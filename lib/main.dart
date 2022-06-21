@@ -16,6 +16,8 @@ import 'package:wechat_app/network/data_agent/we_chat_real_time_data_agent_impl.
 import 'package:wechat_app/pages/we_chat_home_page.dart';
 import 'package:wechat_app/pages/we_chat_start_page.dart';
 import 'package:wechat_app/persistant/constant/hive_constant.dart';
+import 'package:wechat_app/persistant/dao/user_dao.dart';
+import 'package:wechat_app/persistant/impl/user_dao_impl.dart';
 import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/theme/we_chat_theme.dart';
 import 'package:hive_flutter/adapters.dart';
