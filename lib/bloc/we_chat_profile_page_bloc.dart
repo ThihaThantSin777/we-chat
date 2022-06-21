@@ -23,7 +23,7 @@ class WeChatProfilePageBloc extends ChangeNotifier{
   final WeChatAuthModel _auth=WeChatAuthModelImpl();
 
   WeChatProfilePageBloc(){
-    _auth.getUserVoStreamEvent().listen((userVO) {
+    _auth.getUserVoStreamEvent(_auth.getLoggedInUserID()).listen((userVO) {
     if(userVO!=null){
       String id=userVO.id??'';
       _name=userVO.userName??'';

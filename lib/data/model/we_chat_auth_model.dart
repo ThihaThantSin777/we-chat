@@ -18,5 +18,5 @@ abstract class WeChatAuthModel{
 
 
   ///Database
-  Stream<UserVO?>getUserVoStreamEvent();
+  Stream<UserVO?>getUserVoStreamEvent(String id);
 }

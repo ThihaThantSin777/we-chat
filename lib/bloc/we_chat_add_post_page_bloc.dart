@@ -47,7 +47,7 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
 
   WeChatAddPostPageBloc([int ?id]){
     _controller=TextEditingController();
-    _weChatAuthModel.getUserVoStreamEvent().listen((userVO) {
+    _weChatAuthModel.getUserVoStreamEvent(_weChatAuthModel.getLoggedInUserID()).listen((userVO) {
       _profileName=userVO?.userName??'';
       _profileImage=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
       _notifySafely();

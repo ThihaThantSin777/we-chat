@@ -20,15 +20,24 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
   String getLoggedInUserID() => _weChatDataAgent.getLoggedInUserID();
 
   @override
-  bool isLoggedIn() => _weChatDataAgent.isLoggedIn() || !_userDAO.isUserLoggedOut();
+  bool isLoggedIn() => _weChatDataAgent.isLoggedIn() && !_userDAO.isUserLoggedOut(getLoggedInUserID());
 
   @override
-  Future login(String email, String password) =>
-      _weChatDataAgent.login(email, password);
+  Future login(String email, String password) {
+
+    return _weChatDataAgent.login(email, password).then((value) {
+      UserVO ?userVO=_userDAO.getUserVO(_weChatDataAgent.getLoggedInUserID());
+      userVO?.isLogout=false;
+      _userDAO.save(userVO??UserVO.normal());
+    });
+  }
+
 
   @override
   Future logout() {
-    _userDAO.deleteUserVO();
+    UserVO ?userVO=_userDAO.getUserVO(_weChatDataAgent.getLoggedInUserID());
+    userVO?.isLogout=true;
+    _userDAO.save(userVO??UserVO.normal());
     return _weChatDataAgent.logout();
   }
 
@@ -62,8 +71,8 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
   // Future<UserVO?> getLoggedInUserInfoByID() =>_weChatDataAgent.getLoggedInUserInfo();
 
   @override
-  Stream<UserVO?> getUserVoStreamEvent() {
-    return _userDAO.getUserVOStream().startWith(_userDAO.getUserVoStreamEvent()).map((event) =>_userDAO.getUserVO());
+  Stream<UserVO?> getUserVoStreamEvent(String id) {
+    return _userDAO.getUserVOStream().startWith(_userDAO.getUserVoStreamEvent(id)).map((event) =>_userDAO.getUserVO(id));
   }
 
   @override

@@ -12,10 +12,10 @@ class UserDAOImpl extends UserDAO{
   void deleteUserVO() =>_getUserVOBox().clear();
 
   @override
-  UserVO? getUserVO(){
-   List<UserVO>? temp=_getUserVOBox().values.toList();
-   if(temp.isNotEmpty){
-     return temp.first;
+  UserVO? getUserVO(String id){
+   UserVO? temp=_getUserVOBox().get(id);
+   if(temp!=null){
+     return temp;
    }
    return null;
   }
@@ -29,9 +29,15 @@ class UserDAOImpl extends UserDAO{
   Box<UserVO> _getUserVOBox() => Hive.box<UserVO>(kBoxNameForUserVO);
 
   @override
-  bool isUserLoggedOut() =>_getUserVOBox().isEmpty;
+  bool isUserLoggedOut(String id) {
+    UserVO ? userVo=_getUserVOBox().get(id);
+    if(userVo?.isLogout??false){
+      return true;
+    }
+    return false;
+  }
 
   @override
-  Stream<UserVO?> getUserVoStreamEvent()=>Stream.value(getUserVO());
+  Stream<UserVO?> getUserVoStreamEvent(String id)=>Stream.value(getUserVO(id));
 
 }

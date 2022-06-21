@@ -28,13 +28,14 @@ class UserVOAdapter extends TypeAdapter<UserVO> {
       fcmToken: fields[8] as String?,
       backgroundImage: fields[9] as String?,
       bioText: fields[10] as String?,
+      isLogout: fields[11] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserVO obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class UserVOAdapter extends TypeAdapter<UserVO> {
       ..writeByte(9)
       ..write(obj.backgroundImage)
       ..writeByte(10)
-      ..write(obj.bioText);
+      ..write(obj.bioText)
+      ..writeByte(11)
+      ..write(obj.isLogout);
   }
 
   @override
@@ -86,7 +89,8 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
       fcmToken: json['fcm_token'] as String?,
       backgroundImage: json['background_image'] as String?,
       bioText: json['bio_text'] as String?,
-    );
+      isLogout: json['isLogout'] as bool?,
+    )..isShowSuspension = json['isShowSuspension'] as bool;
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'isShowSuspension': instance.isShowSuspension,
@@ -101,4 +105,5 @@ Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'fcm_token': instance.fcmToken,
       'background_image': instance.backgroundImage,
       'bio_text': instance.bioText,
+      'isLogout': instance.isLogout,
     };

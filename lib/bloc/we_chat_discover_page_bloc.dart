@@ -36,7 +36,8 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
   }
   WeChatDiscoverPageBloc([int ? id]){
 
-   _weChatAuthModel.getUserVoStreamEvent().listen((userVO) {
+   _weChatAuthModel.getUserVoStreamEvent(_weChatAuthModel.getLoggedInUserID()).listen((userVO) {
+     print('User ====> $userVO');
      _profileImage=(userVO?.profileImage?.isEmpty??true)?kDefaultImage:userVO?.profileImage??'';
      _profileBackgroundImage=userVO?.backgroundImage??'';
      _profileName=userVO?.userName??'';
