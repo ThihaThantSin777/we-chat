@@ -3,6 +3,8 @@ import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 abstract class MomentDAO{
   void save(MomentVO momentVO);
 
+  void saveList(List<MomentVO>momentVOList);
+
   MomentVO ? getSingleMomentVO(int id);
 
   List<MomentVO>? getMomentVOList();

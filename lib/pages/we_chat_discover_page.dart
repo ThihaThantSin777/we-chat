@@ -266,17 +266,14 @@ class WeChatDiscoverPage extends StatelessWidget {
                                   Padding(
                                       padding: const EdgeInsets.only(
                                           left: kPadSpace20x),
-                                      child: Selector<WeChatDiscoverPageBloc,
-                                          String>(
-                                        selector: (context, bloc) =>
-                                            bloc.getProfileImage,
-                                        builder: (context, imageURL, child) =>
+                                      child:
                                             SmallProfileWidget(
                                           width: 60,
                                           height: 60,
-                                          imageURL: imageURL,
+                                          imageURL: (momentLisVO?[index].profilePicture.isEmpty??true)?kDefaultImage:momentLisVO?[index].profilePicture??'',
                                         ),
-                                      )),
+
+                                  ),
                                 ],
                               ),
                             ),

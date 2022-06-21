@@ -25,21 +25,32 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
 
   Future<MomentVO> _createMoment(
       String description, String imageURL, String videoURL) async{
-    String imgUrl = imageURL.isEmpty ? '' : imageURL;
-
-    String vURL = videoURL.isEmpty ? '' : videoURL;
     final dateTime = DateTime.now();
     UserVO ? userVO=await _weChatDataAgent.getLoggedInUserInfo();
-      var momentVO = MomentVO(
+    List<String> tempArrayImage=(imageURL.isEmpty)?[]:imageURL.split('-');
+    List<String> tepArrayVideo=(videoURL.isEmpty)?[]:videoURL.split('-');
+         var momentVO = MomentVO(
           id: dateTime.millisecond,
           userID: _weChatDataAgent.getLoggedInUserID(),
           userName: userVO?.userName ?? '',
           profilePicture: userVO?.profileImage ?? kDefaultImage,
-          postImage: imgUrl,
-          postVideo: vURL,
+          postImage:tempArrayImage.isEmpty?'':tempArrayImage.first,
+          postVideo: tepArrayVideo.isEmpty?'':tepArrayVideo.first,
           description: description,
-          timeStamp: dateTime
+          timeStamp: dateTime,
+           postImageID: '',
+           postVideoID: '',
       );
+
+         if(tempArrayImage.isNotEmpty){
+           momentVO.postImageID=tempArrayImage.last;
+         }
+         if(tepArrayVideo.isNotEmpty){
+           momentVO.postVideoID=tepArrayVideo.last;
+         }
+
+
+
 
     return Future.value(momentVO);
   }
@@ -63,7 +74,19 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
   }
 
   @override
-  Future<void> delete(int postID) => _weChatDataAgent.delete(postID);
+  Future<void> delete(int postID) {
+    MomentVO? momentVO=_momentDAO.getSingleMomentVO(postID);
+    if(momentVO!=null){
+     if(momentVO.postImageID.isNotEmpty){
+       _weChatDataAgent.deleteMomentFileFromFirebase(momentVO.postImageID);
+     }
+     if(momentVO.postVideoID.isNotEmpty){
+       _weChatDataAgent.deleteMomentFileFromFirebase(momentVO.postVideoID);
+     }
+    }
+    _momentDAO.deleteMomentVO(postID);
+    return  _weChatDataAgent.delete(postID);
+  }
 
   @override
   Stream<MomentVO> getMomentByID(int newsFeedID) =>
@@ -72,6 +95,9 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
   /// _weChatDataAgent.getMoments();
   @override
   Stream<List<MomentVO>> getMoments(){
+    _weChatDataAgent.getMoments().listen((event) {
+      _momentDAO.saveList(event);
+    });
     return _momentDAO.getMomentVOStream().startWith(_momentDAO.getMomentVoListStreamEvent()).map((event) =>_momentDAO.getMomentVOList()??[]);
   }
 
@@ -84,8 +110,20 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
           .then((imageLink) {
         _weChatDataAgent.uploadMomentsFileToFirebase(videoURL??File('')).then((videoLink) {
           MomentVO moment = momentVO;
-          moment.postImage = imageLink;
-          moment.postVideo = videoLink;
+          List<String> tempArrayImage=(imageLink.isEmpty)?[]:imageLink.split('-');
+          List<String> tepArrayVideo=(videoLink.isEmpty)?[]:videoLink.split('-');
+          MomentVO ? tempMoment=_momentDAO.getSingleMomentVO(moment.id);
+          if(tempArrayImage.isNotEmpty){
+            _weChatDataAgent.deleteMomentFileFromFirebase(tempMoment?.postImageID??'');
+            moment.postImage =tempArrayImage.first;
+            moment.postImageID=tempArrayImage.last;
+          }
+          if(tepArrayVideo.isNotEmpty){
+            _weChatDataAgent.deleteMomentFileFromFirebase(tempMoment?.postVideoID??'');
+            moment.postVideo = tepArrayVideo.first;
+            moment.postVideoID=tepArrayVideo.last;
+          }
+
           _momentDAO.save(moment);
           _weChatDataAgent.addNewPost(moment);
         });
@@ -94,5 +132,8 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
 
 
   }
+
+  @override
+  Future<void> deleteMomentFileFromFirebase(String id) =>_weChatDataAgent.deleteMomentFileFromFirebase(id);
 
 }

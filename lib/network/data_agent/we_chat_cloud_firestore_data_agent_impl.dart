@@ -59,14 +59,19 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
 
    @override
   Future<String> uploadMomentsFileToFirebase(File image) {
-    if(image.path.isEmpty){
+     int id=DateTime.now().millisecondsSinceEpoch;
+    if(image.path.isEmpty) {
       return Future.value('');
     }
+
     return _firebaseStorage
         .ref(momentsFileUploadPath)
-        .child('${DateTime.now().millisecondsSinceEpoch}')
+        .child(id.toString())
         .putFile(image)
-        .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
+        .then((takeSnapShot) {
+          String imageURLAndID='${takeSnapShot.ref.getDownloadURL()}-$id';
+          return imageURLAndID;
+    });
   }
 
   @override
@@ -175,5 +180,12 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         .child('${DateTime.now().millisecondsSinceEpoch}')
         .putFile(image)
         .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
+  }
+
+  @override
+  Future<void> deleteMomentFileFromFirebase(String id) {
+   return _firebaseStorage
+        .ref(momentsFileUploadPath)
+        .child(id).delete();
   }
 }

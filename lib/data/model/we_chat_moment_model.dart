@@ -10,5 +10,6 @@ abstract class WeChatMomentModel {
       MomentVO momentVO, File? postImageURL, File? videoURL);
   Future<void> delete(int postID);
   Stream<MomentVO> getMomentByID(int newsFeedID);
+  Future<void>deleteMomentFileFromFirebase(String id);
 
 }

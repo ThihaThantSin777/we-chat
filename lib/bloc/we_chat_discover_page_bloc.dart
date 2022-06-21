@@ -43,6 +43,7 @@ class WeChatDiscoverPageBloc extends ChangeNotifier {
      _notifySafely();
    });
     _weChatModel.getMoments().listen((data) {
+      print('Data =====> $data');
       _momentVO=data.map((moments) {
         String id=_weChatAuthModel.getLoggedInUserID();
         if(id==moments.userID){

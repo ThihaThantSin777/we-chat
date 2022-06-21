@@ -25,13 +25,15 @@ class MomentVOAdapter extends TypeAdapter<MomentVO> {
       postVideo: fields[5] as String,
       description: fields[6] as String,
       timeStamp: fields[7] as DateTime,
+      postImageID: fields[8] as String,
+      postVideoID: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, MomentVO obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +49,11 @@ class MomentVOAdapter extends TypeAdapter<MomentVO> {
       ..writeByte(6)
       ..write(obj.description)
       ..writeByte(7)
-      ..write(obj.timeStamp);
+      ..write(obj.timeStamp)
+      ..writeByte(8)
+      ..write(obj.postImageID)
+      ..writeByte(9)
+      ..write(obj.postVideoID);
   }
 
   @override
@@ -74,6 +80,9 @@ MomentVO _$MomentVOFromJson(Map<String, dynamic> json) => MomentVO(
       postVideo: json['post_video'] as String,
       description: json['description'] as String,
       timeStamp: DateTime.parse(json['time_stamp'] as String),
+      postImageID: json['post_image_id'] as String,
+      postVideoID: json['post_video_id'] as String,
+      isOriginalUploader: json['isOriginalUploader'] as bool? ?? false,
       isLiked: json['isLiked'] as bool? ?? false,
     );
 
@@ -86,5 +95,8 @@ Map<String, dynamic> _$MomentVOToJson(MomentVO instance) => <String, dynamic>{
       'post_video': instance.postVideo,
       'description': instance.description,
       'time_stamp': instance.timeStamp.toIso8601String(),
+      'post_image_id': instance.postImageID,
+      'post_video_id': instance.postVideoID,
+      'isOriginalUploader': instance.isOriginalUploader,
       'isLiked': instance.isLiked,
     };

@@ -40,6 +40,14 @@ class MomentVO {
   DateTime timeStamp;
 
 
+  @JsonKey(name: 'post_image_id')
+  @HiveField(8)
+  String postImageID;
+
+  @JsonKey(name: 'post_video_id')
+  @HiveField(9)
+  String postVideoID;
+
   bool isOriginalUploader;
 
   bool isLiked;
@@ -52,6 +60,8 @@ class MomentVO {
     required this.postVideo,
     required this.description,
     required this.timeStamp,
+    required this.postImageID,
+    required this.postVideoID,
     this.isOriginalUploader=false,
     this.isLiked=false
   });
@@ -59,7 +69,7 @@ class MomentVO {
 
   @override
   String toString() {
-    return 'MomentVO{id: $id, userID: $userID, userName: $userName, profilePicture: $profilePicture, postImage: $postImage, postVideo: $postVideo, description: $description, timeStamp: $timeStamp, isOriginalUploader: $isOriginalUploader, isLiked: $isLiked}';
+    return 'MomentVO{id: $id, userID: $userID, userName: $userName, profilePicture: $profilePicture, postImage: $postImage, postVideo: $postVideo, description: $description, timeStamp: $timeStamp, postImageID: $postImageID, postVideoID: $postVideoID, isOriginalUploader: $isOriginalUploader, isLiked: $isLiked}';
   }
 
 
@@ -76,6 +86,8 @@ class MomentVO {
           postVideo == other.postVideo &&
           description == other.description &&
           timeStamp == other.timeStamp &&
+          postImageID == other.postImageID &&
+          postVideoID == other.postVideoID &&
           isOriginalUploader == other.isOriginalUploader &&
           isLiked == other.isLiked;
 
@@ -89,6 +101,8 @@ class MomentVO {
       postVideo.hashCode ^
       description.hashCode ^
       timeStamp.hashCode ^
+      postImageID.hashCode ^
+      postVideoID.hashCode ^
       isOriginalUploader.hashCode ^
       isLiked.hashCode;
 

@@ -86,7 +86,7 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
       fcmToken: json['fcm_token'] as String?,
       backgroundImage: json['background_image'] as String?,
       bioText: json['bio_text'] as String?,
-    )..isShowSuspension = json['isShowSuspension'] as bool;
+    );
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'isShowSuspension': instance.isShowSuspension,
