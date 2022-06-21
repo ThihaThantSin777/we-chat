@@ -70,7 +70,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         .putFile(image)
         .then((takeSnapShot) {
          return takeSnapShot.ref.getDownloadURL().then((value) {
-            String imageURLAndID='$value-$id';
+            String imageURLAndID='$value|$id';
             return imageURLAndID;
           });
 

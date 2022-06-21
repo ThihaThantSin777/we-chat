@@ -25,8 +25,8 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
       String description, String imageURL, String videoURL) async{
     final dateTime = DateTime.now();
     UserVO ? userVO=await _weChatDataAgent.getLoggedInUserInfo();
-    List<String> tempArrayImage=(imageURL.isEmpty)?[]:imageURL.split('-');
-    List<String> tepArrayVideo=(videoURL.isEmpty)?[]:videoURL.split('-');
+    List<String> tempArrayImage=(imageURL.isEmpty)?[]:imageURL.split('|');
+    List<String> tepArrayVideo=(videoURL.isEmpty)?[]:videoURL.split('|');
          var momentVO = MomentVO(
           id: dateTime.millisecond,
           userID: _weChatDataAgent.getLoggedInUserID(),
@@ -105,8 +105,8 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
           .then((imageLink) {
         _weChatDataAgent.uploadMomentsFileToFirebase(videoURL??File('')).then((videoLink) {
           MomentVO moment = momentVO;
-          List<String> tempArrayImage=(imageLink.isEmpty)?[]:imageLink.split('-');
-          List<String> tepArrayVideo=(videoLink.isEmpty)?[]:videoLink.split('-');
+          List<String> tempArrayImage=(imageLink.isEmpty)?[]:imageLink.split('|');
+          List<String> tepArrayVideo=(videoLink.isEmpty)?[]:videoLink.split('|');
           MomentVO ? tempMoment=_momentDAO.getSingleMomentVO(moment.id);
           if(tempArrayImage.isNotEmpty){
             _weChatDataAgent.deleteMomentFileFromFirebase(tempMoment?.postImageID??'');
