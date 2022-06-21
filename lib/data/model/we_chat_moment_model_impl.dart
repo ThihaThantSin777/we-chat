@@ -95,10 +95,7 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
   /// _weChatDataAgent.getMoments();
   @override
   Stream<List<MomentVO>> getMoments(){
-    _weChatDataAgent.getMoments().listen((event) {
-      _momentDAO.saveList(event);
-    });
-    return _momentDAO.getMomentVOStream().startWith(_momentDAO.getMomentVoListStreamEvent()).map((event) =>_momentDAO.getMomentVOList()??[]);
+    return _weChatDataAgent.getMoments();
   }
 
   @override
