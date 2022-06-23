@@ -6,11 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model_impl.dart';
+import 'package:wechat_app/data/model/we_chat_notification_model_impl.dart';
 import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
+import 'package:wechat_app/data/vos/notification_vo/data_vo/data_vo.dart';
+import 'package:wechat_app/data/vos/notification_vo/notification_vo/notification_vo.dart';
+import 'package:wechat_app/network/api_constant/we_chat_api_constant.dart';
+import 'package:wechat_app/network/response/notification_response.dart';
 import 'package:wechat_app/resources/strings.dart';
 
 import '../data/model/we_chat_moment_model_impl.dart';
 import '../data/model/we_chat_moment_model.dart';
+import '../data/model/we_chat_notification_model.dart';
 
 class WeChatAddPostPageBloc extends ChangeNotifier {
   ///State Variable
@@ -44,8 +50,9 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   ///Model
   final WeChatMomentModel _weChatModel = WeChatMomentModelImpl();
   final WeChatAuthModel _weChatAuthModel=WeChatAuthModelImpl();
+  final WeChatNotificationModel _weChatNotificationModel=WeChatNotificationModelImpl();
 
-  WeChatAddPostPageBloc([int ?id]){
+  WeChatAddPostPageBloc([String ?id]){
     _controller=TextEditingController();
     _weChatAuthModel.getUserVoStreamEvent(_weChatAuthModel.getLoggedInUserID()).listen((userVO) {
       _profileName=userVO?.userName??'';
@@ -57,7 +64,7 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
     }
   }
 
-  void _prePopulateData(int id) {
+  void _prePopulateData(String id) {
     _weChatModel.getMomentByID(id).listen((event) {
     _controller?.text=event.description;
       _videoNetworkLink = event.postVideo;
@@ -106,13 +113,25 @@ class WeChatAddPostPageBloc extends ChangeNotifier {
   }
 
 
-  Future<void> addPost(int id) {
-    if (id == -1) {
+  Future<void> addPost(String id) {
+    if (id == '-1') {
       _loading = true;
       _notifySafely();
       return _weChatModel
           .addNewPost(_description, _photos, _videoFile)
           .then((_) {
+        _weChatAuthModel.getAllFCMTokenFromServer().listen((token) {
+
+         _weChatAuthModel.getLoggedInUserInfo().then((userVO) {
+           List<String?>temp=token.where((element) => element!=userVO?.fcmToken).toList();
+           for (var fcm in temp) {
+             NotificationVO notificationVO=NotificationVO(title: '$_profileName posted a moment', body: 'Click to see it', priority: 'high', contentAvailable: true);
+             DataVO dataVO=DataVO(routeName: 'discover', receiverID: 'receiverID');
+             NotificationResponse notificationResponse= NotificationResponse(to: fcm, notification: notificationVO, data: dataVO);
+             _weChatNotificationModel.getNotificationResponse(kContactTypeData, kAuthorizationData, notificationResponse);
+           }
+         });
+        });
         _loading = false;
         _notifySafely();
       });

@@ -9,7 +9,7 @@ part 'moment_vo.g.dart';
 class MomentVO {
   @JsonKey(name: 'id')
   @HiveField(0)
-  int id;
+  String id;
 
   @JsonKey(name: 'user_id')
   @HiveField(1)

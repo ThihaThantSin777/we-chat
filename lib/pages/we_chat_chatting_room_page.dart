@@ -21,9 +21,8 @@ import '../view_items/we_chat_chat_history_item_views/we_chat_chat_room_views.da
 
 class WeChatChattingRoomPage extends StatelessWidget {
   const WeChatChattingRoomPage(
-      {Key? key, required this.title, required this.friID})
+      {Key? key,  required this.friID})
       : super(key: key);
-  final String title;
   final String friID;
 
   void chooseImage(String text, WeChatChattingPagesBloc bloc) async {
@@ -57,7 +56,11 @@ class WeChatChattingRoomPage extends StatelessWidget {
             Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
-                  title: Text(title),
+                  title: Selector<WeChatChattingPagesBloc,String>(
+                      selector: (context,bloc)=>bloc.getFriName,
+                      builder: (context,friName,builder)=>
+                      (friName.isEmpty)?Container():
+                      Text(friName)),
                   leadingWidth: kLeadingWidth,
                   leading: const LeadingWidget(text: kWeChatTitle),
                   actions: [
@@ -219,7 +222,7 @@ class WeChatChattingRoomPage extends StatelessWidget {
                                             textEditingController:
                                                 textEditingController,
                                             onSubmitted: (text) {
-                                              weChatChattingPagesBloc.sendMessage();
+                                              weChatChattingPagesBloc.sendMessage(friID);
                                             },
                                             onTap: () {
                                               if (weChatChattingPagesBloc

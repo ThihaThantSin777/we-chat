@@ -99,30 +99,6 @@ class CheckBoxItemView extends StatelessWidget {
 }
 
 
-class ChooseImageTypeItemView extends StatelessWidget {
-  const ChooseImageTypeItemView({
-    Key? key,
-    required this.onChoose,
-    required this.title,
-  }) : super(key: key);
-  final Function onChoose;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () => onChoose(),
-        child: Container(
-            padding: const EdgeInsets.all(kPadSpace10x),
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: Text(
-              title,
-              style:
-              const TextStyle(color: Colors.white, fontSize: kFontSize17x),
-            )));
-  }
-}
 
 class RegionListItemView extends StatelessWidget {
   const RegionListItemView({

@@ -246,3 +246,63 @@ class ProfileImageItemView extends StatelessWidget {
     );
   }
 }
+
+
+class BioTextEnterItemView extends StatelessWidget {
+  const BioTextEnterItemView({
+    Key? key,
+    required this.onTapForClose,
+    required this.onChange,
+    required this.onSubmitted
+  }) : super(key: key);
+  final Function onTapForClose;
+  final Function(String) onChange;
+  final Function(String) onSubmitted;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: GestureDetector(
+        onTap: () => onTapForClose(),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kPadSpace10x,
+                  vertical: kPadSpace10x),
+              margin: const EdgeInsets.symmetric(
+                  horizontal: kPadSpace20x),
+              decoration: BoxDecoration(
+                borderRadius:
+                BorderRadius.circular(kPadSpace10x),
+                color: Colors.white,
+              ),
+              width: double.infinity,
+              height: null,
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Enter Bio Text',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: kFontSize19x),
+                    ),
+                    TextField(
+                      autofocus: true,
+                      onChanged: (text)=>onChange(text),
+                      onSubmitted: (text)=>onSubmitted(text),
+                    ),
+                  ]),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

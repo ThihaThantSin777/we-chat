@@ -31,7 +31,7 @@ class WeChatFileDetailsPage extends StatelessWidget {
           builder: (context,link,child)=>
          Center(
             child: Hero(
-              tag: link,
+              tag: link.toString(),
               child: isFile?CachedNetworkImage(
                 imageUrl: link,
                 placeholder: (context,string)=>const WaitingWidget(),

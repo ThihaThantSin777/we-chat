@@ -14,8 +14,8 @@ import 'package:wechat_app/widgets/loading_widget.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 
 class WeChatAddPostPage extends StatelessWidget {
-  WeChatAddPostPage({Key? key, this.id = -1}) : super(key: key);
-  final int id;
+  WeChatAddPostPage({Key? key, this.id = '-1'}) : super(key: key);
+  final String id;
   final formKey = GlobalKey<FormState>();
 
   Future<void> showMyDialog(BuildContext context,String title,String message) async {
@@ -154,12 +154,12 @@ class WeChatAddPostPage extends StatelessWidget {
     weChatAddPostPageBloc.removeVideo();
   }
 
-  Future<void> post(WeChatAddPostPageBloc weChatAddPostPageBloc, int id,
+  Future<void> post(WeChatAddPostPageBloc weChatAddPostPageBloc, String id,
       BuildContext context, GlobalKey<FormState> formKey) {
     if (formKey.currentState?.validate() ?? false) {
       return weChatAddPostPageBloc.addPost(id).then((value) {
         Navigator.of(context).pop();
-        if(id==-1){
+        if(id=='-1'){
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                   backgroundColor: kPrimaryLightColor,
@@ -189,12 +189,12 @@ class WeChatAddPostPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<WeChatAddPostPageBloc>(
-      create: (context) => WeChatAddPostPageBloc((id == -1)?null:id),
+      create: (context) => WeChatAddPostPageBloc((id == '-1')?null:id),
       child: Consumer<WeChatAddPostPageBloc>(
           builder: (context, bloc, child) {
             return    Scaffold(
               appBar: AppBar(
-                title: Text((id == -1) ? 'Add Post' : 'Edit Post'),
+                title: Text((id == '-1') ? 'Add Post' : 'Edit Post'),
                 leading: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.close),
@@ -202,7 +202,7 @@ class WeChatAddPostPage extends StatelessWidget {
                 actions: [
                   GestureDetector(
                       onTap: () => post(bloc, id, context, formKey),
-                      child: Center(child: Text((id == -1) ? 'POST' : 'EDIT'))),
+                      child: Center(child: Text((id == '-1') ? 'POST' : 'EDIT'))),
 
                   const SizedBox(
                     width: kPadSpace10x,

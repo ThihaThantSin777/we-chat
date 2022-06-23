@@ -151,8 +151,9 @@ class WeChatLoginPage extends StatelessWidget {
                 selector: (context, bloc) => bloc.getUserVOList,
                 builder: (context, userVOList, child) {
                   WeChatLoginPageBloc weChatLoginPageBloc=context.read<WeChatLoginPageBloc>();
-                  return Visibility(
-                    visible: (userVOList!=null || (userVOList?.isNotEmpty??false)),
+                  return
+                    Visibility(
+                    visible: (userVOList?.isNotEmpty??false),
                     child: RecentLoginItemView(
                       onTapForBack: (){
                         weChatLoginPageBloc.removeRecentUserVOEmails();

@@ -14,6 +14,7 @@ import 'package:wechat_app/resources/strings.dart';
 import 'package:wechat_app/utils/enums.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:wechat_app/view_items/we_chat_start_item_views/we_chat_register_item_views.dart';
+import 'package:wechat_app/widgets/choose_image_type_widget.dart';
 import 'package:wechat_app/widgets/error_textfield_widget.dart';
 import 'package:wechat_app/widgets/material_button_widget.dart';
 import 'package:wechat_app/widgets/register_text_field_widget.dart';
@@ -34,20 +35,22 @@ class WeChatRegisterPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ChooseImageTypeItemView(
+                ChooseImageTypeWidget(
                   onChoose: () async {
                     navigateBack(context);
                     final ImagePicker picker = ImagePicker();
                     final XFile? photo =
                         await picker.pickImage(source: ImageSource.camera);
-                    weChatRegisterPageBloc.setImage(File(photo?.path ?? ''));
+                 if(photo!=null){
+                   weChatRegisterPageBloc.setImage(File(photo.path));
+                 }
                   },
                   title: kTakePhotoText,
                 ),
                 const SizedBox(
                   height: kPadSpace10x,
                 ),
-                ChooseImageTypeItemView(
+                ChooseImageTypeWidget(
                   onChoose: () async {
                     navigateBack(context);
                     FilePickerResult? result =
@@ -69,7 +72,7 @@ class WeChatRegisterPage extends StatelessWidget {
                   thickness: kPadSpace10x,
                   color: Colors.black38,
                 ),
-                ChooseImageTypeItemView(
+                ChooseImageTypeWidget(
                   onChoose: () {
                     weChatRegisterPageBloc.removePhoto();
                     navigateBack(context);
@@ -94,7 +97,7 @@ class WeChatRegisterPage extends StatelessWidget {
     });
   }
 
-  void _navigateToTermsAndCondition(BuildContext context,WeChatRegisterPageBloc weChatRegisterPageBloc){
+  void _navigateToEmailPage(BuildContext context,WeChatRegisterPageBloc weChatRegisterPageBloc){
     navigatePush(context,  WeChatEmailPage(userVO: weChatRegisterPageBloc.getUserVO()));
   }
 
@@ -353,7 +356,7 @@ class WeChatRegisterPage extends StatelessWidget {
                                     onPressed: (){
                                       weChatRegisterPageBloc.acceptAndContinue(isSelect).then((value) {
                                         if(value){
-                                          _navigateToTermsAndCondition(context,weChatRegisterPageBloc);
+                                          _navigateToEmailPage(context,weChatRegisterPageBloc);
                                         }
                                       });
                                     },

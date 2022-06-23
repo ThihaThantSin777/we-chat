@@ -54,6 +54,13 @@ class UserVO extends ISuspensionBean{
 
   @HiveField(11)
   bool ? isLogout;
+
+  @HiveField(12)
+  String ? imageID;
+
+  @HiveField(13)
+  String? backgroundImageID;
+
   UserVO.normal();
   UserVO({
     required this.id,
@@ -68,12 +75,14 @@ class UserVO extends ISuspensionBean{
     required this.backgroundImage,
     required this.bioText,
     required this.isLogout,
+    required this.imageID,
+    required this.backgroundImageID,
   });
 
 
   @override
   String toString() {
-    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken, backgroundImage: $backgroundImage, bioText: $bioText, isLogout: $isLogout}';
+    return 'UserVO{id: $id, region: $region, phone: $phone, userName: $userName, email: $email, password: $password, profileImage: $profileImage, qrCode: $qrCode, fcmToken: $fcmToken, backgroundImage: $backgroundImage, bioText: $bioText, isLogout: $isLogout, imageID: $imageID, backgroundImageID: $backgroundImageID}';
   }
 
 
@@ -93,7 +102,9 @@ class UserVO extends ISuspensionBean{
           fcmToken == other.fcmToken &&
           backgroundImage == other.backgroundImage &&
           bioText == other.bioText &&
-          isLogout == other.isLogout;
+          isLogout == other.isLogout &&
+          imageID == other.imageID &&
+          backgroundImageID == other.backgroundImageID;
 
   @override
   int get hashCode =>
@@ -108,7 +119,9 @@ class UserVO extends ISuspensionBean{
       fcmToken.hashCode ^
       backgroundImage.hashCode ^
       bioText.hashCode ^
-      isLogout.hashCode;
+      isLogout.hashCode ^
+      imageID.hashCode ^
+      backgroundImageID.hashCode;
 
   factory UserVO.fromJson(Map<String, dynamic> json) => _$UserVOFromJson(json);
 

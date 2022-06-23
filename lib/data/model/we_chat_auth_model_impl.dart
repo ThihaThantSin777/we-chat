@@ -32,7 +32,9 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
     return _weChatDataAgent.login(email, password).then((value) {
       UserVO ?userVO=_userDAO.getUserVO(getLoggedInUserID());
       if(userVO!=null){
+
         userVO.isLogout=false;
+
         _userDAO.save(userVO);
       }else{
         getLoggedInUserInfo().then((userVO) {
@@ -94,4 +96,21 @@ class WeChatAuthModelImpl extends WeChatAuthModel {
 
   @override
   List<UserVO>? getUserVoList() =>_userDAO.getUserVoList();
+
+  @override
+  Future<void> addNewUser(UserVO newUser) =>_weChatDataAgent.addNewUser(newUser);
+
+  @override
+  void saveUser(UserVO userVO) {
+   _userDAO.save(userVO);
+  }
+
+  @override
+  Stream<List<String?>> getAllFCMTokenFromServer() =>_weChatDataAgent.getAllFCMTokenFromServer();
+
+  @override
+  Future<String> uploadChatsFilesToFirebase(File image) =>_weChatDataAgent.uploadChatsFilesToFirebase(image);
+
+  @override
+  Future<void> deleteProfileFileFromFirebase(String id) =>_weChatDataAgent.deleteProfileFileFromFirebase(id);
 }

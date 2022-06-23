@@ -12,7 +12,7 @@ import 'package:wechat_app/persistant/impl/user_dao_impl.dart';
 const momentsCollection = 'moments';
 const momentsFileUploadPath = 'uploads';
 const profilesFileUploadPath='profile';
-const chatsFileUploadPath='profile';
+const chatsFileUploadPath='chats';
 const userCollection = 'users';
 const contactCollection = 'contact';
 
@@ -33,7 +33,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
       .set(momentVO.toJson());
 
   @override
-  Future<void> delete(int postID) => _firebaseFirestore
+  Future<void> delete(String postID) => _firebaseFirestore
       .collection(momentsCollection)
       .doc(postID.toString())
       .delete();
@@ -49,7 +49,7 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
       });
 
   @override
-  Stream<MomentVO> getMomentByID(int newsFeedID) => _firebaseFirestore
+  Stream<MomentVO> getMomentByID(String newsFeedID) => _firebaseFirestore
       .collection(momentsCollection)
       .doc(newsFeedID.toString())
       .get()
@@ -99,10 +99,11 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         user?.updateDisplayName(newUser.userName);
         newUser.id = newUser.qrCode = user?.uid ?? '';
         _userDAO.save(newUser);
-        _addNewUser(newUser);
+        addNewUser(newUser);
       });
 
-  Future<void> _addNewUser(UserVO newUser) {
+  @override
+  Future<void> addNewUser(UserVO newUser) {
     return _firebaseFirestore
         .collection(userCollection)
         .doc(newUser.id.toString())
@@ -170,21 +171,26 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
   }
 
   @override
-  Future<UserVO?> getLoggedInUserInfo() {
-    String id = getLoggedInUserID();
-   return getUserInfoByID(id);
-  }
+  Future<UserVO?> getLoggedInUserInfo() =>
+    getUserInfoByID(getLoggedInUserID());
+
 
   @override
   Future<String> uploadProfileFilesToFirebase(File image) {
+    int id=DateTime.now().millisecondsSinceEpoch;
     if(image.path.isEmpty){
       return Future.value('');
     }
     return _firebaseStorage
         .ref(profilesFileUploadPath)
-        .child('${DateTime.now().millisecondsSinceEpoch}')
+        .child(id.toString())
         .putFile(image)
-        .then((takeSnapShot) => takeSnapShot.ref.getDownloadURL());
+        .then((takeSnapShot) {
+      return takeSnapShot.ref.getDownloadURL().then((value) {
+        String imageURLAndID='$value|$id';
+        return imageURLAndID;
+      });
+    });
   }
 
   @override
@@ -193,4 +199,39 @@ class WeChatCloudFireStoreDataAgentImpl extends WeChatDataAgent{
         .ref(momentsFileUploadPath)
         .child(id).delete();
   }
+
+  @override
+  Stream<List<String?>> getAllFCMTokenFromServer() =>_firebaseFirestore
+      .collection(userCollection)
+      .snapshots()
+      .map((querySnapShot) {
+  return querySnapShot.docs.map<UserVO>((document) {
+  return UserVO.fromJson(document.data());
+  }).toList().map((e) => e.fcmToken).toList();
+  });
+
+  @override
+  Future<String> uploadChatsFilesToFirebase(File image) {
+    int id=DateTime.now().millisecondsSinceEpoch;
+    if(image.path.isEmpty) {
+      return Future.value('');
+    }
+
+    return _firebaseStorage
+        .ref(chatsFileUploadPath)
+        .child(id.toString())
+        .putFile(image)
+        .then((takeSnapShot) {
+      return takeSnapShot.ref.getDownloadURL().then((value) {
+        String imageURLAndID='$value|$id';
+        return imageURLAndID;
+      });
+
+    });
+  }
+
+  @override
+  Future<void> deleteProfileFileFromFirebase(String id) => _firebaseStorage
+      .ref(profilesFileUploadPath)
+      .child(id).delete();
 }

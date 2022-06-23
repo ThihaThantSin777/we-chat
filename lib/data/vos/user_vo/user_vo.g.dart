@@ -29,13 +29,15 @@ class UserVOAdapter extends TypeAdapter<UserVO> {
       backgroundImage: fields[9] as String?,
       bioText: fields[10] as String?,
       isLogout: fields[11] as bool?,
+      imageID: fields[12] as String?,
+      backgroundImageID: fields[13] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserVO obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -59,7 +61,11 @@ class UserVOAdapter extends TypeAdapter<UserVO> {
       ..writeByte(10)
       ..write(obj.bioText)
       ..writeByte(11)
-      ..write(obj.isLogout);
+      ..write(obj.isLogout)
+      ..writeByte(12)
+      ..write(obj.imageID)
+      ..writeByte(13)
+      ..write(obj.backgroundImageID);
   }
 
   @override
@@ -90,6 +96,8 @@ UserVO _$UserVOFromJson(Map<String, dynamic> json) => UserVO(
       backgroundImage: json['background_image'] as String?,
       bioText: json['bio_text'] as String?,
       isLogout: json['isLogout'] as bool?,
+      imageID: json['imageID'] as String?,
+      backgroundImageID: json['backgroundImageID'] as String?,
     )..isShowSuspension = json['isShowSuspension'] as bool;
 
 Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
@@ -106,4 +114,6 @@ Map<String, dynamic> _$UserVOToJson(UserVO instance) => <String, dynamic>{
       'background_image': instance.backgroundImage,
       'bio_text': instance.bioText,
       'isLogout': instance.isLogout,
+      'imageID': instance.imageID,
+      'backgroundImageID': instance.backgroundImageID,
     };

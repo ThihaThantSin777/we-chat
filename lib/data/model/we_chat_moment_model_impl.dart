@@ -28,7 +28,7 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
     List<String> tempArrayImage=(imageURL.isEmpty)?[]:imageURL.split('|');
     List<String> tepArrayVideo=(videoURL.isEmpty)?[]:videoURL.split('|');
          var momentVO = MomentVO(
-          id: dateTime.millisecond,
+          id: dateTime.microsecondsSinceEpoch.toString(),
           userID: _weChatDataAgent.getLoggedInUserID(),
           userName: userVO?.userName ?? '',
           profilePicture: userVO?.profileImage ?? kDefaultImage,
@@ -72,7 +72,7 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
   }
 
   @override
-  Future<void> delete(int postID) {
+  Future<void> delete(String postID) {
     MomentVO? momentVO=_momentDAO.getSingleMomentVO(postID);
     if(momentVO!=null){
      if(momentVO.postImageID.isNotEmpty){
@@ -87,7 +87,7 @@ class WeChatMomentModelImpl extends WeChatMomentModel {
   }
 
   @override
-  Stream<MomentVO> getMomentByID(int newsFeedID) =>
+  Stream<MomentVO> getMomentByID(String newsFeedID) =>
       _weChatDataAgent.getMomentByID(newsFeedID);
 
   /// _weChatDataAgent.getMoments();

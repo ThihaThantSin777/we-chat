@@ -15,6 +15,13 @@ abstract class WeChatAuthModel{
   Future<UserVO?>getLoggedInUserInfo();
   Future<void>addContact(String friendID,UserVO friendUserVO);
   Stream<List<UserVO>> getContactList();
+  Future<void> addNewUser(UserVO newUser);
+  Stream<List<String?>>getAllFCMTokenFromServer();
+  Future<String> uploadChatsFilesToFirebase(File image);
+  Future<void> deleteProfileFileFromFirebase(String id);
+
+
+  void saveUser(UserVO userVO);
 
 
   ///Database

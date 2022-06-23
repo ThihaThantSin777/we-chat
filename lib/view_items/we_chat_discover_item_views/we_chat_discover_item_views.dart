@@ -5,6 +5,8 @@ import 'package:wechat_app/data/vos/moment_vo/moment_vo.dart';
 import 'package:wechat_app/resources/colors.dart';
 import 'package:wechat_app/resources/dimension.dart';
 import 'package:wechat_app/resources/strings.dart';
+import 'package:wechat_app/utils/extension.dart';
+import 'package:wechat_app/widgets/choose_image_type_widget.dart';
 import 'package:wechat_app/widgets/flick_manager_video.dart';
 import 'package:wechat_app/widgets/wating_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -49,19 +51,24 @@ class DateTimeItemView extends StatelessWidget {
 class BackgroundImageItemView extends StatelessWidget {
   const BackgroundImageItemView({
     Key? key,
-    required this.backgroundImage
+    required this.backgroundImage,
+    required this.onTapForBgImage
   }) : super(key: key);
   final String backgroundImage;
+  final Function onTapForBgImage;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: CachedNetworkImage(
-        imageUrl: backgroundImage,
-        placeholder: (context,string)=>const WaitingWidget(),
-        fit: BoxFit.cover,
-      )
+    return GestureDetector(
+      onTap: ()=>onTapForBgImage(),
+      child: SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: CachedNetworkImage(
+          imageUrl: backgroundImage,
+          placeholder: (context,string)=>const WaitingWidget(),
+          fit: BoxFit.cover,
+        )
+      ),
     );
   }
 }
@@ -428,15 +435,6 @@ class DetailsItemView extends StatelessWidget {
                 videoURL: postVideo,
               ),
             ),
-            FavoriteCommentIconItemView(
-              onPressedForFavorite: () {},
-              onPressedForComment: () {},
-              onEdit: () {},
-              onDelete: () {},
-              isFavorite: momentVO?.isLiked ?? false,
-              color: Colors.white70,
-              isOriginalUploader: isOriginalUploader,
-            )
           ],
         ),
       ),
@@ -536,6 +534,66 @@ class TimeAgoItemView extends StatelessWidget {
     return Text(
       timeago.format(ago, locale: 'en'),
       style: const TextStyle(color: Colors.black38),
+    );
+  }
+}
+
+
+
+class BackgroundChooseImageItemView extends StatelessWidget {
+  const BackgroundChooseImageItemView({
+    Key? key,
+    required this.onChooseForTakePhoto,
+    required this.onChooseForAlbum,
+    required this.onChooseForCancel
+  }) : super(key: key);
+  final Function onChooseForTakePhoto;
+  final Function onChooseForAlbum;
+  final Function onChooseForCancel;
+  @override
+  Widget build(BuildContext context) {
+    return
+      SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ChooseImageTypeWidget(
+            color: Colors.black,
+            onChoose: ()  {
+              navigateBack(context);
+              onChooseForTakePhoto();
+            },
+            title: kTakePhotoText,
+          ),
+          const SizedBox(
+            height: kPadSpace10x,
+          ),
+          ChooseImageTypeWidget(
+            color: Colors.black,
+            onChoose: () async {
+              navigateBack(context);
+              onChooseForAlbum();
+
+            },
+            title: kChooseFromAlbumText,
+          ),
+          const SizedBox(
+            height: kPadSpace10x,
+          ),
+          const Divider(
+            color: Colors.black,
+          ),
+          ChooseImageTypeWidget(
+            color: Colors.black,
+            onChoose: () {
+              navigateBack(context);
+              onChooseForCancel();
+            },
+            title: 'Remove',
+          ),
+        ],
+      ),
     );
   }
 }

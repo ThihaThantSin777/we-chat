@@ -32,13 +32,21 @@ class WeChatEmailPageBloc extends ChangeNotifier {
   Future<void> registerNewUser() {
     _loading = true;
     _notifySafely();
-    UserVO newUser = _userVO!;
+    UserVO newUser = _userVO??UserVO.normal();
     newUser.email = _email;
       return _weChatAuthModel
           .uploadProfileFileToFirebase(File(newUser.profileImage ?? ''))
           .then((imageURL) {
-        newUser.profileImage = imageURL;
+            if(imageURL.isEmpty){
+              newUser.profileImage = imageURL;
+            }else{
+              List<String> tempArrayImage=imageURL.split('|');
+              newUser.profileImage=tempArrayImage.first;
+              newUser.imageID=tempArrayImage.last;
+            }
+
         FCMService().getFCMToken().then((fcmToken) {
+          print('FCM Register =====> $fcmToken');
           newUser.fcmToken = fcmToken ?? '';
           _weChatAuthModel.registerNewUser(newUser).then((value) {
             _loading = false;

@@ -57,7 +57,7 @@ class WeChatHomePage extends StatelessWidget {
   void changePageIndex(int pageIndex, BuildContext context,
       WeChatHomePageBloc weChatHomePageBloc) {
     if (pageIndex == kDiscoverPageIndex) {
-      navigatePush(context, const WeChatDiscoverPage());
+      navigatePush(context,  WeChatDiscoverPage());
     } else {
       weChatHomePageBloc.pagesChanges(pageIndex);
     }

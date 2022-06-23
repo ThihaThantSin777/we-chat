@@ -16,8 +16,9 @@ class MomentVOAdapter extends TypeAdapter<MomentVO> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+
     return MomentVO(
-      id: fields[0] as int,
+      id: fields[0] as String,
       userID: fields[1] as String,
       userName: fields[2] as String,
       profilePicture: fields[3] as String,
@@ -72,7 +73,7 @@ class MomentVOAdapter extends TypeAdapter<MomentVO> {
 // **************************************************************************
 
 MomentVO _$MomentVOFromJson(Map<String, dynamic> json) => MomentVO(
-      id: json['id'] as int,
+      id: json['id'] as String,
       userID: json['user_id'] as String,
       userName: json['user_name'] as String,
       profilePicture: json['profile_picture'] as String,

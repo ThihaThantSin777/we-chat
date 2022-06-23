@@ -5,7 +5,7 @@ import 'package:wechat_app/persistant/dao/moment_dao.dart';
 
 class MomentDaoImpl extends MomentDAO {
   @override
-  void deleteMomentVO(int id) {
+  void deleteMomentVO(String id) {
     _getMomentVOBox().delete(id);
   }
 
@@ -20,10 +20,10 @@ class MomentDaoImpl extends MomentDAO {
       Stream.value(getMomentVOList());
 
   @override
-  MomentVO? getSingleMomentVO(int id) => _getMomentVOBox().get(id);
+  MomentVO? getSingleMomentVO(String id) => _getMomentVOBox().get(id);
 
   @override
-  Stream<MomentVO?> getSingleMomentVoStreamEvent(int id) =>
+  Stream<MomentVO?> getSingleMomentVoStreamEvent(String id) =>
       Stream.value(getSingleMomentVO(id));
 
   @override
@@ -35,7 +35,7 @@ class MomentDaoImpl extends MomentDAO {
 
   @override
   void saveList(List<MomentVO> momentVOList) {
-    Map<int, MomentVO> moments = {
+    Map<String, MomentVO> moments = {
       for (var moments in momentVOList) moments.id: moments
     };
     _getMomentVOBox().putAll(moments);

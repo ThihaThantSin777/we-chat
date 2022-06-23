@@ -9,19 +9,19 @@ class PopUpCommentWidget extends StatelessWidget {
   const PopUpCommentWidget(
       {Key? key,
         this.color = Colors.black54,
-        this.id = -1})
+        this.id = '-1'})
       : super(key: key);
   final Color color;
-  final int id;
+  final String id;
 
-  void delete(WeChatDiscoverPageBloc weChatDiscoverPageBloc, int id,
+  void delete(WeChatDiscoverPageBloc weChatDiscoverPageBloc, String id,
       BuildContext context) {
     weChatDiscoverPageBloc
         .deletePost(id)
         .then((_) => showSnackBar(context, '1 Post is deleted'));
   }
 
-  void edit(WeChatDiscoverPageBloc weChatDiscoverPageBloc, int id,
+  void edit(WeChatDiscoverPageBloc weChatDiscoverPageBloc, String id,
       BuildContext context) {
     navigateBack(context);
 

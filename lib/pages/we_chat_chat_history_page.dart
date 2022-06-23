@@ -80,7 +80,6 @@ class WeChatChatHistoryPage extends StatelessWidget {
                                   onTap: () => navigatePush(
                                       context,
                                       WeChatChattingRoomPage(
-                                          title: userVOList[index].name,
                                           friID: userVOList[index].userID)),
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,

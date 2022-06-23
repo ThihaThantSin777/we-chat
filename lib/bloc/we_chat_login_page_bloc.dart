@@ -1,3 +1,4 @@
+import 'package:wechat_app/fcm/fcm_service.dart';
 import 'package:wechat_app/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_app/data/model/we_chat_auth_model.dart';
@@ -97,6 +98,14 @@ class WeChatLoginPageBloc extends ChangeNotifier {
           .login(_email.text, _password.text.encrypt())
           .whenComplete(() {
         _loading = false;
+        FCMService().getFCMToken().then((fcmToken){
+          print('FCM Login =====> $fcmToken');
+          _authModel.getLoggedInUserInfo().then((userVO) {
+            userVO?.fcmToken=fcmToken;
+            _authModel.saveUser(userVO??UserVO.normal());
+            _authModel.addNewUser(userVO??UserVO.normal());
+          });
+        });
         _notifySafely();
       });
     }

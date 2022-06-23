@@ -5,15 +5,15 @@ abstract class MomentDAO{
 
   void saveList(List<MomentVO>momentVOList);
 
-  MomentVO ? getSingleMomentVO(int id);
+  MomentVO ? getSingleMomentVO(String id);
 
   List<MomentVO>? getMomentVOList();
 
-  void deleteMomentVO(int id);
+  void deleteMomentVO(String id);
 
   Stream getMomentVOStream();
 
-  Stream<MomentVO?>getSingleMomentVoStreamEvent(int id);
+  Stream<MomentVO?>getSingleMomentVoStreamEvent(String id);
 
   Stream<List<MomentVO>?>getMomentVoListStreamEvent();
 }

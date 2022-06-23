@@ -88,7 +88,6 @@ class WeChatContactPage extends StatelessWidget {
                                             onTap: (name) => navigatePush(
                                                 context,
                                                 WeChatChattingRoomPage(
-                                                  title: name,
                                                   friID: contactList[index].id.toString(),
                                                 )
                                             ),
